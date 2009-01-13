@@ -1,0 +1,40 @@
+transfr icon sets
+=================
+
+Only needed icons are added. They must also be renamed to specific
+names to allow painless icon switching.
+
+
+Icons
+-----
+
++----------------+
+| filename       |
++----------------+
+| logout.png     |
+| help.png       |
+| group.png      |
+| user.png       |
+| user_new.png   |
+| user_admin.png |
+| delete.png     |
+| upload.png     |
+| files.png      |
++----------------+
+
+
+Silk
+----
+
++----------------+-----------------------+
+| Icon           | Silk icon             |
++----------------+-----------------------+
+| logout.png     | delete.png            |
+| help.png       | help.png              |
+| group.png      | group.png             |
+| user.png       | user.png              |
+| user_add.png   | user_add.png          |
+| user_admin.png | user_admin.png        |
+| files.png      | page_white_copy.png   |
+| 
++--------------+-------------------------+

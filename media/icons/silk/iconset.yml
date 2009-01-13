@@ -1,0 +1,21 @@
+author: Copyright © 2006 Mark James. All rights reserved.
+license: Creative Commons Attribution 2.5 License (http://creativecommons.org/licenses/by/2.5/)
+website: http://www.famfamfam.com/lab/icons/silk/
+icons:
+  email: "email.png"
+  files: "page_white_copy.png"
+  folder: "folder.png"
+  folder_empty: "folder.png"
+  folder_full: "folder_page.png"
+  help: "help.png"
+  users: "group.png"
+  user_add: "user_add.png"
+  save: "add.png"
+  upload: "page_white_get.png"
+  download: "page_white_put.png"
+  delete: "cross.png"
+  logout: "delete.png"
+  comment: "comment.png"
+  password: "key.png"
+  information: "information.png"
+  settings: "cog.png"

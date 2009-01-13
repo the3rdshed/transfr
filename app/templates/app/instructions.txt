@@ -1,0 +1,21 @@
+Accès à Transfr
+
+Adresse:      http://transfr.centdessin.com:8081
+Utilisateur:  {{ username }}
+Mot de passe: {{ password }}
+
+Ce message est envoyé automatiquement, merci de ne pas répondre.
+
+Merci et bonne journée!
+
+-----
+
+Transfr access
+
+Address:  http://transfr.centdessin.com:8081
+Username: {{ username }}
+Password: {{ password }}
+
+This is an automated message, please do not reply. 
+
+Thanks and have a great day!

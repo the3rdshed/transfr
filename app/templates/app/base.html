@@ -1,0 +1,67 @@
+{% load i18n %}
+<html>
+    <head>
+        <title>transfr - {% trans "File manager" %}</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ MEDIA_URL }}themes/default/jquery-ui-themeroller.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ MEDIA_URL }}css/style.css">
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.utils.min.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui-personalized-1.6rc2.min.js"></script>
+        <script type="text/javascript">
+            {% autoescape off %}$.durls = {{ json_urls }};{% endautoescape %}
+            $.user = { // used only for layout disposition purpose as JavaScript *cannot* enforce user security
+                is_authenticated: {% if user.is_authenticated %}true{% else %}false{% endif %},
+                is_superuser: {% if user.is_superuser %}true{% else %}false{% endif %}
+            };
+        </script>
+        <script type="text/javascript" src="{% url jsi18n %}"></script>
+        <script type="text/javascript" src="{% url media_app "js/transfr.js" %}"></script>
+    </head>
+    <body>
+        <div id="language-switch">
+            <form action="{% url django.views.i18n.set_language %}" method="post">
+                <select id="i18n-switcher" name="language">
+                    {% for lang in LANGUAGES %}
+                    <option value="{{ lang.0 }}"{% ifequal lang.0 LANGUAGE_CODE %}selected="selected"{% endifequal %}>{{ lang.1 }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        <div id="hd">{% include "app/_toolbar.html" %}</div>
+        <div id="bd">{% block bd %}{% endblock %}</div>
+        <div id="ft">
+            <p>
+                <!-- You can use, modify this software as you wish, for free. However this copyright string along with the link *must* stay visible at all time. Thanks. -->
+                {% trans "Created by" %} <a href="http://www.centdessin.com">Centdessin Design</a> - &copy; 2008-{% now "Y" %}, {% trans "All rights reserved" %}
+            </p>
+        </div>
+        <script type="text/javascript">
+            $('.transf-upload-file').click(function(e){
+                $('#transfr-file-upload').load($(this).attr('href')+' #transfr-file-upload', function(){
+                    $('#transfr-file-upload-wrapper').show();
+
+                    $('#additional-form').click(function () {
+                        // Number of the last input + 1
+                        var n = parseInt($('input[name^=file]:last')[0].name.match(/\d+$/)[0], 10) + 1;
+                        var url = $.durl('additional_upload_form', {_0: n});
+                        $.get(url, function (data) {
+                            $('#additional-form-li').before('<div class="clear"></div>' + data);
+                        });
+                    });
+                });
+                return false;
+            });
+
+            $('button.ui-button-submit').click(function () {
+                this.form.submit();
+            });
+        </script>
+        <!--[if lt IE 7]>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.ifixpng.js"></script>
+        <script type="text/javascript">
+            $.ifixpng.pixel = '{{ MEDIA_URL }}img/pixel.gif';
+            $('img[@src$=.png]').ifixpng();
+        </script>
+        <![endif]-->
+    </body>
+</html>

@@ -1,0 +1,26 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+
+{% block bd %}
+<div class="content page" style="width:220px;margin:30px auto;">
+    <h3 class="ui-header">{% trans "Login" %}</h3>
+    {% if message %}
+    <div class="error">{{ message }}</div>
+    {% endif %}
+    <form method="post" action="" id="user-login">
+        <ul class="ui-form ui-reset">
+            <li>
+                <label for="username">{% trans "Username" %}</label>
+                <input type="text" name="username">
+            </li>
+            <li>
+                <label>{% trans "Password" %}</label>
+                <input type="password" name="password">
+            </li>
+            <li class="ui-actions ui-clearfix">
+                <button class="ui-button-submit ui-default-state"><img src="{{ MEDIA_URL }}img/silk/accept.png"> {% trans "Login" %}</button>
+            </li>
+        </ul>
+    </form>
+</div>
+{% endblock %}
