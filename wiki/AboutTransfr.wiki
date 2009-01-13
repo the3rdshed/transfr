@@ -1,0 +1,55 @@
+= Developers =
+
+|| [http://haineault.com/ Maxime Haineault] || Interface designer, project manager, programmer (JavaScript, CSS, HTML, Python) ||
+|| [http://gnuvince.wordpress.com/ Vincent Foley] || Programmer (Python, HTML, JavaScript), Tester ||
+
+
+
+= Software stack (technologies used) =
+
+Transfr would most likely not exist without the help of these great free and Open Source softwares and libraries:
+
+|| [http://apache.org Apache Web Server] || Used to serve the application ||
+|| [http://mysql.com MySQL Database] || A reliable relational database ||
+|| [http://djangoproject.com Django Framework] || A web framework for perfectionist with deadlines ||
+|| [http://jquery.com jQuery] || The best JavaScript framework ||
+|| [http://ui.jquery.com jQuery UI] || jQuery Interface components ||
+|| [http://brandonaaron.net/docs/livequery/ jQuery Livequery] || A jQuery plugin for easy AJAX ||
+|| [http://code.google.com/p/jquery-utils/ jQuery Utils] || A packaged collection of useful jQuery plugins ||
+|| [http://gnu.org/software/gettext/ Gettext] || A translation framework used to support multiple langues ||
+|| [http://yaml.org/ YAML] || A structured file format ||
+|| [http://json.org/ JSON] || A lightweight data-interchange format ||
+|| [http://famfamfam.com Silk Icons] || A free icon set ||
+|| [http://pinvoke.com Fugue Icons] || Another free icon set ||
+
+
+
+= Project milestones =
+
+Note: This is a draft, so it still may change
+
+|| *Release*  || *Description* ||
+|| 0.1.0      || Initial import ||
+|| 0.2 to 0.4 || Bug fixes, minor improvement, better browsers support ||
+|| 0.5.0      || Themes support, search, settings page, lightbox support ||
+|| 0.6 to 0.9 || Bug fixes, minor improvement, unit tests ||
+|| 1.0.0      || First "production stable" release ||
+|| 0.6 to 0.9 || Bug fixes, minor improvement, unit tests ||
+|| 1.5.0      || Comments on files, tablesort ||
+|| 0.6 to 0.9 || Performance optimizations, profiling ||
+|| 2.0.0      || More "sugar" options, like embed links, thumbnails effects and filigranes, etc.. ||
+
+
+
+== Features ideas ==
+
+|| *Feature*   || *Description* ||
+|| search      || search throught files and optionally accross folders ||
+|| lightbox    || when preview is clicked a lightbox could show the image ||
+|| themes      || support for themes ||
+|| sendarchive || archive and email selected files ||
+|| comments    || comments on files ||
+|| quotas      || per user and global disk quotas ||
+|| settings    || a settings page for quotas, themes, lightbox, etc.. ||
+|| fileicons   || show visually representative file icons ||
+|| tablesort   || allow per row sorting ||
