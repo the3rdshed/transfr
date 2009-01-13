@@ -1,0 +1,408 @@
+# transfr.app French translation file
+# Copyright (C) 2008
+# This file is distributed under the same license as the transfr package.
+# Vincent Foley <vincent.f@centdessin.com>, 2008
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-12-09 14:38-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:14 models.py:8
+msgid "File"
+msgstr "Fichier"
+
+#: forms.py:15 models.py:9
+msgid "Comments"
+msgstr "Commentaires"
+
+#: forms.py:21 forms.py:26
+msgid "Unknown user"
+msgstr "Utilisateur inconnu"
+
+#: forms.py:42
+msgid ""
+"<span>Note: to send to multiple recipents, separate the emails with a comma."
+"</span>"
+msgstr ""
+"<span>Note: pour envoyer à plusieurs destinataires, séparez les adresses par "
+"des virgules</span>"
+
+#: forms.py:48
+msgid "Please enter an email"
+msgstr "Entrez une adresse courriel"
+
+#: forms.py:51
+#, python-format
+msgid "%s: invalid email"
+msgstr "%s: adresse de courriel invalide"
+
+#: models.py:10
+msgid "Modification date"
+msgstr "Date de modification"
+
+#: models.py:40 templates/app/login.html:19 templates/app/manage_users.html:43
+msgid "Password"
+msgstr "Mot de passe"
+
+#: views.py:52
+msgid "Incorrect username or password"
+msgstr "Nom d'utilisateur ou mot de passe incorrect"
+
+#: templates/app/_toolbar.html:5
+msgid "About <em>transfr</em>"
+msgstr "À propos de <em>transfr</em>"
+
+#: templates/app/_toolbar.html:7
+msgid "Help"
+msgstr "Aide"
+
+#: templates/app/_toolbar.html:16 templates/app/file_list.html:28
+#: templates/app/file_list.html.py:47 templates/app/manage_users.html:44
+msgid "Files"
+msgstr "Fichiers"
+
+#: templates/app/_toolbar.html:22 templates/app/manage_users.html:11
+msgid "Create a user"
+msgstr "Créer un utilisateur"
+
+#: templates/app/_toolbar.html:26 templates/app/manage_users.html:38
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: templates/app/_toolbar.html:32
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: templates/app/add_file.html:7 templates/app/file_list.html:13
+#: templates/app/file_list.html.py:55
+msgid "Upload a file"
+msgstr "Ajouter un fichier"
+
+#: templates/app/add_file.html:13 templates/app/manage_users.html:22
+#: templates/app/send_file.html:38
+msgid "Cancel"
+msgstr "Annuler"
+
+#: templates/app/add_file.html:14 templates/app/manage_users.html:23
+#: templates/app/set_password.html:16
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: templates/app/base.html:4
+msgid "File manager"
+msgstr "Gestionnaire de fichiers"
+
+#: templates/app/base.html:38
+msgid "Created by"
+msgstr "Une création"
+
+#: templates/app/base.html:38
+msgid "All rights reserved"
+msgstr "Tous droits réservés"
+
+#: templates/app/delete_user.html:6
+msgid "Delete user"
+msgstr "Supprimer un utilisateur"
+
+#: templates/app/delete_user.html:13
+msgid "Do you really to delete"
+msgstr "Voulez-vous vraiment supprimer"
+
+#: templates/app/delete_user.html:16
+msgid "Beware: the files of this user will also be deleted"
+msgstr "Attention: les fichiers de cet utilisateur seront également supprimés"
+
+#: templates/app/delete_user.html:25 templates/app/file_list.html:92
+#: templates/app/manage_users.html:61
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/app/disconnected.html:7
+msgid "Your session is terminated."
+msgstr "Votre session est terminée"
+
+#: templates/app/disconnected.html:9
+msgid "Click here"
+msgstr "Cliquez ici"
+
+#: templates/app/disconnected.html:9
+msgid "to reconnect."
+msgstr "pour vous reconnecter."
+
+#: templates/app/file_list.html:17 templates/app/help.html:67
+msgid "Preview"
+msgstr "Aperçu"
+
+#: templates/app/file_list.html:23
+msgid "Folders"
+msgstr "Dossier"
+
+#: templates/app/file_list.html:27
+msgid "Folder"
+msgstr "Dossier"
+
+#: templates/app/file_list.html:29 templates/app/file_list.html.py:68
+msgid "Size"
+msgstr "Taille"
+
+#: templates/app/file_list.html:52
+msgid "Delete selection"
+msgstr "Supprimer la sélection"
+
+#: templates/app/file_list.html:59 templates/app/send_instructions.html:6
+msgid "Send instructions"
+msgstr "Envoyer les instructions"
+
+#: templates/app/file_list.html:67
+msgid "File name"
+msgstr "Nom de fichier"
+
+#: templates/app/file_list.html:69
+msgid "Date"
+msgstr "Date"
+
+#: templates/app/file_list.html:70 templates/app/manage_users.html:46
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/app/file_list.html:91
+msgid "Download"
+msgstr "Télécharger"
+
+#: templates/app/file_list.html:99
+msgid "No files"
+msgstr "Aucun fichier"
+
+#: templates/app/help.html:8
+msgid "User Guide"
+msgstr "Guide d'utilisateur"
+
+#: templates/app/help.html:11 templates/app/help.html.py:18
+msgid "Logging in"
+msgstr "Se connecter"
+
+#: templates/app/help.html:12 templates/app/help.html.py:28
+msgid "The interface"
+msgstr "L'interface"
+
+#: templates/app/help.html:13 templates/app/help.html.py:76
+msgid "Uploading a file"
+msgstr "Ajouter un fichier"
+
+#: templates/app/help.html:14
+msgid "Deleting a file"
+msgstr "Supprimer un fichier"
+
+#: templates/app/help.html:15
+msgid "Logging out"
+msgstr "Déconnexion"
+
+#: templates/app/help.html:20
+msgid ""
+"\n"
+"        To access Transfr, you must first log in.  To do so, enter the "
+"username and the password sent to you by an administrator in the login form. "
+"(Fig. 1)\n"
+"        "
+msgstr ""
+"\n"
+"Pour accéder à Transfr, vous devez d'abord vous connecter.  Pour se faire, "
+"entrez le nom d'utilisateur et le mot de passe qui vous a été envoyé par un "
+"administrateur dans le formulaire de connexion. (Fig. 1)       "
+
+#: templates/app/help.html:30
+msgid ""
+"\n"
+"        If the username and password you entered are valid, you will be "
+"taken to the main screen of Transfr:\n"
+"        "
+msgstr ""
+"\n"
+"Si le nom d'utilisateur et le mot de passe que vous avez entré sont valides, "
+"vous serez transféré à l'écran principal de Transfr:\n"
+"        "
+
+#: templates/app/help.html:40
+msgid "Menu"
+msgstr "Menu"
+
+#: templates/app/help.html:42
+msgid ""
+"\n"
+"            The <b>Files</b> button will take you to the main Transfr page, "
+"which contains a listing of uploaded files and the <b>Logout</b> button will "
+"terminate your session.\n"
+"            "
+msgstr ""
+"\n"
+"Le bouton <b>Fichiers</b> vous ramène à l'écran principal de Transfr qui "
+"contient la liste des fichiers dans votre compte.\n"
+"Le bouton <b>Déconnexion</b> terminera votre session.\n"
+"            "
+
+#: templates/app/help.html:48
+msgid "Help and About Transfr, language switcher"
+msgstr "Aide et à propos de Transfr; choix de langue"
+
+#: templates/app/help.html:50
+msgid ""
+"\n"
+"            <b>About Transfr</b> gives information on this software, who "
+"built it and why. The <b>help</b> button links to this page and finally the "
+"language switcher allow you to switch the interface language.\n"
+"            "
+msgstr ""
+"\n"
+"<b>À propos de Transfr</b> donne des informations sur le logiciels, qui l'a "
+"construit et pourquoi. Le bouton <b>Aide</b> amène à cette page et la liste "
+"déroulante permet de changer la langue de l'interface.            "
+
+#: templates/app/help.html:56
+msgid "File list with actions (delete, upload)"
+msgstr "Liste de fichiers avec actions (supprimer, ajouter)"
+
+#: templates/app/help.html:58
+msgid ""
+"\n"
+"            The file list show uploaded files, their names, size and upload "
+"date. The <b>Delete selection</b> button will delete <b>permanently</b> all "
+"the selected files. The <b>Upload a file</b> button shows the file upload "
+"form (fig. 3).\n"
+"            "
+msgstr ""
+"\n"
+"La liste de fichiers montre les fichiers dans votre compte, leur nom, leur "
+"taille et la date de leur transfert.  Le bouton <b>Supprimer la sélection</"
+"b> va supprimer de façon <b>permanente</b> tous les fichiers cochés.  Le "
+"bouton <b>Ajouter un fichier</b> affichera le formulaire de transfert de "
+"fichier. (fig. 3)\n"
+"            "
+
+#: templates/app/help.html:63
+msgid "Each files has its own delete and download button."
+msgstr "Chaque fichier a son propre bouton de supprimer et de téléchargement"
+
+#: templates/app/help.html:69
+msgid ""
+"\n"
+"            When possible, a thumbnail of the selected file will be shown. "
+"The selected file can be identified by the color of its row in the file list "
+"(pale blue).\n"
+"            "
+msgstr ""
+"\n"
+"Lorsque c'est possible, un aperçu miniature du fichier sélectionné sera "
+"affiché.  Le fichier sélectionné peut être identifié par la couleur de sa "
+"range dans la liste de fichiers (bleu pâle).\n"
+"            "
+
+#: templates/app/help.html:81
+msgid "Click on the <i>Upload a file</i> button"
+msgstr "Cliquez sur le bouton <i>Ajouter un fichier</i>"
+
+#: templates/app/help.html:83
+msgid ""
+"\n"
+"            The file upload form will take the place of the file preview "
+"pane.\n"
+"            "
+msgstr ""
+"\n"
+"Le formulaire de transfert de fichier remplacera l'aperçu."
+
+#: templates/app/help.html:89
+msgid "Click <i>Browse</i> in the file field"
+msgstr "Cliquez sur <i>Parcourir</i> dans le champ Fichier"
+
+#: templates/app/help.html:91
+msgid ""
+"\n"
+"            A window will show up to allow you to select the file you want "
+"to upload from your computer (fig. 4).\n"
+"            "
+msgstr ""
+"\n"
+"Une fenêtre vous permettant de choisir le fichier s'afficher à l'écran. "
+"(fig. 4)"
+
+#: templates/app/help.html:97
+msgid "Optional: enter a comment about the file"
+msgstr "Facultatif: entrez un commentaire à propos du fichier"
+
+#: templates/app/help.html:99
+msgid ""
+"\n"
+"            The file description will show up in the file list, below the "
+"file name.\n"
+"            "
+msgstr ""
+"\n"
+"Le commentaire sera affiché dans la liste de fichiers, sous le nom du "
+"fichier transféré."
+
+#: templates/app/help.html:105
+msgid "Click on the <i>Save</i> button"
+msgstr "Cliquez sur le bouton <i>Sauvegarder</i>"
+
+#: templates/app/help.html:107
+msgid ""
+"\n"
+"            The file upload will then begin; if the file is large, a "
+"progressbar will indicate the upload progress. When the upload is complete, "
+"you will be automatically redirected to the file list, where your uploaded "
+"file will be listed.\n"
+"            "
+msgstr ""
+"\n"
+"Le transfert du fichier va commencer; si le fichier est volumineux, une "
+"barre de progression indiquera l'avancement du transfert.  Quand le "
+"transfert est terminé, vous serez automatiquement redirigé à la liste de "
+"fichiers."
+
+#: templates/app/login.html:6 templates/app/login.html.py:23
+msgid "Login"
+msgstr "Connexion"
+
+#: templates/app/login.html:15
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: templates/app/manage_users.html:31
+msgid "Space repartition"
+msgstr "Espace disque"
+
+#: templates/app/manage_users.html:42 templates/app/set_password.html:7
+msgid "User"
+msgstr "Utilisateur"
+
+#: templates/app/manage_users.html:45
+msgid "Total size"
+msgstr "Taille totale"
+
+#: templates/app/manage_users.html:59 templates/app/set_password.html:6
+msgid "Change password"
+msgstr "Modifier le mot de passe"
+
+#: templates/app/send_file.html:39 templates/app/send_instructions.html:12
+msgid "Send"
+msgstr "Envoyer"
+
+#~ msgid "Upload completed.  Please wait while the file is saved."
+#~ msgstr ""
+#~ "Envoi du fichier terminé.  Veuillez patienter pendant que le fichier est "
+#~ "sauvegardé."
+
+#~ msgid "Do you really want to delete these files?"
+#~ msgstr "Voulez-vous vraiment supprimer ces fichiers?"
+
+#~ msgid "Do you really want to delete this file?"
+#~ msgstr "Voulez-vous vraiment supprimer ce fichier?"

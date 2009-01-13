@@ -1,0 +1,19 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+
+{% block bd %}
+<div class="content page">
+    <h3 class="ui-header">{% trans "Send instructions" %}</h3>
+    <div id="div-file-upload" class="file-upload">
+        <form  method="post" action="" enctype="multipart/form-data">
+            <ul class="ui-form ui-reset">
+                {{ form.as_ul }}
+                <li class="ui-actions">
+                    <button class="ui-button-submit ui-default-state"><img src="{{ MEDIA_URL }}img/silk/accept.png"> {% trans "Send" %}</button>
+                </li>
+            </ul>
+        </form>
+    </div>
+    <br />
+</div>
+{% endblock %}

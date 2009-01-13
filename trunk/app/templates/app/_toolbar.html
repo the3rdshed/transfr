@@ -1,0 +1,34 @@
+{% load i18n %}
+{% load transfr_tags %}
+    <ul id="transfr-top-nav" class="ui-clearfix ui-reset">
+        {# About #}
+        <li><a href="{% url help %}">{% icon "information" %}{% trans "About <em>transfr</em>" %}</a></li>
+        {# Help #}
+        <li><a href="{% url help %}">{% icon "help" %}{% trans "Help" %}</a></li>
+    </ul>
+<h1 id="topbar" class="ui-header">
+    <img src="{{ MEDIA_URL }}img/logo.png"/> <span>Centdessin Design</span>
+</h1>
+<ul id="toolbar" class="ui-reset ui-toolbar ui-clearfix ui-component">
+    {% if user.is_authenticated %}
+    {# File list #}
+    {% url file_list as file_list %}
+    <li>{% button "files" file_list %}{% trans "Files" %}{% endbutton %}</li>
+    {% endif %}
+    {% if user.is_superuser %}
+    {# Create user #}
+    {% comment %}
+    {% url new_user as new_user %}
+    <li>{% button "user_add" new_user %}{% trans "Create a user" %}{% endbutton %}</li>
+    {% endcomment %}
+    {# Manage users #}
+    {% url manage_users as manage_users %}
+    <li>{% button "users" manage_users %}{% trans "Users" %}{% endbutton %}</li>
+    {#<li>{% button "settings" manage_users %}{% trans "Settings" %}{% endbutton %}</li>#}
+    {% endif %}
+    {% if user.is_authenticated %}
+    {# Logout #}
+    {% url logout as logout %}
+    <li>{% button "logout" logout %}{% trans "Logout" %}{% endbutton %}</li>
+    {% endif %}
+</ul>

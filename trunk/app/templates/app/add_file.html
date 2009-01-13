@@ -1,0 +1,25 @@
+{% extends "app/base.html" %}
+{% load transfr_tags %}
+{% load i18n %}
+
+{% block bd %}
+
+<div class="content page">
+    <h3 class="ui-header">{% trans "Upload a file" %}</h3>
+    <div id="transfr-file-upload" class="file-upload ui-clearfix">
+        <form method="post" action="{% url add_file user_id %}" enctype="multipart/form-data">
+            <ul id="upload-forms" class="ui-form ui-reset">
+                {{ form.as_ul }}
+                <li id="additional-form-li">
+                <a href="#" id="additional-form">{% trans "Upload another file" %}</a>
+                </li>
+                <li class="ui-actions">
+                    {% button "save" "#" "" "ui-button-submit" %}{% trans "Save" %}{% endbutton %}
+                    {% button "delete" "#" "" "ui-button-reset" %}{% trans "Cancel" %}{% endbutton %}
+                </li>
+            </ul>
+            <input class="transfr-file-upload-id" type="hidden" value="{{ request.COOKIES.sessionid }}">
+        </form>
+    </div>
+</div>
+{% endblock %}

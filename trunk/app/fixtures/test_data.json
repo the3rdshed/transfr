@@ -1,0 +1,72 @@
+[
+{
+    "pk": 1,
+    "model": "auth.User",
+    "fields": {
+        "username": "admin",
+        "password": "sha1$043bb$19dd4d0306b60b7608662eab55ca0a0cf2b75927",
+        "email": "admin@centdessin.com",
+        "is_superuser": true
+    }
+},
+
+{
+    "pk": 2,
+    "model": "auth.User",
+    "fields": {
+        "username": "user",
+        "password": "sha1$5ae94$958146b9b0b543e17fa3254223c4f613f6a2968e",
+        "email": "user@centdessin.com",
+        "is_superuser": false
+    }
+},
+
+{
+    "pk": 3,
+    "model": "auth.User",
+    "fields": {
+        "username": "user2",
+        "password": "sha1$5ae94$958146b9b0b543e17fa3254223c4f613f6a2968e",
+        "email": "user2@centdessin.com",
+        "is_superuser": false
+    }
+},
+
+{
+    "pk": 1,
+    "model": "app.RawPassword",
+    "fields": {
+        "user": 1,
+        "password": "admin"
+    }
+},
+
+{
+    "pk": 2,
+    "model": "app.RawPassword",
+    "fields": {
+        "user": 2,
+        "password": "user"
+    }
+},
+
+{
+    "pk": 3,
+    "model": "app.RawPassword",
+    "fields": {
+        "user": 3,
+        "password": "user"
+    }
+},
+
+{
+    "pk": 1,
+    "model": "app.File",
+    "fields": {
+        "file": "hello.txt",
+        "comments": "Hello world",
+        "modified_date": "2008-11-11 11:00:00",
+        "user": 2
+    }
+}
+]
