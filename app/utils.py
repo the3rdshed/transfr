@@ -40,7 +40,7 @@ class UploadProgressCachedHandler(TemporaryFileUploadHandler):
         self.uploaded += len(raw_data)
         f = open(self.tmpfile, 'w')
         f.write("{'uploaded': %d, 'total': %d, 'current_file': '%s', finished: false}" % \
-                (self.uploaded, self.total_size, self.current_file))
+                (self.uploaded, self.total_size, self.current_file.encode('utf-8')))
         f.close()
     
     def upload_complete(self):
