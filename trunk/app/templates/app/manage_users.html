@@ -97,7 +97,6 @@ $.showSpaceRepartition = function(selector) {
             }
         }
     });
-    console.log('others', $.sumArray(o));
 
     var url = $.format('http://chart.apis.google.com/chart?cht=p3&chd=t:{0:s}&chs=340x100&chl={1:s}', v.join(','), l.join('|'));
     var img = $('<img alt="" border="0">').attr('src', url);

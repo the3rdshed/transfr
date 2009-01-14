@@ -27,7 +27,6 @@ $.transfr = {
         // File upload
         $('form[@enctype=multipart/form-data]').livequery('submit', function(e){ 
             if (!$.data(this, 'submitted')) { 
-            console.log("hi");
                 $.transfr.file.upload(this);
                 $.data(this, 'submitted', true);
             } // Prevent multiple submits
