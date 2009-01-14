@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-09 14:38-0500\n"
+"POT-Creation-Date: 2009-01-14 09:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,11 +24,7 @@ msgstr "Fichier"
 msgid "Comments"
 msgstr "Commentaires"
 
-#: forms.py:21 forms.py:26
-msgid "Unknown user"
-msgstr "Utilisateur inconnu"
-
-#: forms.py:42
+#: forms.py:62
 msgid ""
 "<span>Note: to send to multiple recipents, separate the emails with a comma."
 "</span>"
@@ -36,11 +32,11 @@ msgstr ""
 "<span>Note: pour envoyer à plusieurs destinataires, séparez les adresses par "
 "des virgules</span>"
 
-#: forms.py:48
+#: forms.py:68
 msgid "Please enter an email"
 msgstr "Entrez une adresse courriel"
 
-#: forms.py:51
+#: forms.py:71
 #, python-format
 msgid "%s: invalid email"
 msgstr "%s: adresse de courriel invalide"
@@ -49,11 +45,11 @@ msgstr "%s: adresse de courriel invalide"
 msgid "Modification date"
 msgstr "Date de modification"
 
-#: models.py:40 templates/app/login.html:19 templates/app/manage_users.html:43
+#: models.py:40 templates/app/login.html:17 templates/app/manage_users.html:43
 msgid "Password"
 msgstr "Mot de passe"
 
-#: views.py:52
+#: views.py:53
 msgid "Incorrect username or password"
 msgstr "Nom d'utilisateur ou mot de passe incorrect"
 
@@ -65,8 +61,8 @@ msgstr "À propos de <em>transfr</em>"
 msgid "Help"
 msgstr "Aide"
 
-#: templates/app/_toolbar.html:16 templates/app/file_list.html:28
-#: templates/app/file_list.html.py:47 templates/app/manage_users.html:44
+#: templates/app/_toolbar.html:16 templates/app/file_list.html:26
+#: templates/app/file_list.html.py:45 templates/app/manage_users.html:44
 msgid "Files"
 msgstr "Fichiers"
 
@@ -82,30 +78,33 @@ msgstr "Utilisateurs"
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: templates/app/add_file.html:7 templates/app/file_list.html:13
-#: templates/app/file_list.html.py:55
+#: templates/app/add_file.html:8 templates/app/file_list.html:11
+#: templates/app/file_list.html.py:53
 msgid "Upload a file"
 msgstr "Ajouter un fichier"
 
-#: templates/app/add_file.html:13 templates/app/manage_users.html:22
-#: templates/app/send_file.html:38
-msgid "Cancel"
-msgstr "Annuler"
+#: templates/app/add_file.html:14
+msgid "Upload another file"
+msgstr "Ajouter un autre fichier"
 
-#: templates/app/add_file.html:14 templates/app/manage_users.html:23
+#: templates/app/add_file.html:17 templates/app/manage_users.html:23
 #: templates/app/set_password.html:16
 msgid "Save"
 msgstr "Sauvegarder"
+
+#: templates/app/add_file.html:18 templates/app/manage_users.html:22
+msgid "Cancel"
+msgstr "Annuler"
 
 #: templates/app/base.html:4
 msgid "File manager"
 msgstr "Gestionnaire de fichiers"
 
-#: templates/app/base.html:38
+#: templates/app/base.html:35
 msgid "Created by"
 msgstr "Une création"
 
-#: templates/app/base.html:38
+#: templates/app/base.html:35
 msgid "All rights reserved"
 msgstr "Tous droits réservés"
 
@@ -121,64 +120,64 @@ msgstr "Voulez-vous vraiment supprimer"
 msgid "Beware: the files of this user will also be deleted"
 msgstr "Attention: les fichiers de cet utilisateur seront également supprimés"
 
-#: templates/app/delete_user.html:25 templates/app/file_list.html:92
+#: templates/app/delete_user.html:25 templates/app/file_list.html:90
 #: templates/app/manage_users.html:61
 msgid "Delete"
 msgstr "Supprimer"
 
-#: templates/app/disconnected.html:7
+#: templates/app/disconnected.html:6
 msgid "Your session is terminated."
 msgstr "Votre session est terminée"
 
-#: templates/app/disconnected.html:9
+#: templates/app/disconnected.html:8
 msgid "Click here"
 msgstr "Cliquez ici"
 
-#: templates/app/disconnected.html:9
+#: templates/app/disconnected.html:8
 msgid "to reconnect."
 msgstr "pour vous reconnecter."
 
-#: templates/app/file_list.html:17 templates/app/help.html:67
+#: templates/app/file_list.html:15 templates/app/help.html:67
 msgid "Preview"
 msgstr "Aperçu"
 
-#: templates/app/file_list.html:23
+#: templates/app/file_list.html:21
 msgid "Folders"
 msgstr "Dossier"
 
-#: templates/app/file_list.html:27
+#: templates/app/file_list.html:25
 msgid "Folder"
 msgstr "Dossier"
 
-#: templates/app/file_list.html:29 templates/app/file_list.html.py:68
+#: templates/app/file_list.html:27 templates/app/file_list.html.py:66
 msgid "Size"
 msgstr "Taille"
 
-#: templates/app/file_list.html:52
+#: templates/app/file_list.html:50
 msgid "Delete selection"
 msgstr "Supprimer la sélection"
 
-#: templates/app/file_list.html:59 templates/app/send_instructions.html:6
+#: templates/app/file_list.html:57 templates/app/send_instructions.html:6
 msgid "Send instructions"
 msgstr "Envoyer les instructions"
 
-#: templates/app/file_list.html:67
+#: templates/app/file_list.html:65
 msgid "File name"
 msgstr "Nom de fichier"
 
-#: templates/app/file_list.html:69
+#: templates/app/file_list.html:67
 msgid "Date"
 msgstr "Date"
 
-#: templates/app/file_list.html:70 templates/app/manage_users.html:46
+#: templates/app/file_list.html:68 templates/app/manage_users.html:46
 msgid "Actions"
 msgstr "Actions"
 
-#: templates/app/file_list.html:91
+#: templates/app/file_list.html:89
 msgid "Download"
 msgstr "Télécharger"
 
-#: templates/app/file_list.html:99
+#: templates/app/file_list.html:97
 msgid "No files"
 msgstr "Aucun fichier"
 
@@ -368,11 +367,11 @@ msgstr ""
 "transfert est terminé, vous serez automatiquement redirigé à la liste de "
 "fichiers."
 
-#: templates/app/login.html:6 templates/app/login.html.py:23
+#: templates/app/login.html:6 templates/app/login.html.py:21
 msgid "Login"
 msgstr "Connexion"
 
-#: templates/app/login.html:15
+#: templates/app/login.html:13
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -392,9 +391,12 @@ msgstr "Taille totale"
 msgid "Change password"
 msgstr "Modifier le mot de passe"
 
-#: templates/app/send_file.html:39 templates/app/send_instructions.html:12
+#: templates/app/send_instructions.html:12
 msgid "Send"
 msgstr "Envoyer"
+
+#~ msgid "Unknown user"
+#~ msgstr "Utilisateur inconnu"
 
 #~ msgid "Upload completed.  Please wait while the file is saved."
 #~ msgstr ""
