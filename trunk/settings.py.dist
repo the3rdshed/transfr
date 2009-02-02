@@ -6,6 +6,7 @@ from utils import join_url
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+THUMBNAIL_MODULE = False
 THUMBNAIL_DEBUG = True
 
 ICONS = 'fugue'

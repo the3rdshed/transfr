@@ -11,12 +11,14 @@
                     <h3 class="ui-header">{% trans "Upload a file" %}</h3>
                     <div id="transfr-file-upload"></div>
                 </div>
+                {% if module_thumbnails %}
                 <div id="transfr-file-preview-wrapper" class="transfr-sidebox">
                     <h3 class="ui-header">{% trans "Preview" %}</h3>
                     <div class="transfr-file-preview">
                         <img src="{{ MEDIA_URL }}img/throbber.gif" style="display:none" border="0"/>
                     </div>
                 </div>
+                {% endif %}
                 <div id="transfr-folder-list-wrapper" class="transfr-sidebox">
                     <h3 class="ui-header">{% trans "Folders" %}</h3>
                     <table class="ui-tablegrid" cellpadding="0" cellspacing="0" summary="">

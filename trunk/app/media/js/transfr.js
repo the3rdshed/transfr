@@ -14,7 +14,7 @@ $.transfr = {
     init: function() {
 
         if ($.browser.msie) { // *Thanks* IE for making me do stupid things like this
-            $('.ui-tablegrid').livequery(function(){ $(this).width($(this).parent().width()-4); });
+            $('.ui-tablegrid').ready(function(){ $(this).width($(this).parent().width()-4); });
         }
 
         $('#transfr-file-upload-wrapper').hide();
@@ -25,7 +25,7 @@ $.transfr = {
         });
 
         // File upload
-        $('form[@enctype=multipart/form-data]').livequery('submit', function(e){ 
+        $('form[enctype=multipart/form-data]').bind('submit', function(e){ 
             if (!$.data(this, 'submitted')) { 
                 $.transfr.file.upload(this);
                 $.data(this, 'submitted', true);
@@ -36,11 +36,11 @@ $.transfr = {
             }
         });
 
-        $('.ui-button-submit').livequery('click', function(){
+        $('.ui-button-submit').live('click', function(){
             $(this).parents('form').submit();
         });
 
-        $('#transfr-file-upload .ui-button-reset').livequery('click', function(){
+        $('#transfr-file-upload .ui-button-reset').live('click', function(){
             $('#transfr-file-upload-wrapper').hide();
             $('#transfr-file-upload').text('');
             $('#transfr-file-preview-wrapper, #transfr-folder-list-wrapper').show();
@@ -171,6 +171,7 @@ $.transfr = {
             poll = setInterval(updateUploadProgress, 1000);
         },
         preview: function(id) {
+            if ($('#transfr-file-preview-wrapper').get(0)) {
                 var href = $('#file-'+ id +' a.file-download').attr('href');
                 $('.transfr-file-preview').addClass('loading');
                 $.getJSON($.durl('view_thumbnail', {id: id}), function(json, success){
@@ -187,6 +188,7 @@ $.transfr = {
                             });
                     }
                 });
+            }
         },
         remove: function(ids) {
             if (confirm(ngettext('Do you really want to delete this file?', 
