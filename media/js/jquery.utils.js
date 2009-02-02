@@ -1,5 +1,5 @@
 /*
-  jQuery utils - 0.5
+  jQuery utils - 0.7.0
   http://code.google.com/p/jquery-utils/
 
   (c) Maxime Haineault <haineault@gmail.com> 
@@ -14,6 +14,12 @@
         // case insensitive version of :contains
         icontains: function(a,i,m){return (a.textContent||a.innerText||jQuery(a).text()||"").toLowerCase().indexOf(m[3].toLowerCase())>=0;}
     });
+
+    $.iterators = {
+        getText:  function() { return $(this).text(); },
+        parseInt: function(v){ return parseInt(v, 10); }
+    };
+
 	$.extend({ 
 
         // Taken from ui.core.js. 
@@ -28,20 +34,21 @@
 
         // Redirect to a specified url
         redirect: function(url) {
-            return window.location.href = url;
+            window.location.href = url;
+            return url;
         },
 
         // Stop event shorthand
         stop: function(e, preventDefault, stopPropagation) {
-            preventDefault  && e.preventDefault();
-            stopPropagation && e.stopPropagation();
+            if (preventDefault)  { e.preventDefault(); }
+            if (stopPropagation) { e.stopPropagation(); }
             return preventDefault && false || true;
         },
 
         // Returns the basename of a path
         basename: function(path) {
             var t = path.split('/');
-            return t[t.length] == '' && s || t.slice(0, t.length).join('/');
+            return t[t.length] === '' && s || t.slice(0, t.length).join('/');
         },
 
         // Returns the filename of a path
@@ -53,15 +60,15 @@
         filesizeformat: function(bytes, suffixes){
             var b = parseInt(bytes, 10);
             var s = suffixes || ['byte', 'bytes', 'KB', 'MB', 'GB'];
-            if (isNaN(b) || b == 0) { return '0 ' + s[0]; }
-            if (b == 1)             { return '1 ' + s[0]; }
-            if (b < 1024)           { return  b.toFixed(2) + ' ' + s[1]; }
-            if (b < 1048576)        { return (b / 1024).toFixed(2) + ' ' + s[2]; }
-            if (b < 1073741824)     { return (b / 1048576).toFixed(2) + ' '+ s[3]; }
-            else                    { return (b / 1073741824).toFixed(2) + ' '+ s[4]; }
+            if (isNaN(b) || b === 0) { return '0 ' + s[0]; }
+            if (b == 1)              { return '1 ' + s[0]; }
+            if (b < 1024)            { return  b.toFixed(2) + ' ' + s[1]; }
+            if (b < 1048576)         { return (b / 1024).toFixed(2) + ' ' + s[2]; }
+            if (b < 1073741824)      { return (b / 1048576).toFixed(2) + ' '+ s[3]; }
+            else                     { return (b / 1073741824).toFixed(2) + ' '+ s[4]; }
         },
 
-        fileExtension: function(s) {
+        fileExtension: function(s) {
             var tokens = s.split('.');
             return tokens[tokens.length-1] || false;
         },
@@ -79,14 +86,345 @@
         // Returns true if an object is an array
         // Mark Miller - http://blog.360.yahoo.com/blog-TBPekxc1dLNy5DOloPfzVvFIVOWMB0li?p=916
 		isArray: function(o) {
+            if (!o) { return false; }
             return Object.prototype.toString.apply(o.constructor.prototype) === '[object Array]';
 		},
+
+        isObject: function(o) {
+            return (typeof(o) == 'object');
+        },
         
         // Convert input to currency (two decimal fixed number)
 		toCurrency: function(i) {
 			i = parseFloat(i, 10).toFixed(2);
 			return (i=='NaN') ? '0.00' : i;
 		},
+
+        /*-------------------------------------------------------------------- 
+         * javascript method: "pxToEm"
+         * by:
+           Scott Jehl (scott@filamentgroup.com) 
+           Maggie Wachs (maggie@filamentgroup.com)
+           http://www.filamentgroup.com
+         *
+         * Copyright (c) 2008 Filament Group
+         * Dual licensed under the MIT (filamentgroup.com/examples/mit-license.txt) and GPL (filamentgroup.com/examples/gpl-license.txt) licenses.
+         *
+         * Description: pxToEm converts a pixel value to ems depending on inherited font size.  
+         * Article: http://www.filamentgroup.com/lab/retaining_scalable_interfaces_with_pixel_to_em_conversion/
+         * Demo: http://www.filamentgroup.com/examples/pxToEm/	 	
+         *							
+         * Options:  	 								
+                scope: string or jQuery selector for font-size scoping
+                reverse: Boolean, true reverses the conversion to em-px
+         * Dependencies: jQuery library						  
+         * Usage Example: myPixelValue.pxToEm(); or myPixelValue.pxToEm({'scope':'#navigation', reverse: true});
+         *
+         * Version: 2.1, 18.12.2008
+         * Changelog:
+         *		08.02.2007 initial Version 1.0
+         *		08.01.2008 - fixed font-size calculation for IE
+         *		18.12.2008 - removed native object prototyping to stay in jQuery's spirit, jsLinted (Maxime Haineault <haineault@gmail.com>)
+        --------------------------------------------------------------------*/
+
+        pxToEm: function(i, settings){
+            //set defaults
+            settings = jQuery.extend({
+                scope: 'body',
+                reverse: false
+            }, settings);
+            
+            var pxVal = (i === '') ? 0 : parseFloat(i);
+            var scopeVal;
+            var getWindowWidth = function(){
+                var de = document.documentElement;
+                return self.innerWidth || (de && de.clientWidth) || document.body.clientWidth;
+            };	
+            
+            /* When a percentage-based font-size is set on the body, IE returns that percent of the window width as the font-size. 
+                For example, if the body font-size is 62.5% and the window width is 1000px, IE will return 625px as the font-size. 	
+                When this happens, we calculate the correct body font-size (%) and multiply it by 16 (the standard browser font size) 
+                to get an accurate em value. */
+                        
+            if (settings.scope == 'body' && $.browser.msie && (parseFloat($('body').css('font-size')) / getWindowWidth()).toFixed(1) > 0.0) {
+                var calcFontSize = function(){		
+                    return (parseFloat($('body').css('font-size'))/getWindowWidth()).toFixed(3) * 16;
+                };
+                scopeVal = calcFontSize();
+            }
+            else { scopeVal = parseFloat(jQuery(settings.scope).css("font-size")); }
+                    
+            var result = (settings.reverse === true) ? (pxVal * scopeVal).toFixed(2) + 'px' : (pxVal / scopeVal).toFixed(2) + 'em';
+            return result;
+        }
+	});
+
+	$.extend($.fn, { 
+        // Select a text range in a textarea
+        selectRange: function(start, end){
+            // use only the first one since only one input can be focused
+            if ($(this).get(0).createTextRange) {
+                var range = $(this).get(0).createTextRange();
+                range.collapse(true);
+                range.moveEnd('character',   end);
+                range.moveStart('character', start);
+                range.select();
+            }
+            else if ($(this).get(0).setSelectionRange) {
+                $(this).bind('focus', function(e){
+                    e.preventDefault();
+                }).get(0).setSelectionRange(start, end);
+            }
+            return $(this);
+        },
+
+        /*-------------------------------------------------------------------- 
+         * JQuery Plugin: "EqualHeights"
+         * by:	Scott Jehl, Todd Parker, Maggie Costello Wachs (http://www.filamentgroup.com)
+         *
+         * Copyright (c) 2008 Filament Group
+         * Licensed under GPL (http://www.opensource.org/licenses/gpl-license.php)
+         *
+         * Description: Compares the heights or widths of the top-level children of a provided element 
+                and sets their min-height to the tallest height (or width to widest width). Sets in em units 
+                by default if pxToEm() method is available.
+         * Dependencies: jQuery library, pxToEm method	(article: 
+                http://www.filamentgroup.com/lab/retaining_scalable_interfaces_with_pixel_to_em_conversion/)							  
+         * Usage Example: $(element).equalHeights();
+                Optional: to set min-height in px, pass a true argument: $(element).equalHeights(true);
+         * Version: 2.1, 18.12.2008
+         *
+         * Note: Changed pxToEm call to call $.pxToEm instead, jsLinted (Maxime Haineault <haineault@gmail.com>)
+        --------------------------------------------------------------------*/
+
+        equalHeights: function(px){
+            $(this).each(function(){
+                var currentTallest = 0;
+                $(this).children().each(function(i){
+                    if ($(this).height() > currentTallest) { currentTallest = $(this).height(); }
+                });
+                if (!px || !$.pxToEm) { currentTallest = $.pxToEm(currentTallest); } //use ems unless px is specified
+                // for ie6, set height since min-height isn't supported
+                if ($.browser.msie && $.browser.version == 6.0) { $(this).children().css({'height': currentTallest}); }
+                $(this).children().css({'min-height': currentTallest}); 
+            });
+            return this;
+        },
+
+        // Copyright (c) 2009 James Padolsey
+        // http://james.padolsey.com/javascript/jquery-delay-plugin/
+        delay: function(time, callback){
+            jQuery.fx.step.delay = function(){};
+            return this.animate({delay:1}, time, callback);
+        }        
+	});
+})(jQuery);
+/*
+  jQuery anchor handler - 0.5
+  http://code.google.com/p/jquery-utils/
+
+  (c) Maxime Haineault <haineault@gmail.com>
+  http://haineault.com   
+
+  MIT License (http://www.opensource.org/licenses/mit-license.php)
+
+*/
+
+(function($){
+    var hash = window.location.hash;
+    var handlers  = [];
+    var opt = {};
+
+	$.extend({
+		anchorHandler: {
+            apply: function() {
+                $.map(handlers, function(handler){
+                    var match = hash.match(handler.r) && hash.match(handler.r)[0] || false;
+                    if (match)  { handler.cb.apply($('a[href*='+match+']').get(0), [handler.r, hash || '']); }
+                });
+                return $.anchorHandler;
+            },
+			add: function(regexp, callback, options) {
+                var opt  = $.extend({handleClick: true, preserveHash: true}, options);
+                if (opt.handleClick) { 
+                    $('a[href*=#]').each(function(i, a){
+                        if (a.href.match(regexp)) {
+                            $(a).bind('click.anchorHandler', function(){
+                                if (opt.preserveHash) { window.location.hash = a.hash; }
+                                return callback.apply(this, [regexp, a.href]);
+                                });
+                        }
+                    }); 
+                }
+				handlers.push({r: regexp, cb: callback});
+                $($.anchorHandler.apply);
+				return $.anchorHandler;
+			}
+		}
+	});
+})(jQuery);
+/*
+  jQuery array utils - 0.1
+  http://code.google.com/p/jquery-utils/
+
+  (c) Maxime Haineault <haineault@gmail.com> 
+  http://haineault.com
+
+  MIT License (http://www.opensource.org/licenses/mit-license.php
+
+*/
+
+(function($){
+    
+    var dummy      = function(i) { return i; };
+    var truthiness = function(i) { return !!i; };
+
+    $.extend({
+
+        all: function(object, iterator){
+            var output   = true;
+            var iterator = iterator || truthiness;
+            $.each(object, function(idx, i){
+                if (!iterator(i)) { output = false; }
+            });
+            return output;
+        },
+
+        any: function(object, iterator){
+            var output   = false;
+            var iterator = iterator || truthiness;
+            $.each(object, function(idx, i){
+                return iterator(i) && !(output = true) || true;
+            });
+            return output;
+        },
+
+        // equivalent of array.find
+        detect: function(object, iterator){
+            var output   = false;
+            var iterator = iterator || truthiness;
+            $.each(object, function(idx, i){
+                //return iterator(i) && !(output = i) || true;
+                if (iterator(i)) { 
+                    output = i; 
+                    return false;
+                }
+            });      
+            return output;
+        },
+
+        eachSlice: function(object, size, iterator){
+            var index = - size, slices = [];
+            while ((index += size) < object.length){ 
+                slices.push($.map(object.slice(index, index + size), iterator || dummy)); 
+            } 
+            return slices;
+        },
+
+        inject: function(object, acc, iterator){
+            $.each(object, function (idx, val) {
+                acc = iterator(acc, val, idx);
+            }); 
+            return acc;
+        },
+
+        invoke: function(object, method, args){
+            $.each(object, function(){
+                if ($.isFunction(method)){
+                    method.apply(object, args);
+                }
+                else if ($.isFunction(window[method])){
+                    window[method].apply(object, args);
+                }
+            });
+            return object;
+        },
+
+        max: function(object, iterator) {
+            var output = false; 
+            $.each(object, function (idx, val) {
+                var rs = (iterator || dummy)(val, idx);
+                if (!output || rs > output) { output = rs; }
+            }); 
+            return output;
+        },
+
+        min: function(object, iterator) {
+            var output = false; 
+            $.each(object, function (idx, val) {
+                var rs = (iterator || dummy)(val, idx);
+                if (!output || rs < output) { output = rs; }
+            }); 
+            return output;
+        },
+
+        partition: function(object, iterator) {
+            var trues = [], falses = []; 
+            $.each(object, function (idx, val) {
+                ((iterator || truthiness)(val, idx) ? trues : falses).push(val);
+            }); 
+            return [trues, falses];
+        },
+        
+        pluck: function(object, property, iterator) {
+            var output = [];
+            var iterator = iterator || dummy;
+            $.each(object, function(){
+                output.push(iterator(this[property]));
+            });
+            return output;
+        },
+/*
+        reject: function(object, iterator){
+            return $.select(object, (iterator || function(i){ return !i; }));
+        },
+
+        // findAll equivalent
+        select: function(object, iterator){
+            var output   = [];
+            var iterator = iterator || truthiness;
+            $.each(object, function(idx, i){
+                if (iterator(i)) { 
+                    output.push(i); 
+                }
+            });
+            return output;
+        },
+*/
+
+        sum: function(object, iterator){
+            var iterator = iterator || function(i) { return parseInt(i, 10) };
+            var t = 0;
+            $.each(object, function(){
+                var v = iterator(this);
+                if (!isNaN(v)) { t = t + v; }
+            });
+            return t;
+        },
+
+        zip: function(object, object2, iterator) {
+            var output = [];
+            var iterator = iterator || dummy;
+            $.each(object, function(idx, i){
+                if (object2[idx]) { output.push([i, object2[idx]]); }
+            });
+            return output;
+        },
+
+        // Randomize an array object with the Fisher-Yates algorythm
+        // Author: Ashley Pond V. (http://sedition.com/perl/javascript-fy.html)
+        randomize: function(object) {  
+            var i = object.length;
+            if (i == 0) return false;
+            while (--i) {
+               var j = Math.floor( Math.random() * ( i + 1 ) );
+               var tempi = object[i];
+               var tempj = object[j];
+               object[i] = tempj;
+               object[j] = tempi;
+             }
+            return object;
+        },
 
         // Returns a range object
         // Author: Matthias Miller
@@ -114,76 +452,25 @@
                 min += ((max-min) % step);
             }
             var a = [];
-            for (var i = min; i <= max; i += step) { 
-                    a.push(i);
-            }
+            for (var i = min; i <= max; i += step) { a.push(i); }
             return a;
         }
-	});
+    });
 
-	$.extend($.fn, { 
-        // Select a text range in a textarea
-        selectRange: function(start, end) {
-            // use only the first one since only one input can be focused
-            if ($(this).get(0).createTextRange) {
-                var range = $(this).get(0).createTextRange();
-                range.collapse(true);
-                range.moveEnd('character',   end);
-                range.moveStart('character', start);
-                range.select();
-            }
-            else if ($(this).get(0).setSelectionRange) {
-                $(this).bind('focus', function(e){
-                    e.preventDefault();
-                }).get(0).setSelectionRange(start, end);
-            }
-            return $(this);
+    $.extend($.fn, {
+        all:       function(iterator) { return $.all(this, iterator); },
+        any:       function(iterator) { return $.any(this, iterator); },
+        pluck:     function(property, iterator) { return $.pluck(this, property, iterator); },
+        detect:    function(iterator) { return $($.detect(this, iterator)); },
+        eachSlice: function(size, iterator) { return $.eachSlice(this, size, iterator); },
+        //select:    function(iterator) { return $.findAll(this, iterator); },
+        sum: function(iterator) {
+            var iterator = iterator || function(i) {
+                return parseFloat($(i).val() || $(i).text(), 10);
+            };
+            return $.sum(this, iterator);
         }
-	});
-})(jQuery);
-/*
-  jQuery anchor handler - 0.5
-  http://code.google.com/p/jquery-utils/
-
-  (c) Maxime Haineault <haineault@gmail.com>
-  http://haineault.com   
-
-  MIT License (http://www.opensource.org/licenses/mit-license.php)
-
-*/
-
-(function($){
-    var hash = window.location.hash;
-    var handlers  = [];
-    var opt = {};
-
-	$.extend({
-		anchorHandler: {
-            apply: function() {
-                $.map(handlers, function(handler){
-                    var match = hash.match(handler.r) && hash.match(handler.r)[0] || false;
-                    if (match)  { handler.cb.apply($('a[href~='+match+']').get(0), [handler.r, hash || '']); }
-                });
-                return $.anchorHandler;
-            },
-			add: function(regexp, callback, options) {
-                var opt  = $.extend({handleClick: true, preserveHash: true}, options);
-                if (opt.handleClick) { 
-                    $('a[href~=#]').each(function(i, a){
-                        if (a.href.match(regexp)) {
-                            $(a).bind('click.anchorHandler', function(){
-                                if (opt.preserveHash) { window.location.hash = a.hash; }
-                                return callback.apply(this, [regexp, a.href]);
-                                });
-                        }
-                    }); 
-                }
-				handlers.push({r: regexp, cb: callback});
-                $($.anchorHandler.apply);
-				return $.anchorHandler;
-			}
-		}
-	});
+    });
 })(jQuery);
 /**
  * Cookie plugin
@@ -281,7 +568,7 @@ jQuery.cookie = function(name, value, options) {
         return cookieValue;
     }
 };/*
-  jQuery countdown - 0.1
+  jQuery countdown - 0.2
   http://code.google.com/p/jquery-utils/
 
   (c) Maxime Haineault <haineault@gmail.com>
@@ -293,28 +580,56 @@ jQuery.cookie = function(name, value, options) {
 
 (function($) {
     function countdown(el, options) {
-        var o       = '';
-        var timer   = false;
-        var now     = new Date();
+        var calc = function (target, current) {
+            /* Return true if the target date has arrived,
+             * an object of the time left otherwise.
+             */
+            if (current === undefined) {
+                current = new Date();
+            }
+
+            if (current >= target) {
+                return true;
+            }
+
+            var o = {};
+            var remain = Math.floor((target.getTime() - current.getTime()) / 1000);
+
+            o.days = Math.floor(remain / 86400);
+            remain %= 86400;
+            o.hours = Math.floor(remain / 3600);
+            remain %= 3600;
+            o.minutes = Math.floor(remain / 60);
+            remain %= 60;
+            o.seconds = remain;
+            o.years = Math.floor(o.days / 365);
+            o.months = Math.floor(o.days / 30);
+            o.weeks = Math.floor(o.days / 7);
+
+            return o;
+        };
 
         var getWeek = function(date) { 
             var onejan = new Date(date.getFullYear(),0,1);
-            return Math.ceil((((date - onejan) / 86400000) + onejan.getDay())/7); };
+            return Math.ceil((((date - onejan) / 86400000) + onejan.getDay())/7);
+        };
 
         var options = $.extend({
-                year : now.getFullYear(), month: now.getMonth(), day: now.getDate(),
-                week: getWeek(now), hour: now.getHours(), min: now.getMinutes(), sec: now.getSeconds(),
-                msgFormat: '%d [day|days] %hh %mm %ss', msgNow: 'Now !',
-                interval:  1000 }, options); 
+            date: new Date(),
+            modifiers: [],
+            interval: 1000,
+            msgFormat: '%d [day|days] %hh %mm %ss',
+            msgNow: 'Now !'
+        }, options);
 
         var tokens = {
-            y: new RegExp ('\\%y(\\s+|\\w+)\\[(\\w+)\\|(\\w+)\\]', 'g'), // years 
-            M: new RegExp ('\\%y(\\s+|\\w+)\\[(\\w+)\\|(\\w+)\\]', 'g'), // months 
-            w: new RegExp ('\\%w(\\s+|\\w+)\\[(\\w+)\\|(\\w+)\\]', 'g'), // weeks
-            d: new RegExp ('\\%d(\\s+|\\w+)\\[(\\w+)\\|(\\w+)\\]', 'g'), // days
-            h: new RegExp ('\\%h(\\s+|\\w+)\\[(\\w+)\\|(\\w+)\\]', 'g'), // hours
-            m: new RegExp ('\\%m(\\s+|\\w+)\\[(\\w+)\\|(\\w+)\\]', 'g'), // minutes
-            s: new RegExp ('\\%s(\\s+|\\w+)\\[(\\w+)\\|(\\w+)\\]', 'g')  // seconds
+            y: new RegExp ('\\%y(.+?)\\[(\\w+)\\|(\\w+)\\]', 'g'), // years 
+            M: new RegExp ('\\%M(.+?)\\[(\\w+)\\|(\\w+)\\]', 'g'), // months 
+            w: new RegExp ('\\%w(.+?)\\[(\\w+)\\|(\\w+)\\]', 'g'), // weeks
+            d: new RegExp ('\\%d(.+?)\\[(\\w+)\\|(\\w+)\\]', 'g'), // days
+            h: new RegExp ('\\%h(.+?)\\[(\\w+)\\|(\\w+)\\]', 'g'), // hours
+            m: new RegExp ('\\%m(.+?)\\[(\\w+)\\|(\\w+)\\]', 'g'), // minutes
+            s: new RegExp ('\\%s(.+?)\\[(\\w+)\\|(\\w+)\\]', 'g')  // seconds
         };
 
         var formatToken = function(str, token, val) {
@@ -323,67 +638,67 @@ jQuery.cookie = function(name, value, options) {
                     || str.replace('%'+token, val);
         };
 
+        var format = function(str, obj) {
+            var o = str;
+            o = formatToken(o, 'y', obj.years);
+            o = formatToken(o, 'M', obj.months);
+            o = formatToken(o, 'w', obj.weeks);
+            o = formatToken(o, 'd', obj.days);
+            o = formatToken(o, 'h', obj.hours);
+            o = formatToken(o, 'm', obj.minutes);
+            o = formatToken(o, 's', obj.seconds);
+            return o;
+        };
+
         var update = function() {
-            cd.remain = Math.floor((cd.date.getTime() - (new Date()).getTime())/1000);
-            if(cd.remain < 0) {
-                cd.stop();
-                clearInterval(cd.id);
+            var date_obj = calc(cd.date);
+            if (date_obj === true) {
+                cd.stop(); clearInterval(cd.id);
                 $(cd.el).html(options.msgNow);
                 return true;
             }
-
-            cd.days   = Math.floor(cd.remain/86400);  // days
-            cd.remain = cd.remain%86400;
-            cd.hours  = Math.floor(cd.remain/3600); // hours
-            cd.remain = cd.remain%3600;
-            cd.mins   = Math.floor(cd.remain/60);     // minutes
-            cd.remain = cd.remain%60;
-            cd.secs   = Math.floor(cd.remain);        // seconds
-            cd.weeks  = Math.floor(cd.days/7);        // weeks 
-            cd.years  = Math.floor(cd.days/365);      // years
-            cd.months = Math.floor(cd.days/30);       // months, TODO: find a more precise way to calculate months
-
-            o = options.msgFormat;
-            o = formatToken(o, 'y', cd.years);
-            o = formatToken(o, 'M', cd.months);
-            o = formatToken(o, 'w', cd.weeks);
-            o = formatToken(o, 'd', cd.days);
-            o = formatToken(o, 'h', cd.hours);
-            o = formatToken(o, 'm', cd.mins);
-            o = formatToken(o, 's', cd.secs);
-
-            $(cd.el).text(o);
+            else {
+                $(cd.el).text(format(options.msgFormat, date_obj));
+            }
         };
-        var parse = function(type, val) {
-           function calc(str, i) {
-               if (str.slice(0,1) == '+') { var o = i + parseInt(str.match(/\d+/)||0, 10); }
-               else { var o = i - parseInt(str.match(/\d+/)||0, 10); }
-               return o;
-           }
-           if (typeof(val)=='number') return val;
-           else {
-               switch(type) {
-                   case 'year':  return calc(val, (new Date()).getFullYear());
-                   case 'month': return calc(val, (new Date()).getMonth()+1);
-                   case 'day':   return calc(val, (new Date()).getDate());
-                   case 'hour':  return calc(val, (new Date()).getHours());
-                   case 'min':   return calc(val, (new Date()).getMinutes());
-                   case 'sec':   return calc(val, (new Date()).getSeconds());
-               }
-           }
+
+        var apply_modifiers = function (modifiers, date) {
+            if (modifiers.length === 0) {
+                return date;
+            }
+
+            var modifier_re = /^([+-]\d+)([yMdhms])$/;
+            var conversions = {
+                s: 1000,
+                m: 60 * 1000,
+                h: 60 * 60 * 1000,
+                d: 24 * 60 * 60 * 1000,
+                M: 30 * 24 * 60 * 60 * 1000,
+                y: 365 * 24 * 60 * 60 * 1000
+            };
+
+            var displacement = 0;
+            for (var i = 0, n = modifiers.length; i < n; ++i) {
+                var match = modifiers[i].match(modifier_re);
+                if (match !== null) {
+                    displacement += parseInt(match[1], 10) * conversions[match[2]];
+                }
+            }
+
+            return new Date(date.getTime() + displacement);
         };
+
         var cd = {
-            id:     setInterval(update, options.interval), el: el,
-            remain: null, el: el, days: 0, hours: 0, mins: 0, secs: 0,
-            start:  function(){ return new countdown($(this.el), options); },
-            stop:   function(){ return clearInterval(this.id);},
-            date:   new Date(parse('year', options.year), parse('month', options.month), parse('day', options.day), 
-                             parse('hour', options.hour), parse('min', options.min),     parse('sec', options.sec)) 
+            id    : setInterval(update, options.interval),
+            el    : el,
+            start : function(){ return new countdown($(this.el), options); },
+            stop  : function(){ return clearInterval(this.id); },
+            date  : apply_modifiers(options.modifiers, options.date),
         };
         $(el).data('countdown', cd);
         update();
         return $(el).data('countdown');
-    };
+    }
     $.fn.countdown = function(args) { if(this.get(0)) return new countdown(this.get(0), args); };
 })(jQuery);
 /*
@@ -1666,387 +1981,7 @@ if (window.attachEvent) {
         }
     };
 })(jQuery);
-/*
- * jQuery ifixpng plugin
- * (previously known as pngfix)
- * Version 2.0  (04/11/2007)
- * @requires jQuery v1.1.3 or above
- *
- * Examples at: http://jquery.khurshid.com
- * Copyright (c) 2007 Kush M.
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.gnu.org/licenses/gpl.html
- */
- 
- /**
-  *
-  * @example
-  *
-  * optional if location of pixel.gif if different to default which is images/pixel.gif
-  * $.ifixpng('media/pixel.gif');
-  *
-  * $('img[@src$=.png], #panel').ifixpng();
-  *
-  * @apply hack to all png images and #panel which icluded png img in its css
-  *
-  * @name ifixpng
-  * @type jQuery
-  * @cat Plugins/Image
-  * @return jQuery
-  * @author jQuery Community
-  */
- 
-(function($) {
-
-	/**
-	 * helper variables and function
-	 */
-	$.ifixpng = function(customPixel) {
-		$.ifixpng.pixel = customPixel;
-	};
-	
-	$.ifixpng.getPixel = function() {
-		return $.ifixpng.pixel || 'images/pixel.gif';
-	};
-	
-	var hack = {
-		ltie7  : $.browser.msie && $.browser.version < 7,
-		filter : function(src) {
-			return "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='"+src+"')";
-		}
-	};
-	
-	/**
-	 * Applies ie png hack to selected dom elements
-	 *
-	 * $('img[@src$=.png]').ifixpng();
-	 * @desc apply hack to all images with png extensions
-	 *
-	 * $('#panel, img[@src$=.png]').ifixpng();
-	 * @desc apply hack to element #panel and all images with png extensions
-	 *
-	 * @name ifixpng
-	 */
-	 
-	$.fn.ifixpng = hack.ltie7 ? function() {
-    	return this.each(function() {
-			var $$ = $(this);
-			var base = $('base').attr('href'); // need to use this in case you are using rewriting urls
-			if ($$.is('img') || $$.is('input')) { // hack image tags present in dom
-				if ($$.attr('src')) {
-					if ($$.attr('src').match(/.*\.png([?].*)?$/i)) { // make sure it is png image
-						// use source tag value if set 
-						var source = (base && $$.attr('src').substring(0,1)!='/') ? base + $$.attr('src') : $$.attr('src');
-						// apply filter
-						$$.css({filter:hack.filter(source), width:$$.width(), height:$$.height()})
-						  .attr({src:$.ifixpng.getPixel()})
-						  .positionFix();
-					}
-				}
-			} else { // hack png css properties present inside css
-				var image = $$.css('backgroundImage');
-				if (image.match(/^url\(["']?(.*\.png([?].*)?)["']?\)$/i)) {
-					image = RegExp.$1;
-					$$.css({backgroundImage:'none', filter:hack.filter(image)})
-					  .children().children().positionFix();
-				}
-			}
-		});
-	} : function() { return this; };
-	
-	/**
-	 * Removes any png hack that may have been applied previously
-	 *
-	 * $('img[@src$=.png]').iunfixpng();
-	 * @desc revert hack on all images with png extensions
-	 *
-	 * $('#panel, img[@src$=.png]').iunfixpng();
-	 * @desc revert hack on element #panel and all images with png extensions
-	 *
-	 * @name iunfixpng
-	 */
-	 
-	$.fn.iunfixpng = hack.ltie7 ? function() {
-    	return this.each(function() {
-			var $$ = $(this);
-			var src = $$.css('filter');
-			if (src.match(/src=["']?(.*\.png([?].*)?)["']?/i)) { // get img source from filter
-				src = RegExp.$1;
-				if ($$.is('img') || $$.is('input')) {
-					$$.attr({src:src}).css({filter:''});
-				} else {
-					$$.css({filter:'', background:'url('+src+')'});
-				}
-			}
-		});
-	} : function() { return this; };
-	
-	/**
-	 * positions selected item relatively
-	 */
-	 
-	$.fn.positionFix = function() {
-		return this.each(function() {
-			var $$ = $(this);
-			var position = $$.css('position');
-			if (position != 'absolute' && position != 'relative') {
-				$$.css({position:'relative'});
-			}
-		});
-	};
-
-})(jQuery);
-/* Copyright (c) 2007 Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
- * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
- *
- * Version: 1.0.2
- * Requires jQuery 1.1.3+
- * Docs: http://docs.jquery.com/Plugins/livequery
- */
-
-(function($) {
-	
-$.extend($.fn, {
-	livequery: function(type, fn, fn2) {
-		var self = this, q;
-		
-		// Handle different call patterns
-		if ($.isFunction(type))
-			fn2 = fn, fn = type, type = undefined;
-			
-		// See if Live Query already exists
-		$.each( $.livequery.queries, function(i, query) {
-			if ( self.selector == query.selector && self.context == query.context &&
-				type == query.type && (!fn || fn.$lqguid == query.fn.$lqguid) && (!fn2 || fn2.$lqguid == query.fn2.$lqguid) )
-					// Found the query, exit the each loop
-					return (q = query) && false;
-		});
-		
-		// Create new Live Query if it wasn't found
-		q = q || new $.livequery(this.selector, this.context, type, fn, fn2);
-		
-		// Make sure it is running
-		q.stopped = false;
-		
-		// Run it
-		$.livequery.run( q.id );
-		
-		// Contnue the chain
-		return this;
-	},
-	
-	expire: function(type, fn, fn2) {
-		var self = this;
-		
-		// Handle different call patterns
-		if ($.isFunction(type))
-			fn2 = fn, fn = type, type = undefined;
-			
-		// Find the Live Query based on arguments and stop it
-		$.each( $.livequery.queries, function(i, query) {
-			if ( self.selector == query.selector && self.context == query.context && 
-				(!type || type == query.type) && (!fn || fn.$lqguid == query.fn.$lqguid) && (!fn2 || fn2.$lqguid == query.fn2.$lqguid) && !this.stopped )
-					$.livequery.stop(query.id);
-		});
-		
-		// Continue the chain
-		return this;
-	}
-});
-
-$.livequery = function(selector, context, type, fn, fn2) {
-	this.selector = selector;
-	this.context  = context || document;
-	this.type     = type;
-	this.fn       = fn;
-	this.fn2      = fn2;
-	this.elements = [];
-	this.stopped  = false;
-	
-	// The id is the index of the Live Query in $.livequery.queries
-	this.id = $.livequery.queries.push(this)-1;
-	
-	// Mark the functions for matching later on
-	fn.$lqguid = fn.$lqguid || $.livequery.guid++;
-	if (fn2) fn2.$lqguid = fn2.$lqguid || $.livequery.guid++;
-	
-	// Return the Live Query
-	return this;
-};
-
-$.livequery.prototype = {
-	stop: function() {
-		var query = this;
-		
-		if ( this.type )
-			// Unbind all bound events
-			this.elements.unbind(this.type, this.fn);
-		else if (this.fn2)
-			// Call the second function for all matched elements
-			this.elements.each(function(i, el) {
-				query.fn2.apply(el);
-			});
-			
-		// Clear out matched elements
-		this.elements = [];
-		
-		// Stop the Live Query from running until restarted
-		this.stopped = true;
-	},
-	
-	run: function() {
-		// Short-circuit if stopped
-		if ( this.stopped ) return;
-		var query = this;
-		
-		var oEls = this.elements,
-			els  = $(this.selector, this.context),
-			nEls = els.not(oEls);
-		
-		// Set elements to the latest set of matched elements
-		this.elements = els;
-		
-		if (this.type) {
-			// Bind events to newly matched elements
-			nEls.bind(this.type, this.fn);
-			
-			// Unbind events to elements no longer matched
-			if (oEls.length > 0)
-				$.each(oEls, function(i, el) {
-					if ( $.inArray(el, els) < 0 )
-						$.event.remove(el, query.type, query.fn);
-				});
-		}
-		else {
-			// Call the first function for newly matched elements
-			nEls.each(function() {
-				query.fn.apply(this);
-			});
-			
-			// Call the second function for elements no longer matched
-			if ( this.fn2 && oEls.length > 0 )
-				$.each(oEls, function(i, el) {
-					if ( $.inArray(el, els) < 0 )
-						query.fn2.apply(el);
-				});
-		}
-	}
-};
-
-$.extend($.livequery, {
-	guid: 0,
-	queries: [],
-	queue: [],
-	running: false,
-	timeout: null,
-	
-	checkQueue: function() {
-		if ( $.livequery.running && $.livequery.queue.length ) {
-			var length = $.livequery.queue.length;
-			// Run each Live Query currently in the queue
-			while ( length-- )
-				$.livequery.queries[ $.livequery.queue.shift() ].run();
-		}
-	},
-	
-	pause: function() {
-		// Don't run anymore Live Queries until restarted
-		$.livequery.running = false;
-	},
-	
-	play: function() {
-		// Restart Live Queries
-		$.livequery.running = true;
-		// Request a run of the Live Queries
-		$.livequery.run();
-	},
-	
-	registerPlugin: function() {
-		$.each( arguments, function(i,n) {
-			// Short-circuit if the method doesn't exist
-			if (!$.fn[n]) return;
-			
-			// Save a reference to the original method
-			var old = $.fn[n];
-			
-			// Create a new method
-			$.fn[n] = function() {
-				// Call the original method
-				var r = old.apply(this, arguments);
-				
-				// Request a run of the Live Queries
-				$.livequery.run();
-				
-				// Return the original methods result
-				return r;
-			}
-		});
-	},
-	
-	run: function(id) {
-		if (id != undefined) {
-			// Put the particular Live Query in the queue if it doesn't already exist
-			if ( $.inArray(id, $.livequery.queue) < 0 )
-				$.livequery.queue.push( id );
-		}
-		else
-			// Put each Live Query in the queue if it doesn't already exist
-			$.each( $.livequery.queries, function(id) {
-				if ( $.inArray(id, $.livequery.queue) < 0 )
-					$.livequery.queue.push( id );
-			});
-		
-		// Clear timeout if it already exists
-		if ($.livequery.timeout) clearTimeout($.livequery.timeout);
-		// Create a timeout to check the queue and actually run the Live Queries
-		$.livequery.timeout = setTimeout($.livequery.checkQueue, 20);
-	},
-	
-	stop: function(id) {
-		if (id != undefined)
-			// Stop are particular Live Query
-			$.livequery.queries[ id ].stop();
-		else
-			// Stop all Live Queries
-			$.each( $.livequery.queries, function(id) {
-				$.livequery.queries[ id ].stop();
-			});
-	}
-});
-
-// Register core DOM manipulation methods
-$.livequery.registerPlugin('append', 'prepend', 'after', 'before', 'wrap', 'attr', 'removeAttr', 'addClass', 'removeClass', 'toggleClass', 'empty', 'remove');
-
-// Run Live Queries when the Document is ready
-$(function() { $.livequery.play(); });
-
-
-// Save a reference to the original init method
-var init = $.prototype.init;
-
-// Create a new init method that exposes two new properties: selector and context
-$.prototype.init = function(a,c) {
-	// Call the original init and save the result
-	var r = init.apply(this, arguments);
-	
-	// Copy over properties if they exist already
-	if (a && a.selector)
-		r.context = a.context, r.selector = a.selector;
-		
-	// Set properties
-	if ( typeof a == 'string' )
-		r.context = c || document, r.selector = a;
-	
-	// Return the result
-	return r;
-};
-
-// Give the init function the jQuery prototype for later instantiation (needed after Rev 4091)
-$.prototype.init.prototype = $.prototype;
-	
-})(jQuery);/* Copyright (c) 2006 Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
+/* Copyright (c) 2006 Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
@@ -2131,7 +2066,7 @@ $.fn.extend({
 });
 
 })(jQuery);/*
-  jQuery strings - 0.1a
+  jQuery strings - 0.2
   http://code.google.com/p/jquery-utils/
   
   (c) Maxime Haineault <haineault@gmail.com>
@@ -2146,141 +2081,219 @@ $.fn.extend({
   
 */
 (function($){
-    var conversion = {
-        // tries to translate any objects type into string gracefully
-        __repr: function(i){
-            switch(this.__getType(i)) {
-                case 'array':case 'date':case 'number':
-                    return i.toString();
-                case 'object': 
-                    var o = [];
-                    for (x=0; x<i.length; i++) { o.push(i+': '+ this.__repr(i[x])); }
-                    return o.join(', ');
-                case 'string': 
-                    return i;
-                default: 
-                    return i;
-            }
-        },
-        // like typeof but less vague
-        __getType: function(i) {
-            if (!i || !i.constructor) { return typeof(i); }
-            var match = i.constructor.toString().match(/Array|Number|String|Object|Date/);
-            return match && match[0].toLowerCase() || typeof(i);
-        },
-        //+ Jonas Raoni Soares Silva
-        //@ http://jsfromhell.com/string/pad [v1.0]
-        __pad: function(str, l, s, t){
-            var p = s || ' ';
-            var o = str;
-            if (l - str.length > 0) {
-                o = new Array(Math.ceil(l / p.length)).join(p).substr(0, t = !t ? l : t == 1 ? 0 : Math.ceil(l / 2)) + str + p.substr(0, l - t);
-            }
-            return o;
-        },
-        __getInput: function(arg, args) {
-             var key = arg.getKey();
-            switch(this.__getType(args)){
-                case 'object': // Thanks to Jonathan Works for the patch
-                    var keys = key.split('.');
-                    var obj = args;
-                    for(var subkey = 0; subkey < keys.length; subkey++){
-                        obj = obj[keys[subkey]];
-                    }
-                    if (typeof(obj) != 'undefined') {
-                        if (conversion.__getType(obj) == 'array') {
-                            return arg.getFormat().match(/\.\*/) && obj[1] || obj;
+    var strings = {
+        strConversion: {
+            // tries to translate any objects type into string gracefully
+            __repr: function(i){
+                switch(this.__getType(i)) {
+                    case 'array':case 'date':case 'number':
+                        return i.toString();
+                    case 'object': 
+                        var o = [];
+                        for (x=0; x<i.length; i++) { o.push(i+': '+ this.__repr(i[x])); }
+                        return o.join(', ');
+                    case 'string': 
+                        return i;
+                    default: 
+                        return i;
+                }
+            },
+            // like typeof but less vague
+            __getType: function(i) {
+                if (!i || !i.constructor) { return typeof(i); }
+                var match = i.constructor.toString().match(/Array|Number|String|Object|Date/);
+                return match && match[0].toLowerCase() || typeof(i);
+            },
+            //+ Jonas Raoni Soares Silva
+            //@ http://jsfromhell.com/string/pad [v1.0]
+            __pad: function(str, l, s, t){
+                var p = s || ' ';
+                var o = str;
+                if (l - str.length > 0) {
+                    o = new Array(Math.ceil(l / p.length)).join(p).substr(0, t = !t ? l : t == 1 ? 0 : Math.ceil(l / 2)) + str + p.substr(0, l - t);
+                }
+                return o;
+            },
+            __getInput: function(arg, args) {
+                 var key = arg.getKey();
+                switch(this.__getType(args)){
+                    case 'object': // Thanks to Jonathan Works for the patch
+                        var keys = key.split('.');
+                        var obj = args;
+                        for(var subkey = 0; subkey < keys.length; subkey++){
+                            obj = obj[keys[subkey]];
                         }
-                        return obj;
-                    }
-                    else {
-                        // TODO: try by numerical index                    
-                    }
-                break;
-                case 'array': 
-                    key = parseInt(key, 10);
-                    if (arg.getFormat().match(/\.\*/) && typeof args[key+1] != 'undefined') { return args[key+1]; }
-                    else if (typeof args[key] != 'undefined') { return args[key]; }
-                    else { return key; }
-                break;
+                        if (typeof(obj) != 'undefined') {
+                            if (strings.strConversion.__getType(obj) == 'array') {
+                                return arg.getFormat().match(/\.\*/) && obj[1] || obj;
+                            }
+                            return obj;
+                        }
+                        else {
+                            // TODO: try by numerical index                    
+                        }
+                    break;
+                    case 'array': 
+                        key = parseInt(key, 10);
+                        if (arg.getFormat().match(/\.\*/) && typeof args[key+1] != 'undefined') { return args[key+1]; }
+                        else if (typeof args[key] != 'undefined') { return args[key]; }
+                        else { return key; }
+                    break;
+                }
+                return '{'+key+'}';
+            },
+            __formatToken: function(token, args) {
+                var arg   = new Argument(token, args);
+                return strings.strConversion[arg.getFormat().slice(-1)](this.__getInput(arg, args), arg);
+            },
+
+            // Signed integer decimal.
+            d: function(input, arg){
+                var o = parseInt(input, 10); // enforce base 10
+                var p = arg.getPaddingLength();
+                if (p) { return this.__pad(o.toString(), p, arg.getPaddingString(), 0); }
+                else   { return o; }
+            },
+            // Signed integer decimal.
+            i: function(input, args){ 
+                return this.d(input, args);
+            },
+            // Unsigned octal
+            o: function(input, arg){ 
+                var o = input.toString(8);
+                if (arg.isAlternate()) { o = this.__pad(o, o.length+1, '0', 0); }
+                return this.__pad(o, arg.getPaddingLength(), arg.getPaddingString(), 0);
+            },
+            // Unsigned decimal
+            u: function(input, args) {
+                return Math.abs(this.d(input, args));
+            },
+            // Unsigned hexadecimal (lowercase)
+            x: function(input, arg){
+                var o = parseInt(input, 10).toString(16);
+                o = this.__pad(o, arg.getPaddingLength(), arg.getPaddingString(),0);
+                return arg.isAlternate() ? '0x'+o : o;
+            },
+            // Unsigned hexadecimal (uppercase)
+            X: function(input, arg){
+                return this.x(input, arg).toUpperCase();
+            },
+            // Floating point exponential format (lowercase)
+            e: function(input, arg){
+                return parseFloat(input, 10).toExponential(arg.getPrecision());
+            },
+            // Floating point exponential format (uppercase)
+            E: function(input, arg){
+                return this.e(input, arg).toUpperCase();
+            },
+            // Floating point decimal format
+            f: function(input, arg){
+                return this.__pad(parseFloat(input, 10).toFixed(arg.getPrecision()), arg.getPaddingLength(), arg.getPaddingString(),0);
+            },
+            // Floating point decimal format (alias)
+            F: function(input, args){
+                return this.f(input, args);
+            },
+            // Floating point format. Uses exponential format if exponent is greater than -4 or less than precision, decimal format otherwise
+            g: function(input, arg){
+                var o = parseFloat(input, 10);
+                return (o.toString().length > 6) ? Math.round(o.toExponential(arg.getPrecision())): o;
+            },
+            // Floating point format. Uses exponential format if exponent is greater than -4 or less than precision, decimal format otherwise
+            G: function(input, args){
+                return this.g(input, args);
+            },
+            // Single character (accepts integer or single character string). 	
+            c: function(input, args) {
+                var match = input.match(/\w|\d/);
+                return match && match[0] || '';
+            },
+            // String (converts any JavaScript object to anotated format)
+            r: function(input, args) {
+                return this.__repr(input);
+            },
+            // String (converts any JavaScript object using object.toString())
+            s: function(input, args) {
+                return input.toString && input.toString() || ''+input;
             }
-            return '{'+key+'}';
-        },
-        __formatToken: function(token, args) {
-            var arg   = new Argument(token, args);
-            return conversion[arg.getFormat().slice(-1)](this.__getInput(arg, args), arg);
         },
 
-        // Signed integer decimal.
-        d: function(input, arg){
-            var o = parseInt(input, 10); // enforce base 10
-            var p = arg.getPaddingLength();
-            if (p) { return this.__pad(o.toString(), p, arg.getPaddingString(), 0); }
-            else   { return o; }
+        format: function(str, args) {
+            var end    = 0;
+            var start  = 0;
+            var match  = false;
+            var buffer = [];
+            var token  = '';
+            var tmp    = (str||'').split('');
+            for(start=0; start < tmp.length; start++) {
+                if (tmp[start] == '{' && tmp[start+1] !='{') {
+                    end   = str.indexOf('}', start);
+                    token = tmp.slice(start+1, end).join('');
+                    buffer.push(strings.strConversion.__formatToken(token, (typeof arguments[1] != 'object')? arguments2Array(arguments, 2): args || []));
+                }
+                else if (start > end || buffer.length < 1) { buffer.push(tmp[start]); }
+            }
+            return (buffer.length > 1)? buffer.join(''): buffer[0];
         },
-        // Signed integer decimal.
-        i: function(input, args){ 
-            return this.d(input, args);
+
+        calc: function(str, args) {
+            return eval(format(str, args));
         },
-        // Unsigned octal
-        o: function(input, arg){ 
-            var o = input.toString(8);
-            if (arg.isAlternate()) { o = this.__pad(o, o.length+1, '0', 0); }
-            return this.__pad(o, arg.getPaddingLength(), arg.getPaddingString(), 0);
+
+        repeat: function(s, n) { 
+            return new Array(n+1).join(s); 
         },
-        // Unsigned decimal
-        u: function(input, args) {
-            return Math.abs(this.d(input, args));
+
+        UTF8encode: function(s) { 
+            return unescape(encodeURIComponent(s)); 
         },
-        // Unsigned hexadecimal (lowercase)
-        x: function(input, arg){
-            var o = parseInt(input, 10).toString(16);
-            o = this.__pad(o, arg.getPaddingLength(), arg.getPaddingString(),0);
-            return arg.isAlternate() ? '0x'+o : o;
+
+        UTF8decode: function(s) { 
+            return decodeURIComponent(escape(s)); 
         },
-        // Unsigned hexadecimal (uppercase)
-        X: function(input, arg){
-            return this.x(input, arg).toUpperCase();
-        },
-        // Floating point exponential format (lowercase)
-        e: function(input, arg){
-            return parseFloat(input, 10).toExponential(arg.getPrecision());
-        },
-        // Floating point exponential format (uppercase)
-        E: function(input, arg){
-            return this.e(input, arg).toUpperCase();
-        },
-        // Floating point decimal format
-        f: function(input, arg){
-            return this.__pad(parseFloat(input, 10).toFixed(arg.getPrecision()), arg.getPaddingLength(), arg.getPaddingString(),0);
-        },
-        // Floating point decimal format (alias)
-        F: function(input, args){
-            return this.f(input, args);
-        },
-        // Floating point format. Uses exponential format if exponent is greater than -4 or less than precision, decimal format otherwise
-        g: function(input, arg){
-            var o = parseFloat(input, 10);
-            return (o.toString().length > 6) ? Math.round(o.toExponential(arg.getPrecision())): o;
-        },
-        // Floating point format. Uses exponential format if exponent is greater than -4 or less than precision, decimal format otherwise
-        G: function(input, args){
-            return this.g(input, args);
-        },
-        // Single character (accepts integer or single character string). 	
-        c: function(input, args) {
-            var match = input.match(/\w|\d/);
-            return match && match[0] || '';
-        },
-        // String (converts any JavaScript object to anotated format)
-        r: function(input, args) {
-            return this.__repr(input);
-        },
-        // String (converts any JavaScript object using object.toString())
-        s: function(input, args) {
-            return input.toString && input.toString() || ''+input;
+
+        tpl: function() {
+            var out    = '';
+            var render = true;
+            // Set
+            // $.tpl('ui.test', ['<span>', helloWorld ,'</span>']);
+            if (arguments.length == 2 && $.isArray(arguments[1])) {
+                out = this[arguments[0]] = arguments[1].join('');
+                //console.log('$.tpl: Storing "%s" from Array (%s...)', arguments[0], out.slice(0, 50))
+            }
+            // $.tpl('ui.test', '<span>hello world</span>');
+            if (arguments.length == 2 && $.isString(arguments[1])) {
+                out = this[arguments[0]] = arguments[1];
+                //console.log('$.tpl: Storing "%s" from String (%s...)', arguments[0], out.slice(0, 50))
+            }
+            // Call
+            // $.tpl('ui.test');
+            if (arguments.length == 1) {
+                render = true;
+                out    = this[arguments[0]];
+                //console.log('$.tpl: Calling1 "%s", render: %s (%s...)', arguments[0], render, out.slice(0, 50))
+            }
+            // $.tpl('ui.test', false);
+            if (arguments.length == 2 && arguments[1] == false) {
+                render = false;
+                out    = this[arguments[0]];
+                //console.log('$.tpl: Calling2 "%s", render: %s (%s...)', arguments[0], render, out.slice(0, 50))
+            }
+            // $.tpl('ui.test', {value:blah});
+            if (arguments.length == 2 && $.isObject(arguments[1])) {
+                render = true;
+                out    = $.format(this[arguments[0]], arguments[1]);
+                //console.log('$.tpl: Calling3 "%s", render: %s (%s...)', arguments[0], render, out.slice(0, 50))
+            }
+            // $.tpl('ui.test', {value:blah}, false);
+            if (arguments.length == 3 && $.isObject(arguments[1])) {
+                render = (arguments[2] == true) ? false: true;
+                out    = $.format(this[arguments[0]], arguments[1]);
+                //console.log('$.tpl: Calling4 "%s", render: %s, arg2: %s (%s...)', arguments[0], render, arguments[2], out.slice(0, 50))
+            }
+            return render ? $(out) : out;
         }
-    };
+};
 
     var Argument = function(arg, args) {
         this.__arg  = arg;
@@ -2303,10 +2316,10 @@ $.fn.extend({
             else {
                 match = match[0].slice(1);
                 if (match != '*') { return parseInt(match, 10); }
-                else if(conversion.__getType(this.__args) == 'array') {
+                else if(strings.strConversion.__getType(this.__args) == 'array') {
                     return this.__args[1] && this.__args[0] || this.__def_precision;
                 }
-                else if(conversion.__getType(this.__args) == 'object') {
+                else if(strings.strConversion.__getType(this.__args) == 'object') {
                     return this.__args[this.getKey()] && this.__args[this.getKey()][0] || this.__def_precision;
                 }
                 else { return this.__def_precision; }
@@ -2343,38 +2356,7 @@ $.fn.extend({
         return o;
     };
 
-    var format = function(str, args) {
-        var end    = 0;
-        var start  = 0;
-        var match  = false;
-        var buffer = [];
-        var token  = '';
-        var tmp    = (str||'').split('');
-        for(start=0; start < tmp.length; start++) {
-            if (tmp[start] == '{' && tmp[start+1] !='{') {
-                end   = str.indexOf('}', start);
-                token = tmp.slice(start+1, end).join('');
-                buffer.push(conversion.__formatToken(token, (typeof arguments[1] != 'object')? arguments2Array(arguments, 2): args || []));
-            }
-            else if (start > end || buffer.length < 1) { buffer.push(tmp[start]); }
-        }
-        return (buffer.length > 1)? buffer.join(''): buffer[0];
-    };
-
-    var calc = function(str, args) {
-        return eval(format(str, args));
-    };
-
-    $.extend({
-        // Format/sprintf functions
-        format: format,
-        calc:   calc,
-        strConversion: conversion,
-        repeat:  function(s, n) { return new Array(n+1).join(s); },
-        UTF8encode: function(s) { return unescape(encodeURIComponent(s)); },
-        UTF8decode: function(s) { return decodeURIComponent(escape(s)); }
-    });
-
+    $.extend(strings);
 })(jQuery);
 /*
  * timeago: a jQuery plugin, version: 0.5.1 (08/20/2008)
@@ -2544,7 +2526,7 @@ $.fn.extend({
 
     $.fn.youtubeLinksToEmbed = function(options){
         var opt = $.extend({autoOpen: false}, options);
-        $(this).find('a[href~=youtube.com/watch?v=]')
+        $(this).find('a[href*=youtube.com/watch?v=]')
             .addClass('youtubeLinksToEmbed')
             .each(function(){ 
                 $(this).click(yl2e.onclick);
@@ -2554,7 +2536,7 @@ $.fn.extend({
     };
 
     $.fn.youtubeInputsToEmbed = function(options) {
-        $(this).find('input[value~=youtube.com/watch?v=]')
+        $(this).find('input[value*=youtube.com/watch?v=]')
             .addClass('youtubeLinksToEmbed')
             .each(function(){ 
                 $('<a href="'+ $(this).val() +'">watch</a>')
@@ -2567,7 +2549,7 @@ $(document).ready(function(){
     $('body').youtubeLinksToEmbed();
 });
 /*
-  jQuery utils - 0.5
+  jQuery utils - 0.7.0
   http://code.google.com/p/jquery-utils/
 
   (c) Maxime Haineault <haineault@gmail.com> 
@@ -2582,6 +2564,12 @@ $(document).ready(function(){
         // case insensitive version of :contains
         icontains: function(a,i,m){return (a.textContent||a.innerText||jQuery(a).text()||"").toLowerCase().indexOf(m[3].toLowerCase())>=0;}
     });
+
+    $.iterators = {
+        getText:  function() { return $(this).text(); },
+        parseInt: function(v){ return parseInt(v, 10); }
+    };
+
 	$.extend({ 
 
         // Taken from ui.core.js. 
@@ -2596,20 +2584,21 @@ $(document).ready(function(){
 
         // Redirect to a specified url
         redirect: function(url) {
-            return window.location.href = url;
+            window.location.href = url;
+            return url;
         },
 
         // Stop event shorthand
         stop: function(e, preventDefault, stopPropagation) {
-            preventDefault  && e.preventDefault();
-            stopPropagation && e.stopPropagation();
+            if (preventDefault)  { e.preventDefault(); }
+            if (stopPropagation) { e.stopPropagation(); }
             return preventDefault && false || true;
         },
 
         // Returns the basename of a path
         basename: function(path) {
             var t = path.split('/');
-            return t[t.length] == '' && s || t.slice(0, t.length).join('/');
+            return t[t.length] === '' && s || t.slice(0, t.length).join('/');
         },
 
         // Returns the filename of a path
@@ -2621,15 +2610,15 @@ $(document).ready(function(){
         filesizeformat: function(bytes, suffixes){
             var b = parseInt(bytes, 10);
             var s = suffixes || ['byte', 'bytes', 'KB', 'MB', 'GB'];
-            if (isNaN(b) || b == 0) { return '0 ' + s[0]; }
-            if (b == 1)             { return '1 ' + s[0]; }
-            if (b < 1024)           { return  b.toFixed(2) + ' ' + s[1]; }
-            if (b < 1048576)        { return (b / 1024).toFixed(2) + ' ' + s[2]; }
-            if (b < 1073741824)     { return (b / 1048576).toFixed(2) + ' '+ s[3]; }
-            else                    { return (b / 1073741824).toFixed(2) + ' '+ s[4]; }
+            if (isNaN(b) || b === 0) { return '0 ' + s[0]; }
+            if (b == 1)              { return '1 ' + s[0]; }
+            if (b < 1024)            { return  b.toFixed(2) + ' ' + s[1]; }
+            if (b < 1048576)         { return (b / 1024).toFixed(2) + ' ' + s[2]; }
+            if (b < 1073741824)      { return (b / 1048576).toFixed(2) + ' '+ s[3]; }
+            else                     { return (b / 1073741824).toFixed(2) + ' '+ s[4]; }
         },
 
-        fileExtension: function(s) {
+        fileExtension: function(s) {
             var tokens = s.split('.');
             return tokens[tokens.length-1] || false;
         },
@@ -2647,8 +2636,13 @@ $(document).ready(function(){
         // Returns true if an object is an array
         // Mark Miller - http://blog.360.yahoo.com/blog-TBPekxc1dLNy5DOloPfzVvFIVOWMB0li?p=916
 		isArray: function(o) {
+            if (!o) { return false; }
             return Object.prototype.toString.apply(o.constructor.prototype) === '[object Array]';
 		},
+
+        isObject: function(o) {
+            return (typeof(o) == 'object');
+        },
         
         // Convert input to currency (two decimal fixed number)
 		toCurrency: function(i) {
@@ -2656,42 +2650,68 @@ $(document).ready(function(){
 			return (i=='NaN') ? '0.00' : i;
 		},
 
-        // Returns a range object
-        // Author: Matthias Miller
-        // Site:   http://blog.outofhanwell.com/2006/03/29/javascript-range-function/
-        range:  function() {
-            if (!arguments.length) { return []; }
-            var min, max, step;
-            if (arguments.length == 1) {
-                min  = 0;
-                max  = arguments[0]-1;
-                step = 1;
+        /*-------------------------------------------------------------------- 
+         * javascript method: "pxToEm"
+         * by:
+           Scott Jehl (scott@filamentgroup.com) 
+           Maggie Wachs (maggie@filamentgroup.com)
+           http://www.filamentgroup.com
+         *
+         * Copyright (c) 2008 Filament Group
+         * Dual licensed under the MIT (filamentgroup.com/examples/mit-license.txt) and GPL (filamentgroup.com/examples/gpl-license.txt) licenses.
+         *
+         * Description: pxToEm converts a pixel value to ems depending on inherited font size.  
+         * Article: http://www.filamentgroup.com/lab/retaining_scalable_interfaces_with_pixel_to_em_conversion/
+         * Demo: http://www.filamentgroup.com/examples/pxToEm/	 	
+         *							
+         * Options:  	 								
+                scope: string or jQuery selector for font-size scoping
+                reverse: Boolean, true reverses the conversion to em-px
+         * Dependencies: jQuery library						  
+         * Usage Example: myPixelValue.pxToEm(); or myPixelValue.pxToEm({'scope':'#navigation', reverse: true});
+         *
+         * Version: 2.1, 18.12.2008
+         * Changelog:
+         *		08.02.2007 initial Version 1.0
+         *		08.01.2008 - fixed font-size calculation for IE
+         *		18.12.2008 - removed native object prototyping to stay in jQuery's spirit, jsLinted (Maxime Haineault <haineault@gmail.com>)
+        --------------------------------------------------------------------*/
+
+        pxToEm: function(i, settings){
+            //set defaults
+            settings = jQuery.extend({
+                scope: 'body',
+                reverse: false
+            }, settings);
+            
+            var pxVal = (i === '') ? 0 : parseFloat(i);
+            var scopeVal;
+            var getWindowWidth = function(){
+                var de = document.documentElement;
+                return self.innerWidth || (de && de.clientWidth) || document.body.clientWidth;
+            };	
+            
+            /* When a percentage-based font-size is set on the body, IE returns that percent of the window width as the font-size. 
+                For example, if the body font-size is 62.5% and the window width is 1000px, IE will return 625px as the font-size. 	
+                When this happens, we calculate the correct body font-size (%) and multiply it by 16 (the standard browser font size) 
+                to get an accurate em value. */
+                        
+            if (settings.scope == 'body' && $.browser.msie && (parseFloat($('body').css('font-size')) / getWindowWidth()).toFixed(1) > 0.0) {
+                var calcFontSize = function(){		
+                    return (parseFloat($('body').css('font-size'))/getWindowWidth()).toFixed(3) * 16;
+                };
+                scopeVal = calcFontSize();
             }
-            else {
-                // default step to 1 if it's zero or undefined
-                min  = arguments[0];
-                max  = arguments[1]-1;
-                step = arguments[2] || 1;
-            }
-            // convert negative steps to positive and reverse min/max
-            if (step < 0 && min >= max) {
-                step *= -1;
-                var tmp = min;
-                min = max;
-                max = tmp;
-                min += ((max-min) % step);
-            }
-            var a = [];
-            for (var i = min; i <= max; i += step) { 
-                    a.push(i);
-            }
-            return a;
+            else { scopeVal = parseFloat(jQuery(settings.scope).css("font-size")); }
+                    
+            var result = (settings.reverse === true) ? (pxVal * scopeVal).toFixed(2) + 'px' : (pxVal / scopeVal).toFixed(2) + 'em';
+            return result;
         }
 	});
 
 	$.extend($.fn, { 
         // Select a text range in a textarea
-        selectRange: function(start, end) {
+        selectRange: function(start, end){
             // use only the first one since only one input can be focused
             if ($(this).get(0).createTextRange) {
                 var range = $(this).get(0).createTextRange();
@@ -2706,6 +2726,46 @@ $(document).ready(function(){
                 }).get(0).setSelectionRange(start, end);
             }
             return $(this);
-        }
+        },
+
+        /*-------------------------------------------------------------------- 
+         * JQuery Plugin: "EqualHeights"
+         * by:	Scott Jehl, Todd Parker, Maggie Costello Wachs (http://www.filamentgroup.com)
+         *
+         * Copyright (c) 2008 Filament Group
+         * Licensed under GPL (http://www.opensource.org/licenses/gpl-license.php)
+         *
+         * Description: Compares the heights or widths of the top-level children of a provided element 
+                and sets their min-height to the tallest height (or width to widest width). Sets in em units 
+                by default if pxToEm() method is available.
+         * Dependencies: jQuery library, pxToEm method	(article: 
+                http://www.filamentgroup.com/lab/retaining_scalable_interfaces_with_pixel_to_em_conversion/)							  
+         * Usage Example: $(element).equalHeights();
+                Optional: to set min-height in px, pass a true argument: $(element).equalHeights(true);
+         * Version: 2.1, 18.12.2008
+         *
+         * Note: Changed pxToEm call to call $.pxToEm instead, jsLinted (Maxime Haineault <haineault@gmail.com>)
+        --------------------------------------------------------------------*/
+
+        equalHeights: function(px){
+            $(this).each(function(){
+                var currentTallest = 0;
+                $(this).children().each(function(i){
+                    if ($(this).height() > currentTallest) { currentTallest = $(this).height(); }
+                });
+                if (!px || !$.pxToEm) { currentTallest = $.pxToEm(currentTallest); } //use ems unless px is specified
+                // for ie6, set height since min-height isn't supported
+                if ($.browser.msie && $.browser.version == 6.0) { $(this).children().css({'height': currentTallest}); }
+                $(this).children().css({'min-height': currentTallest}); 
+            });
+            return this;
+        },
+
+        // Copyright (c) 2009 James Padolsey
+        // http://james.padolsey.com/javascript/jquery-delay-plugin/
+        delay: function(time, callback){
+            jQuery.fx.step.delay = function(){};
+            return this.animate({delay:1}, time, callback);
+        }        
 	});
 })(jQuery);

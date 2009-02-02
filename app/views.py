@@ -63,12 +63,14 @@ def disconnected(request):
 
 @login_required
 def file_list(request):
+    module_thumbnails = settings.THUMBNAIL_MODULE
     if request.user.is_superuser:
         users = User.objects.all()
     else:
         users = User.objects.filter(pk=request.user.id)
     return render(request, 'app/file_list.html',
                   {'users': users,
+                   'module_thumbnails': module_thumbnails,
                   })
 
 
