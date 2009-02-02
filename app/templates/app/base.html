@@ -38,7 +38,7 @@
         <script type="text/javascript">
             $('.transf-upload-file').click(function(e){
                 $('#transfr-file-upload').load($(this).attr('href')+' #transfr-file-upload', function(){
-                    $('#transfr-file-upload-wrapper').show();
+                    $('#transfr-file-upload-wrapper, #leftbar:hidden').show();
 
                     $('#additional-form').click(function () {
                         // Number of the last input + 1
