@@ -2,7 +2,8 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 import os
 
-urlpatterns = patterns('transfr.app.views',
+urlpatterns = patterns(
+    'transfr.app.views',
     url(r'^accounts/login/$', 'mylogin', name='login'),
     url(r'^accounts/logout/$', 'mylogout', name='logout'),
     url(r'^disconnected/$', 'disconnected', name='disconnected'),
@@ -17,6 +18,7 @@ urlpatterns = patterns('transfr.app.views',
     url(r'^users/delete/(\d+)/$', 'delete_user', name='delete_user'),
     url(r'^upload/progress/$', 'upload_progress', name='upload_progress'),
     url(r'^thumbnail/(?P<id>\d+)/$', 'view_thumbnail', name='view_thumbnail'),
+    url(r'^download/(?P<id>\d+)/$', 'download_file', name='download_file'),
 )
 
 urlpatterns += patterns(
