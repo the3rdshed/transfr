@@ -22,6 +22,7 @@ import os
 import operator
 import re
 import pdb
+import mimetypes
 
 @login_required
 def upload_progress(request):
@@ -251,3 +252,11 @@ def delete_user(request, id):
                        'this_user': user,
                       })
 
+def download_file(request, id):
+    f = get_object_or_404(File, pk=id)
+    mime = mimetypes.guess_type(f.file.name)[0] or 'application/octet-stream'
+    f.file.open()
+    response = HttpResponse(f.file.read(), mime)
+    f.file.close()
+    response['Content-Disposition'] = 'attachment; filename=%s' % os.path.split(f.file.name)[1]
+    return response

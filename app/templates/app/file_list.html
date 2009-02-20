@@ -88,7 +88,7 @@
                                     <td class="file-size">{{ file.safesize|filesizeformat }}<span style="display:none;">{{ file.safesize }}</span></td>
                                     <td class="file-date"><abbr class="timeago" title="{{ file.modified_date|timesince }} ago">{{ file.modified_date|date:"d-M-Y H:i" }}</abbr></td>
                                     <td class="actions">
-                                        {% button "download" file.file.url "" "file-download" %}{% trans "Download" %}{% endbutton %}
+                                        <a class="ui-default-state file-download" href="{% url download_file file.id %}">{% icon "download" %} {% trans "Download" %}</a>
                                         {% button "delete" "#" "" "transfr-delete-file" %}{% trans "Delete" %}{% endbutton %}
                                     </td>
                                 </tr>
