@@ -210,7 +210,7 @@ $.transfr = {
             if (wrapper.get(0)) {
                 wrapper.show().siblings('div').hide();
                 $(el).addClass('active').siblings().removeClass('active');
-                $('#title-bar').text($.format('Files of {0:s}', $('.transfr-folder', el).text()));
+                $('#title-bar').text('Files of '+ $('.transfr-folder', el).text());
                 $('.file:first', wrapper).click();
             }
         }
