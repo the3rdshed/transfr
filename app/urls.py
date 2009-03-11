@@ -18,7 +18,7 @@ urlpatterns = patterns(
     url(r'^users/delete/(\d+)/$', 'delete_user', name='delete_user'),
     url(r'^upload/progress/$', 'upload_progress', name='upload_progress'),
     url(r'^thumbnail/(?P<id>\d+)/$', 'view_thumbnail', name='view_thumbnail'),
-    url(r'^download/(?P<id>\d+)/$', 'download_file', name='download_file'),
+    #url(r'^download/(?P<id>\d+)/$', 'download_file', name='download_file'),
 )
 
 urlpatterns += patterns(
