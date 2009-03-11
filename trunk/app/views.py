@@ -252,6 +252,8 @@ def delete_user(request, id):
                        'this_user': user,
                       })
 
+# XXX: Not used, because Django doesn't support (yet) serving
+#      extremely large files.
 def download_file(request, id):
     f = get_object_or_404(File, pk=id)
     mime = mimetypes.guess_type(f.file.name)[0] or 'application/octet-stream'
