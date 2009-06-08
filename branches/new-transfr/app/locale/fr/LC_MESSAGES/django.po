@@ -1,0 +1,253 @@
+# transfr.app French translation file
+# Copyright (C) 2008
+# This file is distributed under the same license as the transfr package.
+# Vincent Foley <vincent.f@centdessin.com>, 2008
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-06-03 10:46-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:16 models.py:8
+msgid "File"
+msgstr "Fichier"
+
+#: forms.py:17 models.py:9
+msgid "Comments"
+msgstr "Commentaires"
+
+#: models.py:10
+msgid "Modification date"
+msgstr "Date de modification"
+
+#: models.py:40 templates/app/instructions.html:30
+#: templates/app/manage_users.html:34
+msgid "Password"
+msgstr "Mot de passe"
+
+#: templates/app/_toolbar.html:8 templates/app/base.html:5
+msgid "Transfr"
+msgstr "Transfr"
+
+#: templates/app/_toolbar.html:28 templates/app/manage_users.html:35
+msgid "Files"
+msgstr "Fichiers"
+
+#: templates/app/_toolbar.html:31 templates/app/file_list.html:13
+#: templates/app/manage_users.html:30
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: templates/app/_toolbar.html:36
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: templates/app/about.html:5
+msgid "About Transfr"
+msgstr "À propos de Transfr"
+
+#: templates/app/about.html:8
+msgid ""
+"\n"
+"    Transfr is a web-based file exchange system developed by Centdessin "
+"Design.\n"
+"    "
+msgstr ""
+"\n"
+"    Transfr est un système d'échange de fichier fonctionnant sur le "
+"web développé par Centdessin Design.\n"
+"    "
+
+#: templates/app/add_file.html:8 templates/app/file_list.html:43
+#: templates/app/file_list.html.py:83
+msgid "Upload a file"
+msgstr "Ajouter un fichier"
+
+#: templates/app/add_file.html:13
+msgid "Upload another file"
+msgstr "Ajouter un autre fichier"
+
+#: templates/app/add_file.html:19 templates/app/manage_users.html:18
+#: templates/app/set_password.html:14
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: templates/app/base.html:19 templates/app/help.html:5
+msgid "Help"
+msgstr "Aide"
+
+#: templates/app/base.html:21
+msgid "About"
+msgstr "À propos"
+
+#: templates/app/base.html:25
+msgid "Created by"
+msgstr "Une création"
+
+#: templates/app/base.html:25
+msgid "All rights reserved"
+msgstr "Tous droits réservés"
+
+#: templates/app/delete_user.html:7
+msgid "Delete user"
+msgstr "Supprimer un utilisateur"
+
+#: templates/app/delete_user.html:11
+msgid "Do you really want to delete"
+msgstr "Voulez-vous vraiment supprimer"
+
+#: templates/app/delete_user.html:14 templates/app/file_list.html:46
+#: templates/app/manage_users.html:50
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/app/delete_user.html:22
+msgid "Beware: the files of this user will also be deleted"
+msgstr "Attention: les fichiers de cet utilisateur seront également supprimés"
+
+#: templates/app/disconnected.html:6
+msgid "Your session is terminated."
+msgstr "Votre session est terminée"
+
+#: templates/app/disconnected.html:8
+msgid "Click here"
+msgstr "Cliquez ici"
+
+#: templates/app/disconnected.html:8
+msgid "to reconnect."
+msgstr "pour vous reconnecter."
+
+#: templates/app/file_list.html:33
+msgid "files"
+msgstr "fichiers"
+
+#: templates/app/file_list.html:53
+msgid "File name"
+msgstr "Nom de fichier"
+
+#: templates/app/file_list.html:54 templates/app/manage_users.html:36
+msgid "Size"
+msgstr "Taille"
+
+#: templates/app/file_list.html:55
+msgid "Date"
+msgstr "Date"
+
+#: templates/app/file_list.html:74
+msgid "No files"
+msgstr "Aucun fichier"
+
+#: templates/app/file_list.html:76
+msgid ""
+"\n"
+"                    There are no files in this directory; click on the "
+"button below to add one.\n"
+"                    "
+msgstr ""
+"\n"
+"Il n'y a pas de fichier dans ce dossier; cliquez sur le bouton ci-dessous\n"
+"pour en ajouter.\n"
+"                "
+
+#: templates/app/help.html:8
+msgid "Upcoming..."
+msgstr "À venir..."
+
+#: templates/app/instructions.html:7
+msgid ""
+"\n"
+"    To give somebody access to Transfr, copy the following text and email it "
+"to them.\n"
+"    "
+msgstr ""
+"\n"
+"    Pour donner accès à Transfr à quelqu'un, copiez la table "
+"suivante et envoyez la par courriel.\n"
+"        "
+
+#: templates/app/instructions.html:13 templates/app/manage_users.html:48
+msgid "Instructions"
+msgstr "Instructions"
+
+#: templates/app/instructions.html:15
+msgid ""
+"\n"
+"        You've been given access to Transfr, a website to exchange files.  "
+"To access it, go to the following address in your web browser and enter your "
+"username and password.\n"
+"        "
+msgstr ""
+"\n"
+"        Vous avez été autorisé à utiliser Transfr, un site web "
+"d'échange de fichiers. Pour y accéder, allez à l'adresse donnée ci-bas dans "
+"votre navigateur web et entrez votre nom d'utilisateur et mot de passe.\n"
+"            "
+
+#: templates/app/instructions.html:22
+msgid "Address"
+msgstr "Adresse"
+
+#: templates/app/instructions.html:26 templates/app/manage_users.html:33
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: templates/app/login.html:10 templates/app/login.html.py:17
+msgid "Login"
+msgstr "Connexion"
+
+#: templates/app/manage_users.html:11
+msgid "Add user"
+msgstr "Ajouter un utilisateur"
+
+#: templates/app/manage_users.html:37
+msgid "Percentage"
+msgstr "Pourcentage"
+
+#: templates/app/manage_users.html:38
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/app/manage_users.html:49 templates/app/set_password.html:8
+msgid "Change password"
+msgstr "Modifier le mot de passe"
+
+#~ msgid "Virtual Folder"
+#~ msgstr "Dossier Virtuel"
+
+#~ msgid "About Virtual Folder"
+#~ msgstr "À propos de Dossier Virtuel"
+
+#~ msgid "About DVC"
+#~ msgstr "À propos de DVC"
+
+#~ msgid "File manager"
+#~ msgstr "Gestionnaire de fichiers"
+
+#~ msgid "Create a user"
+#~ msgstr "Créer un utilisateur"
+
+#~ msgid "Space usage"
+#~ msgstr "Espace disque"
+
+#~ msgid "User"
+#~ msgstr "Utilisateur"
+
+#~ msgid "Total size"
+#~ msgstr "Taille totale"
+
+#~ msgid "Delete selection"
+#~ msgstr "Supprimer la sélection"
+
+#~ msgid "to add a new file."
+#~ msgstr "pour ajouter un fichier."
+
+#~ msgid "Incorrect username or password"
+#~ msgstr "Nom d'utilisateur ou mot de passe incorrect"

@@ -1,0 +1,23 @@
+# transfr JS translations
+# Copyright (C) 2008
+# This file is distributed under the same license as the transfr package.
+# Vincent Foley <vincent.f@centdessin.com>, 2008.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-26 10:17-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: media/js/transfr.js:78
+msgid "Do you really want to delete this file?"
+msgid_plural "Do you really want to delete these files?"
+msgstr[0] "Voulez-vous vraiment supprimer ce fichier?"
+msgstr[1] "Voulez-vous vraiment supprimer ces fichiers?"

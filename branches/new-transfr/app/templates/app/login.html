@@ -1,0 +1,23 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+
+{% block bd %}
+{% if message %}
+    <div class="error">{{ message }}</div>
+{% endif %}
+
+<div id="login-form">
+    <h3 class="title">{% trans "Login" %}</h3>
+    <form method="post" action="#">
+        <table>
+            {{ form }}
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" value="{% trans "Login" %}">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

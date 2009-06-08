@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-06-03 10:46-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:16 models.py:8
+msgid "File"
+msgstr ""
+
+#: forms.py:17 models.py:9
+msgid "Comments"
+msgstr ""
+
+#: models.py:10
+msgid "Modification date"
+msgstr ""
+
+#: models.py:40 templates/app/instructions.html:30
+#: templates/app/manage_users.html:34
+msgid "Password"
+msgstr ""
+
+#: templates/app/_toolbar.html:8 templates/app/base.html:5
+msgid "Transfr"
+msgstr ""
+
+#: templates/app/_toolbar.html:28 templates/app/manage_users.html:35
+msgid "Files"
+msgstr ""
+
+#: templates/app/_toolbar.html:31 templates/app/file_list.html:13
+#: templates/app/manage_users.html:30
+msgid "Users"
+msgstr ""
+
+#: templates/app/_toolbar.html:36
+msgid "Logout"
+msgstr ""
+
+#: templates/app/about.html:5
+msgid "About Transfr"
+msgstr ""
+
+#: templates/app/about.html:8
+msgid ""
+"\n"
+"    Transfr is a web-based file exchange system developed by Centdessin "
+"Design.\n"
+"    "
+msgstr ""
+
+#: templates/app/add_file.html:8 templates/app/file_list.html:43
+#: templates/app/file_list.html.py:83
+msgid "Upload a file"
+msgstr ""
+
+#: templates/app/add_file.html:13
+msgid "Upload another file"
+msgstr ""
+
+#: templates/app/add_file.html:19 templates/app/manage_users.html:18
+#: templates/app/set_password.html:14
+msgid "Save"
+msgstr ""
+
+#: templates/app/base.html:19 templates/app/help.html:5
+msgid "Help"
+msgstr ""
+
+#: templates/app/base.html:21
+msgid "About"
+msgstr ""
+
+#: templates/app/base.html:25
+msgid "Created by"
+msgstr ""
+
+#: templates/app/base.html:25
+msgid "All rights reserved"
+msgstr ""
+
+#: templates/app/delete_user.html:7
+msgid "Delete user"
+msgstr ""
+
+#: templates/app/delete_user.html:11
+msgid "Do you really want to delete"
+msgstr ""
+
+#: templates/app/delete_user.html:14 templates/app/file_list.html:46
+#: templates/app/manage_users.html:50
+msgid "Delete"
+msgstr ""
+
+#: templates/app/delete_user.html:22
+msgid "Beware: the files of this user will also be deleted"
+msgstr ""
+
+#: templates/app/disconnected.html:6
+msgid "Your session is terminated."
+msgstr ""
+
+#: templates/app/disconnected.html:8
+msgid "Click here"
+msgstr ""
+
+#: templates/app/disconnected.html:8
+msgid "to reconnect."
+msgstr ""
+
+#: templates/app/file_list.html:33
+msgid "files"
+msgstr ""
+
+#: templates/app/file_list.html:53
+msgid "File name"
+msgstr ""
+
+#: templates/app/file_list.html:54 templates/app/manage_users.html:36
+msgid "Size"
+msgstr ""
+
+#: templates/app/file_list.html:55
+msgid "Date"
+msgstr ""
+
+#: templates/app/file_list.html:74
+msgid "No files"
+msgstr ""
+
+#: templates/app/file_list.html:76
+msgid ""
+"\n"
+"                    There are no files in this directory; click on the "
+"button below to add one.\n"
+"                    "
+msgstr ""
+
+#: templates/app/help.html:8
+msgid "Upcoming..."
+msgstr ""
+
+#: templates/app/instructions.html:7
+msgid ""
+"\n"
+"    To give somebody access to Transfr, copy the following text and email it "
+"to them.\n"
+"    "
+msgstr ""
+
+#: templates/app/instructions.html:13 templates/app/manage_users.html:48
+msgid "Instructions"
+msgstr ""
+
+#: templates/app/instructions.html:15
+msgid ""
+"\n"
+"        You've been given access to Transfr, a website to exchange files.  "
+"To access it, go to the following address in your web browser and enter your "
+"username and password.\n"
+"        "
+msgstr ""
+
+#: templates/app/instructions.html:22
+msgid "Address"
+msgstr ""
+
+#: templates/app/instructions.html:26 templates/app/manage_users.html:33
+msgid "Username"
+msgstr ""
+
+#: templates/app/login.html:10 templates/app/login.html.py:17
+msgid "Login"
+msgstr ""
+
+#: templates/app/manage_users.html:11
+msgid "Add user"
+msgstr ""
+
+#: templates/app/manage_users.html:37
+msgid "Percentage"
+msgstr ""
+
+#: templates/app/manage_users.html:38
+msgid "Actions"
+msgstr ""
+
+#: templates/app/manage_users.html:49 templates/app/set_password.html:8
+msgid "Change password"
+msgstr ""

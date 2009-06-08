@@ -1,0 +1,36 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load transfr_tags %}
+
+{% block bd %}
+<div class="warning">
+    {% blocktrans %}
+    To give somebody access to Transfr, copy the following text and email it to them.
+    {% endblocktrans %}
+</div>
+
+<div id="instructions">
+    <h1>{% trans "Instructions" %}</h1>
+    <p>
+        {% blocktrans %}
+        You've been given access to Transfr, a website to exchange files.  To access it, go to the following address in your web browser and enter your username and password.
+        {% endblocktrans %}
+    </p>
+
+    <table class="credentials">
+        <tr>
+            <th>{% trans "Address" %}</th>
+            <td>{{ address|urlize }}</td>
+        </tr>
+        <tr>
+            <th>{% trans "Username" %}</th>
+            <td>{{ this_user }}</td>
+        </tr>
+        <tr>
+            <th>{% trans "Password" %}</th>
+            <td>{{ raw_password }}</td>
+        </tr>
+    </table>
+</div>
+
+{% endblock %}

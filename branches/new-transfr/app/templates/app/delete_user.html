@@ -1,0 +1,33 @@
+{% extends "app/base.html" %}
+{% load transfr_tags %}
+{% load i18n %}
+
+{% block bd %}
+<div id="delete-user">
+    <h3 class="title">{% trans "Delete user" %}</h3>
+
+    <form method="post" action="#">
+        <p>
+            {% trans "Do you really want to delete" %} <b>{{ this_user }}</b>?
+        </p>
+        <p>
+            <input type="submit" value="{% trans "Delete" %}">
+        </p>
+    </form>
+</div>
+
+{% if this_user.file_set.all %}
+<div class="warning">
+    <p>
+        <b>{% icon "exclamation" %} {% trans "Beware: the files of this user will also be deleted" %}:</b>
+    </p>
+
+    <ul>
+        {% for file in this_user.file_set.all %}
+        <li><a href="{{ file.file.url }}">{{ file.truncated_name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% endblock %}
