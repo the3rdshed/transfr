@@ -4,22 +4,31 @@
 
 {% block bd %}
 
-<div class="content page">
-    <h3 class="ui-header">{% trans "Upload a file" %}</h3>
-    <div id="transfr-file-upload" class="file-upload ui-clearfix">
-        <form method="post" action="{% url add_file user_id %}" enctype="multipart/form-data">
-            <ul id="upload-forms" class="ui-form ui-reset">
-                {{ form.as_ul }}
-                <li id="additional-form-li">
-                <a href="#" id="additional-form">{% trans "Upload another file" %}</a>
-                </li>
-                <li class="ui-actions">
-                    {% button "save" "#" "" "ui-button-submit" %}{% trans "Save" %}{% endbutton %}
-                    {% button "delete" "#" "" "ui-button-reset" %}{% trans "Cancel" %}{% endbutton %}
-                </li>
-            </ul>
-            <input class="transfr-file-upload-id" type="hidden" value="{{ request.COOKIES.sessionid }}">
-        </form>
-    </div>
+<div id="upload-form">
+    <h3 class="title">{% trans "Upload a file" %}</h3>
+    <form method="post" action="{% url add_file user_id %}" enctype="multipart/form-data">
+        {{ form.as_ul }}
+
+        <p id="additional-form">
+            {% icon "add" %} <a href="#">{% trans "Upload another file" %}</a>
+        </p>
+
+        <input class="transfr-file-upload-id" type="hidden" value="{{ request.COOKIES.sessionid }}">
+
+        <p>
+            <input type="submit" value="{% trans "Save" %}">
+        </p>
+    </form>
 </div>
+
+<script type="text/javascript">
+    $('#additional-form a').click(function () {
+        // Number of the last input + 1
+        var n = $('input[name^=file]').length + 1;
+        var url = $urls.additional_upload_form.replace('0', n);
+        $.get(url, function (data) {
+            $('#additional-form').before(data);
+        });
+    });
+</script>
 {% endblock %}

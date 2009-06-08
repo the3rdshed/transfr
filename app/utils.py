@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import os, cjson, tempfile
 
+from django.contrib.auth.models import User
 from django.core.files.uploadhandler import TemporaryFileUploadHandler
 from django.core.urlresolvers import reverse, RegexURLResolver, RegexURLPattern, normalize
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import Http404
 from django.conf import settings
@@ -12,13 +12,19 @@ from django.conf import settings
 from transfr import urls
 from transfr.utils import join_url
 
+import operator
+import os
+import tempfile
 
 class UploadProgressCachedHandler(TemporaryFileUploadHandler):
+    '''Subclass of TemporaryFileUploadHandler that also keeps a
+    journal of the progress of the upload process, so that it can
+    be relayed to the client.'''
     def __init__(self, request=None):
         super(UploadProgressCachedHandler, self).__init__(request)
         self.total_size = None
-        self.filename = None
-        self.tmpfile = None
+        self.filename = None # the session id is the name of the JSON data file
+        self.tmpfile = None # File containing JSON data on the upload progress
         self.uploaded = 0
         self.current_file = None
 
@@ -39,7 +45,7 @@ class UploadProgressCachedHandler(TemporaryFileUploadHandler):
         super(UploadProgressCachedHandler, self).receive_data_chunk(raw_data, start)
         self.uploaded += len(raw_data)
         f = open(self.tmpfile, 'w')
-        f.write("{'uploaded': %d, 'total': %d, 'current_file': '%s', finished: false}" % \
+        f.write('{"uploaded": %d, "total": %d, "current_file": "%s", "finished": false}' % \
                 (self.uploaded, self.total_size, self.current_file.encode('utf-8')))
         f.close()
     
@@ -50,8 +56,21 @@ class UploadProgressCachedHandler(TemporaryFileUploadHandler):
             pass
 
 
-def total_size(user):
+def total_user_size(user):
+    '''Return the total size of a user's files.'''
     return sum(f.safesize() for f in user.file_set.all())
+
+def all_user_sizes(users):
+    '''Return a list containing tuples where the first
+    element is a user and the second element is the
+    size of their file set.  The list is ordered by
+    size from the largest to the smallest.
+    ''' 
+    users_size = []
+    for user in users:
+        users_size.append((user, total_user_size(user)))
+    users_size.sort(key=operator.itemgetter(1), reverse=True)
+    return users_size
 
 def superuser_required(view_func):
     def new(request, *args, **kwargs):
@@ -65,40 +84,9 @@ def render(request, template_name, *args, **kwargs):
     kwargs['context_instance'] = RequestContext(request)
     return render_to_response(template_name, *args, **kwargs)
 
-class URLDict(object):
-    def __init__(self):
-        self.dict = None
-
-    def urls_dict(self):
-        if self.dict is None:
-            self.dict = self.generate_urls_dict('/', {}, urls.urlpatterns)
-        return self.dict
-
-    def generate_urls_dict(self, root, d, patterns):
-        for pattern in patterns:
-            if isinstance(pattern, RegexURLResolver):
-                d.update(self.generate_urls_dict(join_url(root, normalize(pattern.regex.pattern)[0][0]),
-                                                 {},
-                                                 pattern.url_patterns))
-            elif isinstance(pattern, RegexURLPattern):
-                if pattern.name:
-                    s = normalize(pattern.regex.pattern)[0][0]
-                    s = s.replace('(', '').replace(')s', '')
-                    d[pattern.name] = join_url(root, s)
-
-        return d
-
-ud = URLDict()
-
-def transfr_processor(request):
-    '''
-    This is a context processor, the items in this
-    dictionary will be sent to all templates that use
-    RequestContext.  This function must be added to
-    TEMPLATE_CONTEXT_PROCESSORS in settings.py
-    '''
-    return {
-        'DEBUG'           : settings.DEBUG,
-        'json_urls'       : cjson.encode(ud.urls_dict()),
-    }
-
+def get_normal_user(id):
+    user = get_object_or_404(User, pk=id)
+    if user.is_superuser:
+        raise Http404
+    else:
+        return user

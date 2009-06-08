@@ -1,65 +1,44 @@
 {% load i18n %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
-        <title>transfr - {% trans "File manager" %}</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ MEDIA_URL }}themes/default/jquery-ui-themeroller.css">
+        <title>{% trans "Transfr" %}</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ MEDIA_URL }}css/reset.css">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ MEDIA_URL }}css/style.css">
-        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>
-        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.utils.js"></script>
-        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui.min.js"></script>
-        <script type="text/javascript">
-            {% autoescape off %}$.durls = {{ json_urls }};{% endautoescape %}
-            $.user = { // used only for layout disposition purpose as JavaScript *cannot* enforce user security
-                is_authenticated: {% if user.is_authenticated %}true{% else %}false{% endif %},
-                is_superuser: {% if user.is_superuser %}true{% else %}false{% endif %}
-            };
-        </script>
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ MEDIA_URL }}css/smoothness/jquery-ui-1.7.1.custom.css">
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.3.2.min.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui-1.7.1.custom.min.js"></script>
         <script type="text/javascript" src="{% url jsi18n %}"></script>
         <script type="text/javascript" src="{% url media_app "js/transfr.js" %}"></script>
     </head>
     <body>
-        <div id="language-switch">
-            <form action="{% url django.views.i18n.set_language %}" method="post">
-                <select id="i18n-switcher" name="language">
-                    {% for lang in LANGUAGES %}
-                    <option value="{{ lang.0 }}"{% ifequal lang.0 LANGUAGE_CODE %}selected="selected"{% endifequal %}>{{ lang.1 }}</option>
-                    {% endfor %}
-                </select>
-            </form>
-        </div>
         <div id="hd">{% include "app/_toolbar.html" %}</div>
         <div id="bd">{% block bd %}{% endblock %}</div>
         <div id="ft">
+            <p>
+                <a href="{% url help %}">{% trans "Help" %}</a>
+                |
+                <a href="{% url about %}">{% trans "About" %}</a>
+            </p>
             <p>
                 <!-- You can use, modify this software as you wish, for free. However this copyright string along with the link *must* stay visible at all time. Thanks. -->
                 {% trans "Created by" %} <a href="http://www.centdessin.com">Centdessin Design</a> - &copy; 2008-{% now "Y" %}, {% trans "All rights reserved" %}
             </p>
         </div>
+
         <script type="text/javascript">
-            $('.transf-upload-file').click(function(e){
-                $('#transfr-file-upload').load($(this).attr('href')+' #transfr-file-upload', function(){
-                    $('#transfr-file-upload-wrapper, #leftbar:hidden').show();
 
-                    $('#additional-form').click(function () {
-                        // Number of the last input + 1
-                        var n = parseInt($('input[name^=file]:last')[0].name.match(/\d+$/)[0], 10) + 1;
-                        var url = $.durl('additional_upload_form', {_0: n});
-                        $.get(url, function (data) {
-                            $('#additional-form-li').before('<div class="clear"></div>' + data);
-                        });
-                    });
-                });
-                return false;
-            });
+            var $urls = {
+                delete_file: "{% url delete_file %}",
+                upload_progress: "{% url upload_progress %}",
+                additional_upload_form: "{% url additional_upload_form 0 %}"
+            };
 
-            $('button.ui-button-submit').click(function () {
-                this.form.submit();
-            });
         </script>
         <!--[if lt IE 7]>
-        <script type="text/javascript" src="/media/js/jquery.ifixpng.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.ifixpng.js"></script>
         <script type="text/javascript">
-            $.ifixpng.pixel = '/media/img/pixel.gif';
+            $.ifixpng.pixel = '{{ MEDIA_URL }}img/pixel.gif';
             $('img[src$=.png]').ifixpng();
         </script>
         <![endif]-->

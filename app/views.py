@@ -1,27 +1,28 @@
 # -*- coding: utf-8 -*-
 
-from django.core.files.uploadhandler import FileUploadHandler
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.core.files.uploadhandler import FileUploadHandler
+from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, get_list_or_404
-from django.utils import simplejson
 from django.template.defaultfilters import filesizeformat
+from django.utils import simplejson
 from django.utils.translation import ugettext as _
 
-from transfr import settings
+from transfr.utils import join_url
 from transfr.app.models import File, RawPassword
-from transfr.app.forms import SingleFileUploadForm, MultipleFileUploadForm, InstructionsForm
-from transfr.app.utils import total_size, superuser_required, render
+from transfr.app.forms import SingleFileUploadForm, MultipleFileUploadForm
+from transfr.app.utils import (total_user_size, superuser_required, render, all_user_sizes,
+                               get_normal_user)
 
 import tempfile
 import os
 import operator
-import re
-import pdb
 import mimetypes
 
 @login_required
@@ -33,27 +34,25 @@ def upload_progress(request):
     tmpfile  = os.path.join(tempfile.gettempdir(), filename)
     try:
         f = open(tmpfile, 'r')
-        data = f.readlines()
+        data = f.read()
+    except (IOError, OSError):
+        data = '{"uploaded": "1", "total": "1", "finished": true}'
+    finally:
         f.close()
-    except Exception, e:
-        data = "{'uploaded': '1', 'total': '1', finished: true}"
 
     return HttpResponse(data)
 
 def mylogin(request):
     if request.method == 'POST':
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            login(request, user)
+        form = AuthenticationForm(None, request.POST, label_suffix='')
+        if form.is_valid():
+            login(request, form.user_cache)
             return HttpResponseRedirect(reverse('file_list'))
-        else:
-            return render(request, 'app/login.html',
-                          {'message': _(u"Incorrect username or password")})
     else:
-        return render(request, 'app/login.html')
+        form = AuthenticationForm(label_suffix='')
+    return render(request, 'app/login.html',
+                  {'form': form,
+                  })
 
 def mylogout(request):
     logout(request)
@@ -63,62 +62,47 @@ def disconnected(request):
     return render(request, 'app/disconnected.html')
 
 @login_required
-def file_list(request):
-    module_thumbnails = settings.THUMBNAIL_MODULE
-    if request.user.is_superuser:
-        users = User.objects.all()
-    else:
-        users = User.objects.filter(pk=request.user.id)
+def file_list(request, id=None):
+    if id is None:
+        if 'current_user_id' in request.session:
+            id = request.session['current_user_id']
+        else:
+            id = request.user.id
+
+    user = get_object_or_404(User, pk=id)
+    if user != request.user and not request.user.is_superuser:
+        raise Http404
+    request.session['current_user_id'] = id
     return render(request, 'app/file_list.html',
-                  {'users': users,
-                   'module_thumbnails': module_thumbnails,
+                  {'this_user': user,
+                   'user_list': User.objects.order_by('username'),
                   })
-
-
-def get_field_numbers(files):
-    number_re = re.compile(r'(\d+)$')
-    for filename in files:
-        m = number_re.search(filename)
-        if m:
-            yield m.group(1)
-
-def select_fields(post, xs):
-    new_post = {}
-    for x in xs:
-        comments = post.get('comments%s' % x)
-        if comments is not None:
-            new_post['comments%s' % x] = comments
-    return new_post
 
 
 @login_required
 def add_file(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     # Only superusers or the owner can upload files to that profile.
-    if not request.user.is_superuser and request.user != user:
+    if request.user != user and not request.user.is_superuser:
         raise Http404
 
     if request.method == 'POST':
-        xs = sorted(get_field_numbers(request.FILES))
-        new_post = select_fields(request.POST, xs)
-        form = MultipleFileUploadForm(user, xs, new_post, request.FILES)
+        form = MultipleFileUploadForm(user, request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('file_list'))
+            return HttpResponseRedirect(reverse('file_list_user', args=[user_id]))
     else:
-        form = SingleFileUploadForm(0)
+        form = SingleFileUploadForm(1)
     return render(request, 'app/add_file.html',
-                  {'form': form, 'user_id': user_id})
+                  {'form': form,
+                   'user_id': user_id,
+                  })
 
 @login_required
 def additional_upload_form(request, n):
     form = SingleFileUploadForm(n)
     return HttpResponse(form.as_ul())
 
-
-@login_required
-def help(request):
-    return render(request, 'app/help.html')
 
 @login_required
 def delete_file(request):
@@ -129,46 +113,18 @@ def delete_file(request):
     for file in files:
         if file.owned_by(request.user):
             file.delete()
-    return HttpResponse(simplejson.dumps([owner.id,
-                                          owner.file_set.count(),
-                                          filesizeformat(total_size(owner))]))
-
-@login_required
-def view_thumbnail(request, id):
-    file = get_object_or_404(File, pk=id)
-    _, extension = os.path.splitext(file.file.path)
-
-    if extension in settings.THUMBNAIL_SUPPORTED:
-        is_supported = 'true'
-    else:
-        is_supported = 'false'
-    if extension in settings.THUMBNAIL_ARCHIVES:
-        is_archive = 'true'
-    else:
-        is_archive = 'false'
-
-    return render(request, 'app/view_thumbnail.json', {
-        'file': file, 
-        'is_supported': is_supported,
-        'is_archive': is_archive,
-        })
-
+    return HttpResponse(simplejson.dumps([owner.file_set.count(),
+                                          filesizeformat(total_user_size(owner))]))
 
 @superuser_required
-def send_instructions(request, id):
-    user = get_object_or_404(User, pk=id)
-    if user.is_superuser:
-        raise Http404
-    if request.method == 'POST':
-        form = InstructionsForm(request.POST)
-        if form.is_valid():
-            form.send(user.username, 
-                      RawPassword.objects.get(user=user).password)
-            return HttpResponseRedirect(reverse('file_list'))
-    else:
-        form = InstructionsForm()
-    return render(request, 'app/send_instructions.html',
-                  {'form': form})
+def instructions(request, id):
+    user = get_normal_user(id)
+    return render(request, 'app/instructions.html',
+                  {'this_user': user,
+                   'raw_password': RawPassword.objects.get(user=user).password,
+                   'address': 'http://' + join_url(request.META.get('HTTP_HOST', ''),
+                                                   settings.BASE_URL),
+                  })
 
 ###
 # Users
@@ -186,45 +142,31 @@ def manage_users(request):
     # Remove help text
     form.fields['username'].help_text = ''
 
+    # User list
+    all_users = User.objects.exclude(is_superuser=True).order_by('username')
     user_list = []
-    for user in User.objects.all():
+    for user in all_users:
         user_list.append((user,
                           RawPassword.objects.get(user=user),
                           user.file_set.count(),
-                          total_size(user)))
+                          total_user_size(user)))
+
+    # Space usage by each user, sorted by space.
+    user_sizes = all_user_sizes(all_users)
+    total_size = sum(us[1] for us in user_sizes) or 1 # 1 to prevent div by 0
     
     return render(request, 'app/manage_users.html',
                   {'user_list': user_list,
                    'form': form,
-                   'chart_url': get_stats()
+                   'user_sizes': user_sizes,
+                   'total_size': total_size,
                   })
 
-def get_stats(threshold=5):
-    userlist = [(user.username, total_size(user))
-                for user in User.objects.all()]
-    userlist.sort(key=operator.itemgetter(1), reverse=True)
-
-    labels = []
-    sizes = []
-    others = 0
-    for (i, (username, size)) in enumerate(userlist):
-        if i < threshold:
-            labels.append(username)
-            sizes.append(size)
-        else:
-            others += size
-    if len(labels) == threshold:
-        labels.append('Autres')
-        sizes.append(others)
-
-    total = float(sum(sizes) or 1)
-    values = [str(size / total * 100) for size in sizes]
-    return 'http://chart.apis.google.com/chart?cht=p3&chd=t:%s&chs=340x100&chl=%s' \
-            % (','.join(values), '|'.join(labels))
 
 @superuser_required
 def set_password(request, id):
-    user = get_object_or_404(User, pk=id)
+    user = get_normal_user(id)
+
     if request.method == 'POST':
         form = SetPasswordForm(user, request.POST)
         if form.is_valid():
@@ -239,26 +181,30 @@ def set_password(request, id):
 
 @superuser_required
 def delete_user(request, id):
-    user = get_object_or_404(User, pk=id)
-    if user.is_superuser:
-        raise Http404
-
+    user = get_normal_user(id)
     if request.method == 'POST':
         user.delete()
         return HttpResponseRedirect(reverse('manage_users'))
     else:
         return render(request, 'app/delete_user.html',
-                      {'show_form': True,
-                       'this_user': user,
+                      {'this_user': user,
                       })
 
-# XXX: Not used, because Django doesn't support (yet) serving
-#      extremely large files.
+
+# XXX: Not used right now, uses too much memory.
 def download_file(request, id):
     f = get_object_or_404(File, pk=id)
     mime = mimetypes.guess_type(f.file.name)[0] or 'application/octet-stream'
-    f.file.open()
-    response = HttpResponse(f.file.read(), mime)
-    f.file.close()
-    response['Content-Disposition'] = 'attachment; filename=%s' % os.path.split(f.file.name)[1]
+    wrapper = FileWrapper(f.file)
+    response = HttpResponse(wrapper, content_type=mime)
+    response['Content-Disposition'] = 'attachment; filename=%s' % \
+            os.path.basename(f.file.name)
+    response['Content-Length'] = f.safesize()
     return response
+
+
+def help(request):
+    return render(request, 'app/help.html')
+
+def about(request):
+    return render(request, 'app/about.html')

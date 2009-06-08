@@ -1,30 +1,33 @@
 {% extends "app/base.html" %}
+{% load transfr_tags %}
 {% load i18n %}
 
 {% block bd %}
-<div class="content">
-    <h3 class="ui-accordion-header selected">{% trans "Delete user" %}</h3>
-    {% if message %}
-    <h4>{{ message }}</h4>
-    {% endif %}
+<div id="delete-user">
+    <h3 class="title">{% trans "Delete user" %}</h3>
 
-    {% if show_form %}
-    <form method="post" action="#" style="margin-bottom:0;">
-        <h4>{% trans "Do you really to delete" %} <b>{{ this_user }}</b>?</h4>
-        {% if this_user.file_set.all %}
-        <div class="warning">
-            <b><img src="{{ MEDIA_URL }}img/silk/exclamation.png" style="margin-bottom:-2px;"> {% trans "Beware: the files of this user will also be deleted" %}:</b>
-            <ul>
-                {% for file in this_user.file_set.all %}
-                <li><a href="{{ file.file.url }}">{{ file.truncated_name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-        <div class="ui-reset ui-clearfix ui-component ui-hover-state" style="margin-top:30px;padding:5px 10px;border-top:1px solid #ccc;">
-            <button class="ui-default-state"><img src="{{ MEDIA_URL }}img/silk/delete.png"> {% trans "Delete" %}</button>
-        </div>
+    <form method="post" action="#">
+        <p>
+            {% trans "Do you really want to delete" %} <b>{{ this_user }}</b>?
+        </p>
+        <p>
+            <input type="submit" value="{% trans "Delete" %}">
+        </p>
     </form>
-    {% endif %}
 </div>
+
+{% if this_user.file_set.all %}
+<div class="warning">
+    <p>
+        <b>{% icon "exclamation" %} {% trans "Beware: the files of this user will also be deleted" %}:</b>
+    </p>
+
+    <ul>
+        {% for file in this_user.file_set.all %}
+        <li><a href="{{ file.file.url }}">{{ file.truncated_name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
 {% endblock %}

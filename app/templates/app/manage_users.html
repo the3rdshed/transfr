@@ -3,105 +3,58 @@
 {% load i18n %}
 
 {% block bd %}
-<div class="content">
-    <table id="transfr-user-index" class="trasfr-layout-2cols" cellpadding="0" cellspacing="0" summary="">
-        <tr>
-            <td id="leftbar" class="sidebar">
-                <div id="transfr-user-create-wrapper" class="transfr-sidebox">
-                    <h3 class="ui-header">{% trans "Create a user" %}</h3>
-                    <div id="transfr-create-user">
-                        {% if message %}
-                            <h4>{{ message }}</h4>
-                        {% endif %}
 
-                        {% if form %}
-                        <form method="post" action="" id="user-create">
-                            <ul class="ui-form ui-reset">
-                                {{ form.as_ul }}
-                                <li class="ui-actions ui-clearfix">
-                                    {% button "delete" "#" "" "ui-button-reset" %}{% trans "Cancel" %}{% endbutton %}
-                                    {% button "save" "#" "" "ui-button-submit" %}{% trans "Save" %}{% endbutton %}
-                                </li>
-                            </ul>
-                        </form>
-                        {% endif %}
-                    </div>
-                </div>
-                <div id="transfr-user-create-wrapper" class="transfr-sidebox">
-                    <h3 class="ui-header">{% trans "Space repartition" %}</h3>
-                    <div id="user-space-repartition"></div>
-                </div>
-            </td>
-            <td class="ui-tablegrid-drawer">&nbsp;</td>
-            <td style="vertical-align:top;">
-                <div class="transfr-content-wrapper">
-                    <h3 class="ui-header">{% trans "Users" %}</h3>
-                    <table class="user-list ui-tablegrid" cellpadding="0" cellspacing="0" summary="">
-                        <thead>
-                            <tr>
-                                <th>{% trans "User" %}</th>
-                                <th>{% trans "Password" %}</th>
-                                <th>{% trans "Files" %}</th>
-                                <th>{% trans "Total size" %}</th>
-                                <th style="width:300px;">{% trans "Actions" %}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for this_user, password, file_count, size in user_list %}
-                            <tr class="{% cycle odd,even %}">
-                                <td class="ui-tablegrid-ticon file-user {% if this_user.is_superuser %}admin{% else %}user{% endif %}">{{ this_user }}</td>
-                                <td class="user-password">{{ password.password }}</td>
-                                <td class="file-count">{{ file_count }}</td>
-                                <td class="file-size"><abbr title="{{ size }}">{{ size|filesizeformat }}</abbr></td>
-                                <td class="actions">
-                                    {% if not this_user.is_superuser %}
-                                        {% url set_password this_user.id as change_password_url %}
-                                        {% button "password" change_password_url %}{% trans "Change password" %}{% endbutton %}
-                                        {% url delete_user this_user.id as delete_user_url %}
-                                        {% button "delete" delete_user_url %}{% trans "Delete" %}{% endbutton %}
-                                    {% else %}
-                                        &nbsp;
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
+<table class="workspace full-width" cellspacing="0" cellpadding="0">
+    <tr>
+        <td class="left">
+            <div class="container">
+                <h3 class="title">{% trans "Add user" %}</h3>
+                <form method="post" action="#">
+                    <table id="add-user-form" class="full-width" cellspacing="0" cellpadding="0">
+                        {{ form }}
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <input type="submit" value="{% trans "Save" %}">
+                            </td>
+                        </tr>
                     </table>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
-<script type="text/javascript">
-$.sumArray = function(a) {
-    var total = 0;
-    $.each(a, function(){
-        total = total + parseFloat(this, 10);
-    });
-    return total;
-}
+                </form>
+            </div>
+        </td>
 
-$.showSpaceRepartition = function(selector) {
-    var l = []; var v = []; var o =[]; var i = 0; var url = ''; var img = false;
-    var s = $('.file-size abbr').map(function(){ return $(this).attr('title'); });
-    var t = $.sumArray(s);
-    $.map(s, function(i, idx){
-        i = parseFloat(i, 10);
-        if (i > 0) {
-            if (idx < 4) {
-                v.push(Math.round(100 * (i/t)));
-                l.push($('.file-user').eq(idx).text());
-            }
-            else {
-                o.push(Math.round(100 * (i/t)));
-            }
-        }
-    });
+        <td class="separator">&nbsp;</td>
 
-    var url = $.format('http://chart.apis.google.com/chart?cht=p3&chd=t:{0:s}&chs=340x100&chl={1:s}', v.join(','), l.join('|'));
-    var img = $('<img alt="" border="0">').attr('src', url);
-    $(selector).html(img);
-};
-$.showSpaceRepartition('#user-space-repartition');
-</script>
+        <td class="right">
+            <div class="container">
+                <h3 class="title">{% trans "Users" %}</h3>
+                <table id="manage-users" class="full-width">
+                    <tr>
+                        <th class="username">{% trans "Username" %}</th>
+                        <th class="password">{% trans "Password" %}</th>
+                        <th class="files">{% trans "Files" %}</th>
+                        <th class="size">{% trans "Size" %}</th>
+                        <th class="percentage">{% trans "Percentage" %}</th>
+                        <th class="actions">{% trans "Actions" %}</th>
+                    </tr>
+                    {% for this_user,password,file_count,size in user_list %}
+                    <tr class="{% cycle even,odd %}">
+                        <td class="username"><a href="{% url file_list_user this_user.id %}">{{ this_user }}</a></td>
+                        <td class="password">{{ password.password }}</td>
+                        <td class="files">{{ file_count }}</td>
+                        <td class="size">{{ size|filesizeformat }}</td>
+                        <td class="percentage">{% size_percentage size total_size %}</td>
+                        <td class="actions">
+                            <a href="{% url instructions this_user.id %}" title="{% trans "Instructions" %}">{% icon "email" %}</a>
+                            <a href="{% url set_password this_user.id %}" title="{% trans "Change password" %}">{% icon "password" %}</a>
+                            <a href="{% url delete_user this_user.id %}" title="{% trans "Delete" %}">{% icon "delete" %}</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+
 {% endblock %}

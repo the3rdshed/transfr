@@ -11,7 +11,7 @@ class File(models.Model):
     user = models.ForeignKey(User)
 
     class Meta:
-        ordering = ['file']
+        ordering = ['-modified_date']
 
     def __unicode__(self):
         return self.file.name
@@ -22,7 +22,7 @@ class File(models.Model):
     def owned_by(self, user):
         return user.is_superuser or user == self.user
 
-    def truncated_name(self, n=25):
+    def truncated_name(self, n=50):
         basename = self.basename()
         if len(basename) < n:
             return basename
@@ -43,18 +43,21 @@ class RawPassword(models.Model):
         return '<RawPassword: %s>' % self.user
 
 
+# We monkey-patch (yuck) User.set_password with our
+# own version which also saves the raw password in
+# the RawPassword table.
 def set_password(user, raw_password):
     if user.id is None:
         user.save()
     user.set_password_orig(raw_password)
 
     try:
-        p = RawPassword.objects.get(user=user)
-        p.password = raw_password
-        p.save()
+        rp = RawPassword.objects.get(user=user)
+        rp.password = raw_password
+        rp.save()
     except RawPassword.DoesNotExist:
-        p = RawPassword.objects.create(user=user,
-                                       password=raw_password)
+        RawPassword.objects.create(user=user,
+                                   password=raw_password)
 
 User.set_password_orig = User.set_password
 User.set_password = set_password

@@ -1,20 +1,25 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import mail
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
+from django.forms import ValidationError
+from django.http import Http404
 from django.test import TestCase
 from django.test.client import Client
-from django.forms import ValidationError
 
 from transfr.app.models import File, RawPassword
-from transfr.app.forms import InstructionsForm, SingleFileUploadForm, MultipleFileUploadForm
+from transfr.app.forms import SingleFileUploadForm, MultipleFileUploadForm
+from transfr.app import utils
 
 import datetime
 import os
 import shutil
 import urllib
 
+
+settings.DEBUG = True
 
 TEST_MEDIA_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                'fixtures', 'media')
@@ -50,41 +55,6 @@ class TestFile(TestCase):
         self.assertEquals(self.f.truncated_name(8), 'he...txt')
 
 
-# TestInstructionsForm {{{1
-class TestInstructionsForm(TestCase):
-    fixtures = ['test_data']
-
-    def test_required_fields(self):
-        form = InstructionsForm({})
-        self.assert_('subject' in form.errors)
-        self.assert_('emails' in form.errors)
-
-    def test_clean_emails(self):
-        for bad_input in ('   ',
-                          ',,',
-                          'hello',
-                          'hello,world',
-                          'foo@bar.com,~~~'):
-            form = InstructionsForm({'emails': bad_input})
-            self.assert_('emails' in form.errors)
-
-        for good_input in ('foo@bar.com',
-                           'foo@bar.com,',
-                           'foo@bar.com,baz@quux.com',
-                           'foo@bar.com, baz@quux.com'):
-            form = InstructionsForm({'emails': good_input})
-            self.assert_('emails' not in form.errors, good_input)
-
-    def test_send(self):
-        f = InstructionsForm({'subject': 'hello',
-                              'emails': 'foo@bar.com,baz@bar.com'})
-        f.full_clean()
-        f.send('foo', 'bar')
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].subject, 'hello')
-        self.assertEquals(mail.outbox[0].to, [u'foo@bar.com', u'baz@bar.com'])
-
-
 # TestSingleFileUploadForm {{{1
 class TestSingleFileUploadForm(TestCase):
     def test_init(self):
@@ -110,27 +80,28 @@ class TestMultipleFileUploadForm(TestCase):
         shutil.rmtree(os.path.join(TEST_MEDIA_ROOT, 'uploads'), True)
 
     def test_init(self):
-        f = MultipleFileUploadForm(self.user, [1, 4])
-        self.assertEquals(len(f.fields), 4)
+        f = MultipleFileUploadForm(self.user)
+        self.assertEquals(len(f.fields), 0)
         self.assertEquals(f.user, self.user)
-        self.assertEquals(f.xs, [1, 4])
+        f = MultipleFileUploadForm(self.user, {}, {'file1': None, 'file3': None})
+        self.assertEquals(len(f.fields), 4)
         self.assert_('file1' in f.fields)
         self.assert_('comments1' in f.fields)
-        self.assert_('file4' in f.fields)
-        self.assert_('comments4' in f.fields)
+        self.assert_('file3' in f.fields)
+        self.assert_('comments3' in f.fields)
 
     def test_save(self):
         post = {'comments0': 'abc', 'comments1': 'def'}
         files = {'file0': SimpleUploadedFile('0.txt', 'text/plain', 'abc'),
                  'file1': SimpleUploadedFile('1.txt', 'text/plain', 'def')}
-        f = MultipleFileUploadForm(self.user, [0, 1], post, files)
+        f = MultipleFileUploadForm(self.user, post, files)
         self.assert_(f.is_valid())
         f.save()
         self.assertEquals(File.objects.count(), 3)
-        self.assertEquals(os.path.basename(File.objects.get(pk=2).file.name), '0.txt')
-        self.assertEquals(File.objects.get(pk=2).comments, 'abc')
-        self.assertEquals(os.path.basename(File.objects.get(pk=3).file.name), '1.txt')
-        self.assertEquals(File.objects.get(pk=3).comments, 'def')
+        file0 = File.objects.get(file__endswith='0.txt')
+        file1 = File.objects.get(file__endswith='1.txt')
+        self.assertEquals(file0.comments, 'abc')
+        self.assertEquals(file1.comments, 'def')
 
 # TestUser {{{1
 class TestUser(TestCase):
@@ -196,11 +167,21 @@ class TestUrls(TestCase):
     def test_file_list(self):
         resp = self.anon.get(reverse('file_list'))
         self.assertEquals(resp.status_code, 302)
+        resp = self.anon.get(reverse('file_list_user', args=[1]))
+        self.assertEquals(resp.status_code, 302)
 
         resp = self.user.get(reverse('file_list'))
         self.assertEquals(resp.status_code, 200)
+        resp = self.user.get(reverse('file_list_user', args=[2]))
+        self.assertEquals(resp.status_code, 200)
+        resp = self.user.get(reverse('file_list_user', args=[1]))
+        self.assertEquals(resp.status_code, 404)
 
         resp = self.admin.get(reverse('file_list'))
+        self.assertEquals(resp.status_code, 200)
+        resp = self.admin.get(reverse('file_list_user', args=[1]))
+        self.assertEquals(resp.status_code, 200)
+        resp = self.admin.get(reverse('file_list_user', args=[2]))
         self.assertEquals(resp.status_code, 200)
 
     def test_manage_users(self):
@@ -221,6 +202,8 @@ class TestUrls(TestCase):
         self.assertEquals(resp.status_code, 404)
 
         resp = self.admin.get(reverse('set_password', args=[1]))
+        self.assertEquals(resp.status_code, 404)
+        resp = self.admin.get(reverse('set_password', args=[2]))
         self.assertEquals(resp.status_code, 200)
         resp = self.admin.get(reverse('set_password', args=[100]))
         self.assertEquals(resp.status_code, 404)
@@ -279,16 +262,16 @@ class TestUrls(TestCase):
         resp = c.post(reverse('delete_file'), {'id': 1})
         self.assertEquals(resp.status_code, 404)
 
-    def test_send_instruction(self):
-        resp = self.anon.get(reverse('send_instructions', args=[2]))
+    def test_instruction(self):
+        resp = self.anon.get(reverse('instructions', args=[2]))
         self.assertEquals(resp.status_code, 404)
 
-        resp = self.user.get(reverse('send_instructions', args=[2]))
+        resp = self.user.get(reverse('instructions', args=[2]))
         self.assertEquals(resp.status_code, 404)
 
-        resp = self.admin.get(reverse('send_instructions', args=[1]))
+        resp = self.admin.get(reverse('instructions', args=[1]))
         self.assertEquals(resp.status_code, 404)
-        resp = self.admin.get(reverse('send_instructions', args=[2]))
+        resp = self.admin.get(reverse('instructions', args=[2]))
         self.assertEquals(resp.status_code, 200)
 
 
@@ -349,14 +332,13 @@ class TestViews(TestCase):
 
     def test_file_list(self): # {{{2
         resp = self.user.get(reverse('file_list'))
-        self.assertEquals(resp.context[0]['users'].count(), 1)
-        self.assertEquals(resp.context[0]['users'][0], User.objects.get(username='user'))
+        self.assertEquals(resp.context[0]['user_list'].count(), 3)
 
         resp = self.admin.get(reverse('file_list'))
-        self.assertEquals(resp.context[0]['users'].count(), 3)
-        self.assertEquals(resp.context[0]['users'][0], User.objects.get(username='admin'))
-        self.assertEquals(resp.context[0]['users'][1], User.objects.get(username='user'))
-        self.assertEquals(resp.context[0]['users'][2], User.objects.get(username='user2'))
+        self.assertEquals(resp.context[0]['user_list'].count(), 3)
+        self.assertEquals(resp.context[0]['user_list'][0], User.objects.get(username='admin'))
+        self.assertEquals(resp.context[0]['user_list'][1], User.objects.get(username='user'))
+        self.assertEquals(resp.context[0]['user_list'][2], User.objects.get(username='user2'))
 
     def test_add_file(self): # {{{2
         resp = self.user.post(reverse('add_file', args=[2]), {})
@@ -392,7 +374,7 @@ class TestViews(TestCase):
     def test_manage_users(self): # {{{2
         resp = self.admin.get(reverse('manage_users'))
         self.assertEquals(resp.status_code, 200)
-        self.assertEquals(len(resp.context[0]['user_list']), 3)
+        self.assertEquals(len(resp.context[0]['user_list']), 2)
 
     def test_add_user(self): # {{{2
         self.assertEquals(User.objects.count(), 3)
@@ -424,3 +406,12 @@ class TestViews(TestCase):
         self.assertEquals(resp.status_code, 302)
         self.assertEquals(User.objects.count(), 2)
         self.assertEquals(RawPassword.objects.count(), 2)
+
+
+# TestUtils {{{1
+class TestUtils(TestCase):
+    fixtures = ['test_data']
+
+    def test_get_normal_user(self):
+        self.assertEquals(User.objects.get(pk=2), utils.get_normal_user(2))
+        self.assertRaises(Http404, lambda: utils.get_normal_user(1))

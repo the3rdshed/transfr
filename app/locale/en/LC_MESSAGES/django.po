@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-14 09:18-0500\n"
+"POT-Creation-Date: 2009-06-03 10:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,111 +16,97 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:14 models.py:8
+#: forms.py:16 models.py:8
 msgid "File"
 msgstr ""
 
-#: forms.py:15 models.py:9
+#: forms.py:17 models.py:9
 msgid "Comments"
-msgstr ""
-
-#: forms.py:62
-msgid ""
-"<span>Note: to send to multiple recipents, separate the emails with a comma."
-"</span>"
-msgstr ""
-
-#: forms.py:68
-msgid "Please enter an email"
-msgstr ""
-
-#: forms.py:71
-#, python-format
-msgid "%s: invalid email"
 msgstr ""
 
 #: models.py:10
 msgid "Modification date"
 msgstr ""
 
-#: models.py:40 templates/app/login.html:17 templates/app/manage_users.html:43
+#: models.py:40 templates/app/instructions.html:30
+#: templates/app/manage_users.html:34
 msgid "Password"
 msgstr ""
 
-#: views.py:53
-msgid "Incorrect username or password"
+#: templates/app/_toolbar.html:8 templates/app/base.html:5
+msgid "Transfr"
 msgstr ""
 
-#: templates/app/_toolbar.html:5
-msgid "About <em>transfr</em>"
-msgstr ""
-
-#: templates/app/_toolbar.html:7
-msgid "Help"
-msgstr ""
-
-#: templates/app/_toolbar.html:16 templates/app/file_list.html:26
-#: templates/app/file_list.html.py:45 templates/app/manage_users.html:44
+#: templates/app/_toolbar.html:28 templates/app/manage_users.html:35
 msgid "Files"
 msgstr ""
 
-#: templates/app/_toolbar.html:22 templates/app/manage_users.html:11
-msgid "Create a user"
-msgstr ""
-
-#: templates/app/_toolbar.html:26 templates/app/manage_users.html:38
+#: templates/app/_toolbar.html:31 templates/app/file_list.html:13
+#: templates/app/manage_users.html:30
 msgid "Users"
 msgstr ""
 
-#: templates/app/_toolbar.html:32
+#: templates/app/_toolbar.html:36
 msgid "Logout"
 msgstr ""
 
-#: templates/app/add_file.html:8 templates/app/file_list.html:11
-#: templates/app/file_list.html.py:53
+#: templates/app/about.html:5
+msgid "About Transfr"
+msgstr ""
+
+#: templates/app/about.html:8
+msgid ""
+"\n"
+"    Transfr is a web-based file exchange system developed by Centdessin "
+"Design.\n"
+"    "
+msgstr ""
+
+#: templates/app/add_file.html:8 templates/app/file_list.html:43
+#: templates/app/file_list.html.py:83
 msgid "Upload a file"
 msgstr ""
 
-#: templates/app/add_file.html:14
+#: templates/app/add_file.html:13
 msgid "Upload another file"
 msgstr ""
 
-#: templates/app/add_file.html:17 templates/app/manage_users.html:23
-#: templates/app/set_password.html:16
+#: templates/app/add_file.html:19 templates/app/manage_users.html:18
+#: templates/app/set_password.html:14
 msgid "Save"
 msgstr ""
 
-#: templates/app/add_file.html:18 templates/app/manage_users.html:22
-msgid "Cancel"
+#: templates/app/base.html:19 templates/app/help.html:5
+msgid "Help"
 msgstr ""
 
-#: templates/app/base.html:4
-msgid "File manager"
+#: templates/app/base.html:21
+msgid "About"
 msgstr ""
 
-#: templates/app/base.html:35
+#: templates/app/base.html:25
 msgid "Created by"
 msgstr ""
 
-#: templates/app/base.html:35
+#: templates/app/base.html:25
 msgid "All rights reserved"
 msgstr ""
 
-#: templates/app/delete_user.html:6
+#: templates/app/delete_user.html:7
 msgid "Delete user"
 msgstr ""
 
-#: templates/app/delete_user.html:13
-msgid "Do you really to delete"
+#: templates/app/delete_user.html:11
+msgid "Do you really want to delete"
 msgstr ""
 
-#: templates/app/delete_user.html:16
-msgid "Beware: the files of this user will also be deleted"
-msgstr ""
-
-#: templates/app/delete_user.html:25 templates/app/file_list.html:90
-#: templates/app/manage_users.html:61
+#: templates/app/delete_user.html:14 templates/app/file_list.html:46
+#: templates/app/manage_users.html:50
 msgid "Delete"
+msgstr ""
+
+#: templates/app/delete_user.html:22
+msgid "Beware: the files of this user will also be deleted"
 msgstr ""
 
 #: templates/app/disconnected.html:6
@@ -135,218 +121,83 @@ msgstr ""
 msgid "to reconnect."
 msgstr ""
 
-#: templates/app/file_list.html:15 templates/app/help.html:67
-msgid "Preview"
+#: templates/app/file_list.html:33
+msgid "files"
 msgstr ""
 
-#: templates/app/file_list.html:21
-msgid "Folders"
-msgstr ""
-
-#: templates/app/file_list.html:25
-msgid "Folder"
-msgstr ""
-
-#: templates/app/file_list.html:27 templates/app/file_list.html.py:66
-msgid "Size"
-msgstr ""
-
-#: templates/app/file_list.html:50
-msgid "Delete selection"
-msgstr ""
-
-#: templates/app/file_list.html:57 templates/app/send_instructions.html:6
-msgid "Send instructions"
-msgstr ""
-
-#: templates/app/file_list.html:65
+#: templates/app/file_list.html:53
 msgid "File name"
 msgstr ""
 
-#: templates/app/file_list.html:67
+#: templates/app/file_list.html:54 templates/app/manage_users.html:36
+msgid "Size"
+msgstr ""
+
+#: templates/app/file_list.html:55
 msgid "Date"
 msgstr ""
 
-#: templates/app/file_list.html:68 templates/app/manage_users.html:46
-msgid "Actions"
-msgstr ""
-
-#: templates/app/file_list.html:89
-msgid "Download"
-msgstr ""
-
-#: templates/app/file_list.html:97
+#: templates/app/file_list.html:74
 msgid "No files"
 msgstr ""
 
+#: templates/app/file_list.html:76
+msgid ""
+"\n"
+"                    There are no files in this directory; click on the "
+"button below to add one.\n"
+"                    "
+msgstr ""
+
 #: templates/app/help.html:8
-msgid "User Guide"
+msgid "Upcoming..."
 msgstr ""
 
-#: templates/app/help.html:11 templates/app/help.html.py:18
-msgid "Logging in"
-msgstr ""
-
-#: templates/app/help.html:12 templates/app/help.html.py:28
-msgid "The interface"
-msgstr ""
-
-#: templates/app/help.html:13 templates/app/help.html.py:76
-msgid "Uploading a file"
-msgstr ""
-
-#: templates/app/help.html:14
-msgid "Deleting a file"
-msgstr ""
-
-#: templates/app/help.html:15
-msgid "Logging out"
-msgstr ""
-
-#: templates/app/help.html:20
+#: templates/app/instructions.html:7
 msgid ""
 "\n"
-"        To access Transfr, you must first log in.  To do so, enter the "
-"username and the password sent to you by an administrator in the login form. "
-"(Fig. 1)\n"
+"    To give somebody access to Transfr, copy the following text and email it "
+"to them.\n"
+"    "
+msgstr ""
+
+#: templates/app/instructions.html:13 templates/app/manage_users.html:48
+msgid "Instructions"
+msgstr ""
+
+#: templates/app/instructions.html:15
+msgid ""
+"\n"
+"        You've been given access to Transfr, a website to exchange files.  "
+"To access it, go to the following address in your web browser and enter your "
+"username and password.\n"
 "        "
 msgstr ""
 
-#: templates/app/help.html:30
-msgid ""
-"\n"
-"        If the username and password you entered are valid, you will be "
-"taken to the main screen of Transfr:\n"
-"        "
+#: templates/app/instructions.html:22
+msgid "Address"
 msgstr ""
 
-#: templates/app/help.html:40
-msgid "Menu"
-msgstr ""
-
-#: templates/app/help.html:42
-msgid ""
-"\n"
-"            The <b>Files</b> button will take you to the main Transfr page, "
-"which contains a listing of uploaded files and the <b>Logout</b> button will "
-"terminate your session.\n"
-"            "
-msgstr ""
-
-#: templates/app/help.html:48
-msgid "Help and About Transfr, language switcher"
-msgstr ""
-
-#: templates/app/help.html:50
-msgid ""
-"\n"
-"            <b>About Transfr</b> gives information on this software, who "
-"built it and why. The <b>help</b> button links to this page and finally the "
-"language switcher allow you to switch the interface language.\n"
-"            "
-msgstr ""
-
-#: templates/app/help.html:56
-msgid "File list with actions (delete, upload)"
-msgstr ""
-
-#: templates/app/help.html:58
-msgid ""
-"\n"
-"            The file list show uploaded files, their names, size and upload "
-"date. The <b>Delete selection</b> button will delete <b>permanently</b> all "
-"the selected files. The <b>Upload a file</b> button shows the file upload "
-"form (fig. 3).\n"
-"            "
-msgstr ""
-
-#: templates/app/help.html:63
-msgid "Each files has its own delete and download button."
-msgstr ""
-
-#: templates/app/help.html:69
-msgid ""
-"\n"
-"            When possible, a thumbnail of the selected file will be shown. "
-"The selected file can be identified by the color of its row in the file list "
-"(pale blue).\n"
-"            "
-msgstr ""
-
-#: templates/app/help.html:81
-msgid "Click on the <i>Upload a file</i> button"
-msgstr ""
-
-#: templates/app/help.html:83
-msgid ""
-"\n"
-"            The file upload form will take the place of the file preview "
-"pane.\n"
-"            "
-msgstr ""
-
-#: templates/app/help.html:89
-msgid "Click <i>Browse</i> in the file field"
-msgstr ""
-
-#: templates/app/help.html:91
-msgid ""
-"\n"
-"            A window will show up to allow you to select the file you want "
-"to upload from your computer (fig. 4).\n"
-"            "
-msgstr ""
-
-#: templates/app/help.html:97
-msgid "Optional: enter a comment about the file"
-msgstr ""
-
-#: templates/app/help.html:99
-msgid ""
-"\n"
-"            The file description will show up in the file list, below the "
-"file name.\n"
-"            "
-msgstr ""
-
-#: templates/app/help.html:105
-msgid "Click on the <i>Save</i> button"
-msgstr ""
-
-#: templates/app/help.html:107
-msgid ""
-"\n"
-"            The file upload will then begin; if the file is large, a "
-"progressbar will indicate the upload progress. When the upload is complete, "
-"you will be automatically redirected to the file list, where your uploaded "
-"file will be listed.\n"
-"            "
-msgstr ""
-
-#: templates/app/login.html:6 templates/app/login.html.py:21
-msgid "Login"
-msgstr ""
-
-#: templates/app/login.html:13
+#: templates/app/instructions.html:26 templates/app/manage_users.html:33
 msgid "Username"
 msgstr ""
 
-#: templates/app/manage_users.html:31
-msgid "Space repartition"
+#: templates/app/login.html:10 templates/app/login.html.py:17
+msgid "Login"
 msgstr ""
 
-#: templates/app/manage_users.html:42 templates/app/set_password.html:7
-msgid "User"
+#: templates/app/manage_users.html:11
+msgid "Add user"
 msgstr ""
 
-#: templates/app/manage_users.html:45
-msgid "Total size"
+#: templates/app/manage_users.html:37
+msgid "Percentage"
 msgstr ""
 
-#: templates/app/manage_users.html:59 templates/app/set_password.html:6
+#: templates/app/manage_users.html:38
+msgid "Actions"
+msgstr ""
+
+#: templates/app/manage_users.html:49 templates/app/set_password.html:8
 msgid "Change password"
-msgstr ""
-
-#: templates/app/send_instructions.html:12
-msgid "Send"
 msgstr ""
