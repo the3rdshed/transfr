@@ -24,46 +24,8 @@
                 <a href="{% url help %}">{% trans "Help" %}</a> | <a href="{% url about %}">{% trans "About" %}</a> | {% trans "Created by" %} <a href="http://www.centdessin.com">Centdessin Design</a> - &copy; 2008-{% now "Y" %}, {% trans "All rights reserved" %}
             </p>
         </div>
-
         <script type="text/javascript">
-
-            var $urls = {
-                delete_file: "{% url delete_file %}",
-                upload_progress: "{% url upload_progress %}",
-                additional_upload_form: "{% url additional_upload_form 0 %}"
-            };
-
-            $(function(){
-                $('.ui-button').hover(function(){ 
-                    if (!$(this).hasClass('ui-button-disabled')) {
-                        $(this).addClass('ui-state-hover'); 
-                    }
-                }, function(){
-                    if (!$(this).hasClass('ui-button-disabled')) {
-                        $(this).removeClass('ui-state-hover'); 
-                    }
-                });
-
-                /* -- FILE LIST -- */
-                $('.file-check').change(function(){
-                    if ($('.file-check:checked').length > 0) {
-                        $('.transfr-delete-selection').removeClass('ui-button-disabled');
-                    }
-                    else {
-                        $('.transfr-delete-selection').addClass('ui-button-disabled');
-                    }
-                });
-
-                /* -- ADD FILES -- */
-                $('#additional-form a').click(function () {
-                    // Number of the last input + 1
-                    var n = $('input[name^=file]').length + 1;
-                    var url = $urls.additional_upload_form.replace('0', n);
-                    $.get(url, function (data) {
-                        $('#additional-form').before(data);
-                    });
-                });
-            });
+        var $urls = { delete_file: "{% url delete_file %}", upload_progress: "{% url upload_progress %}", additional_upload_form: "{% url additional_upload_form 0 %}" };
         </script>
     </body>
 </html>
