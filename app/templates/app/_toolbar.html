@@ -2,37 +2,22 @@
 {% load transfr_tags %}
 
 <div id="titlebar">
-    <table class="full-width">
-        <tr>
-            <td class="left">
-                {% trans "Transfr" %}
-            </td>
-            <td class="right">
-                <form action="{% url django.views.i18n.set_language %}" method="post">
-                    <select id="i18n-switcher" name="language">
-                        {% for lang in LANGUAGES %}
-                        <option value="{{ lang.0 }}"{% ifequal lang.0 LANGUAGE_CODE %}selected="selected"{% endifequal %}>{{ lang.1 }}</option>
-                        {% endfor %}
-                    </select>
-                </form>
-            </td>
-        </tr>
-    </table>
-</div>
-
-{% if user.is_authenticated %}
-<div id="navbar">
+    <form action="{% url django.views.i18n.set_language %}" method="post">
+        <select id="i18n-switcher" name="language">
+            {% for lang in LANGUAGES %}
+            <option value="{{ lang.0 }}"{% ifequal lang.0 LANGUAGE_CODE %}selected="selected"{% endifequal %}>{{ lang.1 }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    <span id="logo">{% trans "Transfr" %}</span>
+    {% if user.is_authenticated %}
+    <ul id="navbar">
     {# File list + Manage users #}
     {% if user.is_superuser %}
-        {% url file_list as file_list %}
-        {% button "files" file_list %}{% trans "Files" %}{% endbutton %}
-
-        {% url manage_users as manage_users %}
-        {% button "users" manage_users %}{% trans "Users" %}{% endbutton %}
+        <li><a href="{% url file_list %}">{% trans "Files" %}</a></li>
+        <li><a href="{% url manage_users %}">{% trans "Users" %}</a></li>
     {% endif %}
-
-    {# Logout #}
-    {% url logout as logout %}
-    {% button "logout" logout %}{% trans "Logout" %}{% endbutton %}
+        <li><a href="{% url logout %}">{% trans "Logout" %}</a></li>
+    </ul>
+    {% endif %}
 </div>
-{% endif %}

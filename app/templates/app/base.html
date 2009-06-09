@@ -15,14 +15,9 @@
         <div id="hd">{% include "app/_toolbar.html" %}</div>
         <div id="bd">{% block bd %}{% endblock %}</div>
         <div id="ft">
+            <!-- You can use, modify this software as you wish, for free. However this copyright string along with the link *must* stay visible at all time. Thanks. -->
             <p>
-                <a href="{% url help %}">{% trans "Help" %}</a>
-                |
-                <a href="{% url about %}">{% trans "About" %}</a>
-            </p>
-            <p>
-                <!-- You can use, modify this software as you wish, for free. However this copyright string along with the link *must* stay visible at all time. Thanks. -->
-                {% trans "Created by" %} <a href="http://www.centdessin.com">Centdessin Design</a> - &copy; 2008-{% now "Y" %}, {% trans "All rights reserved" %}
+                <a href="{% url help %}">{% trans "Help" %}</a> | <a href="{% url about %}">{% trans "About" %}</a> | {% trans "Created by" %} <a href="http://www.centdessin.com">Centdessin Design</a> - &copy; 2008-{% now "Y" %}, {% trans "All rights reserved" %}
             </p>
         </div>
 
@@ -33,6 +28,27 @@
                 upload_progress: "{% url upload_progress %}",
                 additional_upload_form: "{% url additional_upload_form 0 %}"
             };
+            $(function(){
+                $('.ui-button').hover(function(){ 
+                    if (!$(this).hasClass('ui-button-disabled')) {
+                        $(this).addClass('ui-state-hover'); 
+                    }
+                }, function(){
+                    if (!$(this).hasClass('ui-button-disabled')) {
+                        $(this).removeClass('ui-state-hover'); 
+                    }
+                });
+
+                $('.file-check').change(function(){
+                    if ($('.file-check:checked').length > 0) {
+                        $('.transfr-delete-selection').removeClass('ui-button-disabled');
+                    }
+                    else {
+                        $('.transfr-delete-selection').addClass('ui-button-disabled');
+                    }
+                });
+            });
+
 
         </script>
         <!--[if lt IE 7]>

@@ -4,6 +4,10 @@ body {
     color: #333;
 }
 
+small {
+    font-size:80%;
+}
+
 .left {
     text-align:left;
 }
@@ -17,13 +21,22 @@ body {
 .clear {
     clear:both;
 }
+.message {
+    background:#ffffee;
+    border:3px solid #ffeecc;
+    padding:20px;
+}
+.message li {
+    list-style:square;
+    margin-left:20px;
+}
 
 #hd {
-    margin: 10px 20px;
+    margin:0 20px;
 }
 
 #bd {
-    margin: 10px 20px;
+    margin: 0 20px;
 }
 
 #ft {
@@ -50,7 +63,7 @@ h2 {
     font-size:1.6em;
 }
 h3 {
-    font-size:1.4em;
+    font-size:1.5em;
 }
 
 p {
@@ -69,19 +82,27 @@ tr.even {
     background-color:#fff;
 }
 tr.odd {
-    background-color: #eee;
+    background-color: #f4f4f4;
 }
 
 .title {
-    background-color:#628296;
-    color:#fff;
-    text-align:center;
-    line-height:1.5em;
+    color:#628296;
+    text-align:left;
+    padding:0 0 10px 0;
+}
+.title small {
+    color:#999;
+    font-size:60%;
 }
 
-.highlight {
-    background-color:#E0E9EF;
+.highlight a {
+    background-color:#eee;
+    color:#3B515F;
+    font-weight:bold;
+    text-decoration:none;
+    cursor:default;
 }
+
 
 .full-width {
     width:100%;
@@ -90,22 +111,48 @@ tr.odd {
 
 /* _toolbar.html */
 #titlebar {
-    border-top:2px solid #999;
-    border-bottom:2px solid #999;
-    padding: 10px 0;
-    margin: 20px auto;
+    padding:0;
+    margin:20px auto;
+    background:#628296;
+    color:#fff;
+    height:44px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
 }
 
-#titlebar table td {
-    vertical-align:middle;
+#titlebar span {
+    font-size:150%;
+    margin:0;
+    padding:10px;
+    float:left;
+    color:#3B515F;
+    border-right:1px solid #3B515F;
+    background:#ddd;
+    -moz-border-radius-topLeft:2px;
+    -moz-border-radius-bottomLeft:2px;
+    -webkit-border-radius-topLeft:2px;
+    -webkit-border-radius-bottomLeft:2px;
+}
+#titlebar form {
+    float:right;
+    margin:10px 10px 0 0;
 }
 
-#titlebar table td.left {
-    font-size: 2.0em;
-}
 
-#navbar {
-    margin: 20px auto;
+#titlebar #navbar {
+    margin:0;
+    padding:0;
+}
+#titlebar #navbar li {
+    margin:0;
+    padding:0;
+    list-style:none;
+    float:left;
+}
+#titlebar #navbar li a {
+    display:block;
+    padding:14px;
+    color:#fff;
 }
 
 .button {
@@ -125,16 +172,26 @@ tr.odd {
 
 /* login.html */
 #login-form {
-    border: 1px solid #999;
-    margin: 10px auto;
-    width:350px;
+    border: 1px solid #ccc;
+    background:#eee;
+    padding:8px;
+    margin: 20px auto;
+    width:290px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
 }
-#login-form th,
+#login-form th {
+    width:50px;
+    text-align:right;
+    vertical-align:middle;
+    padding: 4px 8px;
+    font-size:80%;
+    color:#666;
+}
 #login-form td {
     text-align:left;
-    vertical-align:bottom;
+    vertical-align:middle;
     padding: 4px 8px;
-    width:50%;
 }
 
 #login-form .errorlist {
@@ -152,26 +209,26 @@ tr.odd {
 table.workspace {
     border-collapse:collapse;
 }
+.users-list {
+    width:250px;
+}
+.users-list li a {
+    display:block;
+    padding:8px;
+    border-bottom:1px solid #ddd;
+}
+
+.users-list li a .ui-icon {
+    float:left;
+}
 
 table.workspace td.left {
     width:250px;
 }
-table.workspace td.left div {
-    width:250px;
-    border:1px solid #999;
-}
 
-table.workspace td.left table {
-    border-collapse:collapse;
-}
-
-table.workspace td.left tr {
-    height:32px;
-}
 
 table.workspace td.left td {
-    padding:2px 4px;
-    border-top:1px solid #999;
+    padding:0!important;
     vertical-align:middle;
 }
 
@@ -186,39 +243,18 @@ table.workspace td.right {
 table.workspace td.right table {
     border-collapse:collapse;
 }
-table.workspace td.right div.container {
-    border:1px solid #999;
-}
 
-table.workspace td.right tr.toolbar {
-    background-color: #efefef;
-    height:48px;
-}
-
-table.workspace td.right tr.toolbar td {
-    vertical-align:middle;
-    border-bottom:1px solid #999;
-    padding-left:8px;
-}
-
-table.workspace td.right tr.header {
-    background-color: #E0E9EF;
-}
-table.workspace td.right tr.header th {
-    border-bottom:1px solid #999;
+table.workspace td.right thead tr th {
     font-size:0.8em;
     vertical-align:middle;
-}
-table.workspace td.right td,
-table.workspace td.right th {
-    padding-top:2px;
-    border-right:1px solid #999;
+    padding:2px 4px;
 }
 table.workspace td.right .file-list-checkbox {
     width:30px;
 }
 table.workspace td.right .file-list-filename {
     padding-left:8px;
+    font-size:120%;
 }
 table.workspace td.right .file-list-size {
     width:100px;
@@ -229,8 +265,8 @@ table.workspace td.right .file-list-date {
     padding-left:8px;
 }
 
-table.workspace td.right tr.detail {
-    height:32px;
+table.workspace td.right tr.detail td {
+    padding:4px;
 }
 
 p.comments {
@@ -262,7 +298,6 @@ ul.file-upload li  {
 #upload-form {
     margin: 10px 0;
     width:600px;
-    border:1px solid #999;
 }
 
 #upload-form form {
@@ -274,36 +309,32 @@ ul.file-upload li  {
 }
 
 /* manage_users.html */
-#manage-users {
-    border:1px solid #999;
-    border-collapse:collapse;
+ul.form label {
+    font-size:80%;
+    color:#666;
+    padding:6px 0 3px 0;
+    display:block;
 }
-#manage-users th {
-    background-color: #E0E9EF;
-    padding:4px;
-    font-size:0.8em;
-    border-bottom:1px solid #999;
+ul.form .actions {
+    padding:8px 0;
+}
+
+ul.form #id_username,
+ul.form #id_password1,
+ul.form #id_password2 {
+    width:220px;
 }
 #manage-users td {
     vertical-align:center;
-    padding: 2px 4px;
+    padding:0px 4px 10px 4px;
 }
 #manage-users .username { width: 120px; }
 #manage-users .password { width: 120px; }
 #manage-users .files { width: 60px; }
 #manage-users .size { width: 120px; }
 #manage-users .percentage { width: 220px; }
-#manage-users .actions { width: 80px; }
+#manage-users .actions { width: 180px; }
 
-#add-user-form td {
-    border:none;
-    padding:2px 4px;
-}
-#add-user-form th {
-    font-size:0.8em;
-    vertical-align:middle;
-    padding:2px 4px;
-}
 
 /* Percentages */
 div.percentage-back {
@@ -312,6 +343,9 @@ div.percentage-back {
     line-height:20px;
     width:200px;
     position:relative;
+    top:6px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
 }
 
 div.percentage-front {
@@ -320,6 +354,8 @@ div.percentage-front {
     height:100%;
     font-size:0.8em;
     position:absolute;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
 }
 div.percentage-text {
     color: #fff;
@@ -333,14 +369,13 @@ div.percentage-text {
 /* Delete user */
 #delete-user {
     width:500px;
-    border:1px solid #999;
 }
 #delete-user p {
     margin:10px;
 }
 div.warning {
     border:1px solid #999;
-    background:#ffe;
+    background:#f4f4f4;
     padding:10px;
     margin:10px 0;
     text-align:center;
@@ -348,7 +383,12 @@ div.warning {
 
 table.credentials {
     border-collapse:collapse;
-    margin:20px auto;
+    margin:20px 0;
+}
+table.credentials th {
+    color:#333;
+    font-weight:bold;
+    font-size:80%;
 }
 table.credentials th,
 table.credentials td {
@@ -361,18 +401,48 @@ table.credentials td {
 /* Change password */
 #user-change-password {
     width:500px;
-    border:1px solid #999;
-}
-#user-change-password table {
-    border-collapse:collapse;
-}
-#user-change-password th,
-#user-change-password td {
-    vertical-align:bottom;
-    padding: 10px 4px;
 }
 
 #instructions {
-    border: 2px dashed #999;
+    border: 1px dashed #ccc;
     padding: 10px;
+}
+
+
+
+/* BUTTONS */
+#file-list-actions {
+    float:left;
+    margin:2px 10px 0 0;
+}
+.ui-button {
+    padding:0.3em 0.9em 0.3em 20px;
+    position:relative;
+    text-decoration:none!important;
+    font-size:75%;
+}
+.ui-button .ui-icon {
+    margin:-4px 5px 0 0;
+    top:8px;
+    left:2px;
+    position:absolute;
+}
+.ui-button-disabled {
+    color:#aaa!important;
+    cursor:default;
+}
+
+.user-add-form form {
+    background:#f4f4f4;
+    border:1px solid #ccc;
+    padding:8px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+}
+
+
+/* -- FIXES -- */
+
+.users-list li { 
+    *height:30px; /* FIX: IE6*/
 }
