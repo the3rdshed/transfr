@@ -12,6 +12,10 @@
         <script type="text/javascript" src="{% url media_app "js/transfr.js" %}"></script>
     </head>
     <body>
+        <!--[if lt IE 7]>
+        <div style="top:0;width:100%;background:#ffc;color:#333;text-align:left;padding:6px 10px;border-bottom:1px solid #ccc;"> This application is optimized for modern browsers, for a better user experience a <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx">browser update</a> is strongly advised. Or better yet, try <a href="http://www.mozilla.com/firefox/">Firefox</a> ! Thank you.
+        </div>
+        <![endif]-->
         <div id="hd">{% include "app/_toolbar.html" %}</div>
         <div id="bd">{% block bd %}{% endblock %}</div>
         <div id="ft">
@@ -28,6 +32,7 @@
                 upload_progress: "{% url upload_progress %}",
                 additional_upload_form: "{% url additional_upload_form 0 %}"
             };
+
             $(function(){
                 $('.ui-button').hover(function(){ 
                     if (!$(this).hasClass('ui-button-disabled')) {
@@ -39,6 +44,7 @@
                     }
                 });
 
+                /* -- FILE LIST -- */
                 $('.file-check').change(function(){
                     if ($('.file-check:checked').length > 0) {
                         $('.transfr-delete-selection').removeClass('ui-button-disabled');
@@ -47,16 +53,17 @@
                         $('.transfr-delete-selection').addClass('ui-button-disabled');
                     }
                 });
+
+                /* -- ADD FILES -- */
+                $('#additional-form a').click(function () {
+                    // Number of the last input + 1
+                    var n = $('input[name^=file]').length + 1;
+                    var url = $urls.additional_upload_form.replace('0', n);
+                    $.get(url, function (data) {
+                        $('#additional-form').before(data);
+                    });
+                });
             });
-
-
         </script>
-        <!--[if lt IE 7]>
-        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.ifixpng.js"></script>
-        <script type="text/javascript">
-            $.ifixpng.pixel = '{{ MEDIA_URL }}img/pixel.gif';
-            $('img[src$=.png]').ifixpng();
-        </script>
-        <![endif]-->
     </body>
 </html>
