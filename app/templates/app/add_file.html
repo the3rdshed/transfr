@@ -3,32 +3,15 @@
 {% load i18n %}
 
 {% block bd %}
-
 <h3 class="title">{% trans "Upload a file" %}</h3>
 <div id="upload-form">
     <form method="post" action="{% url add_file user_id %}" enctype="multipart/form-data">
         {{ form.as_ul }}
-
         <p id="additional-form">
-            {% icon "add" %} <a href="#">{% trans "Upload another file" %}</a>
+        <a href="#" class="ui-state-default ui-corner-all ui-button"><span class="ui-icon ui-icon-plus"></span>{% trans "Upload another file" %}</a>
         </p>
-
         <input class="transfr-file-upload-id" type="hidden" value="{{ request.COOKIES.sessionid }}">
-
-        <p>
-            <input type="submit" value="{% trans "Save" %}">
-        </p>
+        <p><input type="submit" value="{% trans "Save" %}"></p>
     </form>
 </div>
-
-<script type="text/javascript">
-    $('#additional-form a').click(function () {
-        // Number of the last input + 1
-        var n = $('input[name^=file]').length + 1;
-        var url = $urls.additional_upload_form.replace('0', n);
-        $.get(url, function (data) {
-            $('#additional-form').before(data);
-        });
-    });
-</script>
 {% endblock %}

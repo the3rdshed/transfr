@@ -165,6 +165,7 @@ tr.odd {
 }
 .button:hover {
     background-color:#eee;
+
     text-decoration:none;
 }
 
@@ -173,7 +174,7 @@ tr.odd {
 /* login.html */
 #login-form {
     border: 1px solid #ccc;
-    background:#eee;
+    background:#f4f4f4;
     padding:8px;
     margin: 20px auto;
     width:290px;
@@ -300,10 +301,10 @@ ul.file-upload li  {
 
 #upload-form {
     margin: 10px 0;
-    width:600px;
-    background:#eee;
+    width:330px;
+    background:#f4f4f4;
     border:1px solid #ccc;
-    padding:8px;
+    padding:6px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
 }
