@@ -1,43 +1,26 @@
-/* global */
+/* -- GLOBAL -- */
+
 body {
     font-family:helvetica,arial,sans-serif;
     color: #333;
 }
 
-small {
-    font-size:80%;
-}
-
-.left {
-    text-align:left;
-}
-.center {
-    text-align:center;
-}
-.right {
-    text-align:right;
-}
-
-.clear {
-    clear:both;
-}
-.message {
-    background:#ffffee;
-    border:3px solid #ffeecc;
-    padding:20px;
-}
-.message li {
-    list-style:square;
-    margin-left:20px;
-}
-
-#hd {
-    margin:0 20px;
-}
-
-#bd {
-    margin: 0 20px;
-}
+table    { border-collapse:collapse; }
+small    { font-size:80%; }
+h1       { font-size:1.8em; }
+h2       { font-size:1.6em; }
+h3       { font-size:1.5em; }
+p        { margin: 10px 0; }
+a        { color: #58788C; text-decoration:none; }
+a:hover  { text-decoration:underline; }
+.even    { background-color:#fff; }
+.odd     { background-color: #f4f4f4; }
+.left    { text-align:left; }
+.center  { text-align:center; }
+.right   { text-align:right; }
+.clear   { clear:both; }
+.full-width { width:100%; }
+#hd, #bd { margin:0 20px; }
 
 #ft {
     text-align:center;
@@ -51,38 +34,21 @@ small {
     text-decoration:underline;
 }
 
+/* MESSAGES */
+.message {
+    background:#ffffee;
+    border:3px solid #ffeecc;
+    padding:20px;
+}
+
+.message li {
+    list-style:square;
+    margin-left:20px;
+}
+
 .errorlist {
     color:#c30;
     font-size: 0.8em;
-}
-
-h1 {
-    font-size:1.8em;
-}
-h2 {
-    font-size:1.6em;
-}
-h3 {
-    font-size:1.5em;
-}
-
-p {
-    margin: 10px 0;
-}
-
-a {
-    color: #58788C;
-    text-decoration:none;
-}
-a:hover {
-    text-decoration:underline;
-}
-
-tr.even {
-    background-color:#fff;
-}
-tr.odd {
-    background-color: #f4f4f4;
 }
 
 .title {
@@ -90,6 +56,7 @@ tr.odd {
     text-align:left;
     padding:0 0 10px 0;
 }
+
 .title small {
     color:#999;
     font-size:60%;
@@ -103,13 +70,16 @@ tr.odd {
     cursor:default;
 }
 
+/* -- WORKSPACE -- */
 
-.full-width {
-    width:100%;
-}
+.left      { width:250px; }
+.left td   { padding:0!important; vertical-align:middle; }
+.separator { width: 10px; }
+.right     { vertical-align:top; }
+.right th  { font-size:0.8em; vertical-align:middle; padding:2px 4px; }
 
+/* -- TITLEBAR -- */
 
-/* _toolbar.html */
 #titlebar {
     padding:0;
     margin:20px auto;
@@ -133,45 +103,64 @@ tr.odd {
     -webkit-border-radius-topLeft:2px;
     -webkit-border-radius-bottomLeft:2px;
 }
+
 #titlebar form {
     float:right;
     margin:10px 10px 0 0;
 }
 
+/* -- NAVBAR -- */
 
-#titlebar #navbar {
+#navbar {
     margin:0;
     padding:0;
 }
-#titlebar #navbar li {
+
+#navbar li {
     margin:0;
     padding:0;
     list-style:none;
     float:left;
 }
-#titlebar #navbar li a {
+
+#navbar a {
     display:block;
     padding:14px;
     color:#fff;
 }
 
-.button {
-    border: 1px solid #bbb;
-    color: #333;
-    padding: 4px 8px;
-    background-color:#ddd;
-    margin-right: 10px;
-    text-decoration:none;
+/* -- PROGRESSBAR -- */
+
+.percentage-back {
+    background-color:#aaa;
+    height:20px;
+    line-height:20px;
+    width:200px;
+    position:relative;
+    top:6px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
 }
-.button:hover {
-    background-color:#eee;
 
-    text-decoration:none;
+.percentage-front {
+    background-color:#628296;
+    color: #fff;
+    height:100%;
+    font-size:0.8em;
+    position:absolute;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
 }
 
+.percentage-text {
+    color: #fff;
+    height:100%;
+    font-size:0.8em;
+    position:absolute;
+}
 
+/* -- LOGIN -- */
 
-/* login.html */
 #login-form {
     border: 1px solid #ccc;
     background:#f4f4f4;
@@ -181,6 +170,7 @@ tr.odd {
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
 }
+
 #login-form th {
     width:50px;
     text-align:right;
@@ -189,6 +179,7 @@ tr.odd {
     font-size:80%;
     color:#666;
 }
+
 #login-form td {
     text-align:left;
     vertical-align:middle;
@@ -199,78 +190,40 @@ tr.odd {
     max-width: 320px;
 }
 
-
 /* IE6 doesn't allow input[type=text] selectors :( */
-#id_username,
-#id_password {
+#id_username, #id_password {
     width:100%;
 }
 
-/* file_list.html */
-table.workspace {
-    border-collapse:collapse;
-}
+/* -- USER LIST -- */
+
 .users-list {
     width:250px;
 }
-.users-list li a {
+
+.users-list a {
     display:block;
     padding:8px;
     border-bottom:1px solid #ddd;
 }
 
-.users-list li a .ui-icon {
+.users-list .ui-icon {
     float:left;
 }
 
-table.workspace td.left {
-    width:250px;
-}
+/* FILES LIST */
 
+#file-list-actions {
+    float:left;
+    margin:2px 10px 0 0;
+}
+.file-list-checkbox { width:30px; }
+.file-list-filename { padding-left:8px; font-size:120%; }
+.file-list-size     { width:100px; padding-left:8px; }
+.file-list-date     { width:100px; padding-left:8px; }
+.detail td          { padding:4px; }
 
-table.workspace td.left td {
-    padding:0!important;
-    vertical-align:middle;
-}
-
-table.workspace td.separator {
-    width: 10px;
-}
-
-table.workspace td.right {
-    vertical-align:top;
-}
-
-table.workspace td.right table {
-    border-collapse:collapse;
-}
-
-table.workspace td.right thead tr th {
-    font-size:0.8em;
-    vertical-align:middle;
-    padding:2px 4px;
-}
-table.workspace td.right .file-list-checkbox {
-    width:30px;
-}
-table.workspace td.right .file-list-filename {
-    padding-left:8px;
-    font-size:120%;
-}
-table.workspace td.right .file-list-size {
-    width:100px;
-    padding-left:8px;
-}
-table.workspace td.right .file-list-date {
-    width:100px;
-    padding-left:8px;
-}
-
-table.workspace td.right tr.detail td {
-    padding:4px;
-}
-
-p.comments {
+.comments {
     font-size:0.8em;
     color:#666;
     border-left:4px solid #ddd;
@@ -278,19 +231,15 @@ p.comments {
     margin-left:5px;
 }
 
+/* -- ADD FILE -- */
 
-
-
-/* add_file.html */
-ul.file-upload {
-
-}
-ul.file-upload li label {
+.file-upload label {
     display:block;
     font-size:0.8em;
     padding-top:10px;
 }
-ul.file-upload li  {
+
+.file-upload li {
     float:left;
     padding-right:10px;
 }
@@ -313,133 +262,11 @@ ul.file-upload li  {
     padding: 10px;
 }
 
-#upload-form input.comment {
+#upload-form .comment {
     width: 300px;
 }
 
-/* manage_users.html */
-ul.form label {
-    font-size:80%;
-    color:#666;
-    padding:6px 0 3px 0;
-    display:block;
-}
-ul.form .actions {
-    padding:8px 0;
-}
-
-ul.form #id_username,
-ul.form #id_password1,
-ul.form #id_password2 {
-    width:220px;
-}
-#manage-users td {
-    vertical-align:center;
-    padding:0px 4px 10px 4px;
-}
-#manage-users .username { width: 120px; }
-#manage-users .password { width: 120px; }
-#manage-users .files { width: 60px; }
-#manage-users .size { width: 120px; }
-#manage-users .percentage { width: 220px; }
-#manage-users .actions { width: 180px; }
-
-
-/* Percentages */
-div.percentage-back {
-    background-color:#aaa;
-    height:20px;
-    line-height:20px;
-    width:200px;
-    position:relative;
-    top:6px;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-}
-
-div.percentage-front {
-    background-color:#628296;
-    color: #fff;
-    height:100%;
-    font-size:0.8em;
-    position:absolute;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-}
-div.percentage-text {
-    color: #fff;
-    height:100%;
-    font-size:0.8em;
-    position:absolute;
-}
-
-
-
-/* Delete user */
-#delete-user {
-    width:500px;
-}
-#delete-user p {
-    margin:10px;
-}
-div.warning {
-    border:1px solid #999;
-    background:#f4f4f4;
-    padding:10px;
-    margin:10px 0;
-    text-align:center;
-}
-
-table.credentials {
-    border-collapse:collapse;
-    margin:20px 0;
-}
-table.credentials th {
-    color:#333;
-    font-weight:bold;
-    font-size:80%;
-}
-table.credentials th,
-table.credentials td {
-    border:1px solid #999;
-    padding:4px 8px;
-}
-
-
-
-/* Change password */
-#user-change-password {
-    width:500px;
-}
-
-#instructions {
-    border: 1px dashed #ccc;
-    padding: 10px;
-}
-
-
-
-/* BUTTONS */
-#file-list-actions {
-    float:left;
-    margin:2px 10px 0 0;
-}
-.ui-button {
-    padding:0.3em 0.9em 0.3em 20px;
-    position:relative;
-    text-decoration:none!important;
-    font-size:75%;
-}
-.ui-button .ui-icon {
-    margin:-4px 5px 0 0;
-    top:8px;
-    left:2px;
-    position:absolute;
-}
-.ui-button-disabled {
-    color:#aaa!important;
-    cursor:default;
-}
+/* -- MANAGE USERS -- */
 
 .user-add-form form {
     background:#f4f4f4;
@@ -449,9 +276,90 @@ table.credentials td {
     -webkit-border-radius:3px;
 }
 
+.form label {
+    font-size:80%;
+    color:#666;
+    padding:6px 0 3px 0;
+    display:block;
+}
+
+.form .actions {
+    padding:8px 0;
+}
+
+#id_username, #id_password1, #id_password2 {
+    width:220px;
+}
+
+#manage-users td {
+    vertical-align:center;
+    padding:0px 4px 10px 4px;
+}
+
+#manage-users .username { width: 120px; }
+#manage-users .password { width: 120px; }
+#manage-users .files { width: 60px; }
+#manage-users .size { width: 120px; }
+#manage-users .percentage { width: 220px; }
+#manage-users .actions { width: 180px; }
+
+/* -- DELETE USER -- */
+
+#delete-user {
+    width:500px;
+}
+
+#delete-user p {
+    margin:10px;
+}
+
+.credentials {
+    border-collapse:collapse;
+    margin:20px 0;
+}
+
+.credentials th {
+    color:#333;
+    font-weight:bold;
+    font-size:80%;
+}
+
+.credentials th, .credentials td {
+    border:1px solid #999;
+    padding:4px 8px;
+}
+
+/* -- CHANGE PASSWORD -- */
+
+#user-change-password {
+    width:500px;
+}
+
+#instructions {
+    border: 1px dashed #ccc;
+    padding: 10px;
+}
+
+/* -- BUTTONS -- */
+
+.ui-button {
+    padding:0.3em 0.9em 0.3em 20px;
+    position:relative;
+    text-decoration:none!important;
+    font-size:75%;
+}
+
+.ui-button .ui-icon {
+    margin:-4px 5px 0 0;
+    top:8px;
+    left:2px;
+    position:absolute;
+}
+
+.ui-button-disabled {
+    color:#aaa!important;
+    cursor:default;
+}
 
 /* -- FIXES -- */
-
-.users-list li { 
-    *height:30px; /* FIX: IE6*/
-}
+.users-list li { *height:30px; } /* FIX: IE6*/

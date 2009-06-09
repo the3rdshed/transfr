@@ -1,13 +1,42 @@
 var poll = false;
 $.transfr = {
     init: function() {
+        // UI buttons
+        $('.ui-button').hover(function(){ 
+            if (!$(this).hasClass('ui-button-disabled')) {
+                $(this).addClass('ui-state-hover'); 
+            }
+        }, function(){
+            if (!$(this).hasClass('ui-button-disabled')) {
+                $(this).removeClass('ui-state-hover'); 
+            }
+        });
 
         // Language switcher
         $('#i18n-switcher').change(function(){
             $(this).parents('form').submit();
         });
 
+        // File list
+        $('.file-check').change(function(){
+            if ($('.file-check:checked').length > 0) {
+                $('.transfr-delete-selection').removeClass('ui-button-disabled');
+            }
+            else {
+                $('.transfr-delete-selection').addClass('ui-button-disabled');
+            }
+        });
+
         // File upload
+        $('#additional-form a').click(function () {
+            // Number of the last input + 1
+            var n = $('input[name^=file]').length + 1;
+            var url = $urls.additional_upload_form.replace('0', n);
+            $.get(url, function (data) {
+                $('#additional-form').before(data);
+            });
+        });
+
         $('form[enctype=multipart/form-data]').bind('submit', function(e){ 
             if (!$.data(this, 'submitted')) { 
                 $.transfr.file.upload(this);
