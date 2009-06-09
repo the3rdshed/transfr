@@ -3,22 +3,19 @@
 {% load i18n %}
 
 {% block bd %}
-
 <table class="workspace full-width" cellspacing="0" cellpadding="0">
     <tr>
-        {# User list #}
-        {% if user.is_superuser %}
         <td class="left">
-            <div class="container">
-                <h3 class="title">{% trans "Users" %}</h3>
-                <table class="full-width" cellspacing="0" cellpadding="0">
-                    {% for u in user_list %}
-                    <tr{% ifequal u this_user %} class="highlight"{% endifequal %}>
-                        <td><a href="{% url file_list_user u.id %}">{{ u }}</a></td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
+            {# User list #}
+            {% if user.is_superuser %}
+            <h3 class="title">{% trans "Users" %}</h3>
+            <ul class="users-list">
+                {% for u in user_list %}
+                <li{% ifequal u this_user %} class="highlight"{% endifequal %}>
+                    <a href="{% url file_list_user u.id %}"><span class="ui-icon ui-icon-{% ifequal u this_user %}bullet{% else %}radio-on{% endifequal %}"></span>{{ u }}</a>
+                </li>
+                {% endfor %}
+            </ul>
         </td>
         <td class="separator">&nbsp;</td>
         {% endif %}
@@ -27,66 +24,65 @@
         <td class="right">
             <div class="container">
                 {% if this_user.file_set.all %}
+                <div id="file-list-actions">
+                    {% url add_file this_user.id as add_file %}
+                    {# Upload file #}
+                    <a class="ui-state-default ui-corner-left ui-button ui-button-disabled transfr-delete-selection" href="#" style="border-right:0;"><span class="ui-icon ui-icon-trash"></span>{% trans "Delete selection" %}</a><a class="ui-state-default ui-corner-right ui-button" href="{{ add_file }}"><span class="ui-icon ui-icon-circle-plus"></span>{% trans "Upload a file" %}</a>
+                </div>
                 <h3 class="title">
                     {{ this_user }}
-                    (<span id="transfr-folder-count">{{ this_user.file_set.count }}</span>
+                    <small>(<span id="transfr-folder-count">{{ this_user.file_set.count }}</span>
                     {% trans "files" %},
-                    <span id="transfr-folder-size">{{ this_user|total_user_size|filesizeformat }}</span>)
+                    <span id="transfr-folder-size">{{ this_user|total_user_size|filesizeformat }}</span>)</small>
                 </h3>
-
                 <table class="full-width" cellspacing="0" cellpadding="0">
-                    <tr class="toolbar">
-                        <td colspan="4">
-
-                            {# Upload file #}
-                            {% url add_file this_user.id as add_file %}
-                            {% button "upload" add_file %}{% trans "Upload a file" %}{% endbutton %}
-
-                            {# Upload file #}
-                            {% button "delete" "#" "transfr-delete-selection" %}{% trans "Delete" %}{% endbutton %}
-
-                        </td>
-                    </tr>
-
-                    <tr class="header">
-                        <th class="center file-list-checkbox"><input class="file-check-all" type="checkbox"></th>
-                        <th class="file-list-filename">{% trans "File name" %}</th>
-                        <th class="file-list-size">{% trans "Size" %}</th>
-                        <th class="file-list-date">{% trans "Date" %}</th>
-                    </tr>
-                    {% for file in this_user.file_set.all %}
-                    <tr id="file-{{ file.id }}" class="detail {% cycle even,odd %}">
-                        <td class="center file-list-checkbox"><input class="file-check" type="checkbox" value="{{ file.id }}"></td>
-                        <td class="file-list-filename">
-                            <a href="{{ file.file.url }}">{{ file.truncated_name }}</a>
-                            <p class="comments">
-                                {% if file.comments %}
-                                {{ file.comments|linebreaksbr }}
-                                {% endif %}
-                            </p>
-                        </td>
-                        <td class="file-list-size">{{ file.safesize|filesizeformat }}</td>
-                        <td class="file-list-date">{{ file.modified_date|date:"d-M-Y" }}</td>
-                    </tr>
-                    {% endfor %}
+                    <thead>
+                        <tr class="header">
+                            <th class="ui-state-default center file-list-checkbox"><input class="file-check-all" type="checkbox"></th>
+                            <th class="ui-state-default">{% trans "File name" %}</th>
+                            <th class="ui-state-default">{% trans "Size" %}</th>
+                            <th class="ui-state-default">{% trans "Date" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in this_user.file_set.all %}
+                        <tr id="file-{{ file.id }}" class="detail {% cycle even,odd %}">
+                            <td class="center file-list-checkbox"><input class="file-check" type="checkbox" value="{{ file.id }}"></td>
+                            <td class="file-list-filename">
+                                <a href="{{ file.file.url }}">{{ file.truncated_name }}</a>
+                                <p class="comments">
+                                    {% if file.comments %}
+                                    {{ file.comments|linebreaksbr }}
+                                    {% endif %}
+                                </p>
+                            </td>
+                            <td class="file-list-size">{{ file.safesize|filesizeformat }}</td>
+                            <td class="file-list-date">{{ file.modified_date|date:"d-M-Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
                 {% else %}
-                <h3 class="title">{% trans "No files" %}</h3>
-                <p class="center">
-                    {% blocktrans %}
-                    There are no files in this directory; click on the button below to add one.
-                    {% endblocktrans %}
-                </p>
-                <br>
-                <p class="center">
-                    {% url add_file this_user.id as add_file_url %}
-                    {% button "upload" add_file_url %}{% trans "Upload a file" %}{% endbutton %}
-                </p>
-                <br>
+                <h3 class="title">
+                    {{ this_user }}
+                    <small>(<span id="transfr-folder-count">{% trans "No files" %}</span>)</small>
+                    
+                </h3>
+                <div class="message">
+                    <p class="center">
+                        {% blocktrans %}
+                        There are no files in this directory; click on the button below to add one.
+                        {% endblocktrans %}
+                    </p>
+                    <br>
+                    <p class="center">
+                        {% url add_file this_user.id as add_file_url %}
+                        <a class="ui-state-default ui-corner-all ui-button" href="{{ add_file_url }}"><span class="ui-icon ui-icon-circle-arrow-n" style="top:8px;"></span>{% trans "Upload a file" %}</a>
+                    </p>
+                </div>
                 {% endif %}
             </div>
         </td>
     </tr>
 </table>
-
 {% endblock %}

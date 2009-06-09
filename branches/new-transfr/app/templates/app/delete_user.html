@@ -3,21 +3,25 @@
 {% load i18n %}
 
 {% block bd %}
+<h3 class="title">{% trans "Delete user" %}</h3>
 <div id="delete-user">
-    <h3 class="title">{% trans "Delete user" %}</h3>
 
     <form method="post" action="#">
         <p>
             {% trans "Do you really want to delete" %} <b>{{ this_user }}</b>?
         </p>
         <p>
-            <input type="submit" value="{% trans "Delete" %}">
+            {% if this_user.file_set.all %}
+            <input type="submit" value="{% trans "Yes delete this user and all his files" %}">
+            {% else %}
+            <input type="submit" value="{% trans "Yes delete this user" %}">
+            {% endif %}
         </p>
     </form>
 </div>
 
 {% if this_user.file_set.all %}
-<div class="warning">
+<div class="message">
     <p>
         <b>{% icon "exclamation" %} {% trans "Beware: the files of this user will also be deleted" %}:</b>
     </p>
