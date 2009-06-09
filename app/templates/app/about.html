@@ -4,9 +4,49 @@
 {% block bd %}
 <h1>{% trans "About Transfr" %}</h1>
 
+{% blocktrans %}
 <p>
-    {% blocktrans %}
-    Transfr is a web-based file exchange system developed by Centdessin Design.
-    {% endblocktrans %}
+    Transfr is a simple file sharing application developped in house at Centdessin Design. The first goal was to make the process of sharing files securely as easy as possible for our graphic designers and our clients.
 </p>
+<p>
+    After years of using the FTP protocol to transfer files between our graphic designers and clients we got tired of the recurrents problems that can't be fixed with FTP.
+</p>
+    The most significative ones being firewalls and clients that don't know how to use a FTP.
+</p>
+<p>
+    In the process of building the application we decided that it could be a nice idea to release it under Open Source license. It allow us to showcase the quality of the web applications we build while, hopefully, being useful to other people. We also think it's a great opportunity to increase the quality of our software with user contributed fixes and enhancements, or at least bug reports.
+</p>
+<p>
+    We also hope that it can somehow incite some of our clients to invest in Open Source projects. It's our way to demonstrate that we truely believe in the Open Source potential by not only using it, but proactively contributing.
+</p>
+<h3>Authors</h3>
+
+<dl>
+    <dt>Maxime Haineault <small>(<a href="http://haineault.com/">haineault.com</a>)</small></dt>
+    <dd>
+        Project manager, front-end development, design.<br />
+        
+    </dd>
+    <dt>Vincent Foley <small>(<a href="http://gnuvince.wordpress.com/">gnuvince.wordpress.com</a>)</small></dt>
+    <dd>
+        Backend programming, user interface.
+    </dd>
+</dl>
+
+
+<h3>Links</h3>
+<ul class="list">
+    <li><a href="http://centdessin.com">centdessin.com</a> <small>(sponsor)</small></li>
+    <li><a href="http://code.google.com/p/transfr/">Project page</a></li>
+    <li><a href="http://code.google.com/p/transfr/source/checkout">Project source code</a></li>
+    <li><a href="http://code.google.com/p/transfr/issues/list">Report a bug</a></li>
+</ul>
+{% endblocktrans %}
 {% endblock %}
+
+
+
+
+
+
+

@@ -19,7 +19,21 @@ a:hover  { text-decoration:underline; }
 .center  { text-align:center; }
 .right   { text-align:right; }
 .clear   { clear:both; }
+.list    { margin:20px 0;}
+.list li { list-style:square;margin-left:30px;}
 .full-width { width:100%; }
+
+dl       { margin: 20px; }
+dl dt {
+    font-weight:bold;
+    font-size:80%;
+}
+dl dd {
+    color:#999;
+    margin-bottom:10px;
+}
+
+
 #hd, #bd { margin:0 20px; }
 
 #ft {
@@ -190,11 +204,6 @@ a:hover  { text-decoration:underline; }
     max-width: 320px;
 }
 
-/* IE6 doesn't allow input[type=text] selectors :( */
-#id_username, #id_password {
-    width:100%;
-}
-
 /* -- USER LIST -- */
 
 .users-list {
@@ -287,8 +296,10 @@ a:hover  { text-decoration:underline; }
     padding:8px 0;
 }
 
-#id_username, #id_password1, #id_password2 {
-    width:220px;
+#login-form #id_username, 
+#login-form #id_password1, 
+#login-form #id_password2 {
+    width:180px!important;
 }
 
 #manage-users td {
