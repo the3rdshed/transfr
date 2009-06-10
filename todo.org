@@ -1,0 +1,34 @@
+* Tasks
+** Features
+*** TODO Force downloads
+    Some user are not familiar with the "right-click / save link
+    as..." procedure, and as such, clicking on a file link should open
+    a download dialog box.  This is not possible with Django 1.0.2
+    without exhausting all available memory.  This will need to be
+    examined again when Django 1.1 is released.
+*** TODO Secure downloads
+    Once downloads can be forced, the upload directory should no
+    longer be world-readable to prevent potential attackers from
+    guessing file names and downloading unauthorised material.
+*** TODO Themes
+    Administrators of a Transfr installation should be able to
+    customize the colors of the application to reflect the corporate
+    image of their company.
+
+** Bugs
+*** DONE Login doesn't work in Chrome
+    CLOSED: [2009-06-10 Wed 14:15]
+    There was a problem with my version of Chrome.  An update fixed
+    the issue.
+
+** i18n
+*** DONE French translation
+    CLOSED: [2009-06-10 Wed 13:42]
+
+** Documentation
+*** TODO Better about page
+*** TODO Write help page
+*** TODO INSTALL file
+
+** IE6
+*** TODO Username field is slightly wider than password fields

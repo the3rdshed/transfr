@@ -42,7 +42,11 @@
                             <td class="files">{{ file_count }}</td>
                             <td class="size">{{ size|filesizeformat }}</td>
                             <td class="percentage">{% size_percentage size total_size %}</td>
-                            <td class="actions"><a class="ui-state-default ui-corner-left ui-button" href="{% url instructions this_user.id %}" style="border-right:0;" title="{% trans "Instructions" %}"><span class="ui-icon ui-icon-circle-arrow-n"></span>{% trans "Instructions" %}</a><a class="ui-state-default ui-button" href="{% url set_password this_user.id %}" style="border-right:0;" title="{% trans "Instructions" %}"><span class="ui-icon ui-icon-locked"></span>{% trans "Password" %}</a><a class="ui-state-default ui-corner-right ui-button transfr-delete-selection" href="{% url delete_user this_user.id %}"><span class="ui-icon ui-icon-trash"></span>{% trans "Delete" %}</a></td>
+                            <td class="actions">
+                                <a href="{% url instructions this_user.id %}" title="{% trans "Instructions" %}">{% icon "email" %}</a>
+                                <a href="{% url set_password this_user.id %}" title="{% trans "Change password" %}">{% icon "password" %}</a>
+                                <a href="{% url delete_user this_user.id %}" title="{% trans "Delete" %}">{% icon "delete" %}</a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
