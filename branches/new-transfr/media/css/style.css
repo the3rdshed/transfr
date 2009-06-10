@@ -180,7 +180,7 @@ dl dd {
     background:#f4f4f4;
     padding:8px;
     margin: 20px auto;
-    width:290px;
+    width:250px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
 }
@@ -259,7 +259,7 @@ dl dd {
 
 #upload-form {
     margin: 10px 0;
-    width:330px;
+    width:600px;
     background:#f4f4f4;
     border:1px solid #ccc;
     padding:6px;
@@ -294,12 +294,6 @@ dl dd {
 
 .form .actions {
     padding:8px 0;
-}
-
-#login-form #id_username, 
-#login-form #id_password1, 
-#login-form #id_password2 {
-    width:180px!important;
 }
 
 #manage-users td {

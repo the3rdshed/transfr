@@ -5,9 +5,9 @@
 {% block bd %}
 <table class="workspace full-width" cellspacing="0" cellpadding="0">
     <tr>
+        {% if user.is_superuser %}
         <td class="left">
             {# User list #}
-            {% if user.is_superuser %}
             <h3 class="title">{% trans "Users" %}</h3>
             <ul class="users-list">
                 {% for u in user_list %}
